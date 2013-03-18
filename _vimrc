@@ -162,38 +162,13 @@ if has("gui_running")
 
     " window background
     set background=dark
-    
+
     " set overall colorscheme
     colorscheme peaksea
 else
     " set overall colorscheme
     colorscheme slate
 endif
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"     Statusline
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" always show the statusline
-set laststatus=2
-
-" format it
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{CurDir()}%h\ %=Line:\ %l/%L:%c
-
-" helper-functions
-function! CurDir()
-    let curdir = substitute(getcwd(), $HOME, "~", "g")
-    return curdir
-endfunction
-
-function! HasPaste()
-    if &paste
-        return 'PASTE MODE  '
-    else
-        return ''
-    endif
-endfunction
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -230,9 +205,6 @@ match OverLength /\%81v.*/
 "     vim +BundleInstall +qall
 " to install configured bundles
 
-" vundle requires this
-filetype off
-
 " init it
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
@@ -240,3 +212,13 @@ call vundle#rc()
 " let vundle manage vundle
 Bundle 'gmarik/vundle'
 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"     Powerline
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Bundle 'Lokaltog/powerline'
+set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
+
+" always show the statusline
+set laststatus=2
