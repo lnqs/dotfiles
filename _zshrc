@@ -1,0 +1,335 @@
+###############################################################################
+# Lynx' .zshrc
+# A lot of stuff is taken from grml's zshrc (see <http://grml.org/zsh/>, GPLv2)
+###############################################################################
+
+###############################################################################
+#     PREREQUISITES
+###############################################################################
+
+# loaded early since it's needed at various places
+autoload -U add-zsh-hook
+
+
+###############################################################################
+#     SETUP ENVIRONMENT
+###############################################################################
+
+export SHELL='/bin/zsh'
+export EDITOR=${EDITOR:-vim}
+export PAGER=${PAGER:-less}
+export MANSECT=3:2:9:8:1:5:4:7:6:n
+
+export PATH="/usr/lib/ccache/bin:$HOME/.bin:$HOME/.local/bin:$PATH"
+export WINEARCH="win32"
+
+# syntax-highlighting in less with source-highlight
+export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
+export LESS=' -R '
+
+
+###############################################################################
+#     ALIASES
+###############################################################################
+
+# colors for ls. Also, human-readable sizes are great.
+alias ls='ls -b -CF -h --color=auto'
+
+# don't grep in binary files by default
+alias grep='grep -I'
+
+
+###############################################################################
+#     OPTIONS
+###############################################################################
+
+# append history list to the history file and share it between instances
+setopt append_history
+setopt share_history
+
+# save timestamp and duration for each command executed in history
+setopt extended_history
+
+# keep only the newest invocation of a command in history
+setopt histignorealldups
+
+# don't add commands prefixed with a whitespace to the history
+setopt histignorespace
+
+# enable #, ~ and ^ in globbing
+setopt extended_glob
+
+# display PID when suspending processes
+setopt longlistjobs
+
+# try to avoid the 'zsh: no matches found...'
+setopt nonomatch
+
+# report the status of backgrounds jobs immediately
+setopt notify
+
+# when a command completion is attempted, make sure the command path is hashed
+setopt hash_list_all
+
+# not just at the end
+setopt completeinword
+
+# Don't send SIGHUP to background processes when the shell exits
+setopt nohup
+
+# make cd push the old directory onto the directory stack
+setopt auto_pushd
+
+# avoid "beep"ing
+setopt nobeep
+
+# don't push the same dir twice.
+setopt pushd_ignore_dups
+
+# * shouldn't match dotfiles. ever.
+setopt noglobdots
+
+# use zsh style word splitting
+setopt noshwordsplit
+
+# don't error out when unset parameters are used
+setopt unset
+
+# report times as if invoked with `time' when a command takes more than 5 secs
+REPORTTIME=5
+
+# history
+HISTFILE=${HOME}/.zsh/history
+HISTSIZE=5000
+SAVEHIST=10000
+
+
+###############################################################################
+#     COLORS
+###############################################################################
+
+autoload -U colors && colors
+
+# support colors in ls
+eval $(dircolors -b)
+
+# support colors in less
+export LESS_TERMCAP_mb=$'\e[01;31m'
+export LESS_TERMCAP_md=$'\e[01;31m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[01;44;33m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[01;32m'
+
+# colors in zsh itself
+export ZLSCOLORS="${LS_COLORS}"
+
+
+###############################################################################
+#     KEYBINDINGS
+###############################################################################
+
+bindkey -v
+
+# ctrl+h sends command to history without executing it
+commit-to-history() {
+    print -s ${(z)BUFFER}
+    zle send-break
+}
+zle -N commit-to-history
+bindkey "^h" commit-to-history
+
+# ctrl+z continues the last stopped job
+raise-stopped-to-fg() {
+    if (( ${#jobstates} )); then
+        zle .push-input
+        [[ -o hist_ignore_space ]] && BUFFER=' ' || BUFFER=''
+        BUFFER="${BUFFER}fg"
+        zle .accept-line
+    else
+        zle -M 'No background jobs. Doing nothing.'
+    fi
+}
+zle -N raise-stopped-to-fg
+bindkey '^z' raise-stopped-to-fg
+
+# ctrl+j/ctrl+k search the history incremental
+autoload -U history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end  history-search-end
+bindkey "^J" history-beginning-search-backward-end
+bindkey "^K" history-beginning-search-forward-end
+bindkey -a "^J" history-beginning-search-backward-end
+bindkey -a "^K" history-beginning-search-forward-end
+
+# ctrl+f inserts filenames by wildcards
+autoload -U insert-files
+zle -N insert-files
+bindkey '^F' insert-files
+
+# ctrl+p toggles command prediction
+function toggle-predict() {
+    if [[ $prediction_on == 1 ]]; then
+        predict-off
+        prediction_on=0
+    else
+        predict-on
+        prediction_on=1
+    fi
+}
+autoload -U predict-on
+zle -N toggle-predict
+bindkey '^P' toggle-predict
+
+
+###############################################################################
+#     DIRSTACK HANDLING
+###############################################################################
+
+# Keep a stack of recent directories
+DIRSTACKSIZE=${DIRSTACKSIZE:-20}
+DIRSTACKFILE=${DIRSTACKFILE:-${HOME}/.zsh/dirs}
+
+if [[ -f ${DIRSTACKFILE} ]] && [[ ${#dirstack[*]} -eq 0 ]] ; then
+    dirstack=( ${(f)"$(< $DIRSTACKFILE)"} )
+    # "cd -" won't work after login by just setting $OLDPWD, so
+    [[ -d $dirstack[1] ]] && cd $dirstack[1] && cd $OLDPWD
+fi
+
+chpwd() {
+    local -ax my_stack
+    my_stack=( ${PWD} ${dirstack} )
+    builtin print -l ${(u)my_stack} >! ${DIRSTACKFILE}
+}
+
+
+###############################################################################
+#     AUTOCOMPLETION
+###############################################################################
+
+# NOTE: Disable 'HashKnownHosts' in /etc/ssh/ssh_config to allow
+#       autocompletion to work with ssh
+
+autoload -U compinit && compinit
+
+setopt completealiases
+
+zstyle ':completion:*' menu select
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*:processes' command 'ps -au$USER'
+zstyle ':completion:*:matches' group 'yes'
+zstyle ':completion:*:options' description 'yes'
+zstyle ':completion:*:options' auto-description '%d'
+zstyle ':completion:*:descriptions' \
+       format "%{$fg_bold[yellow]%}completing %d%{$reset_color%}"
+zstyle ':completion:*:messages' \
+       format "%{$fg_bold[green]%}completing %d%{$reset_color%}"
+zstyle ':completion:*:warnings' \
+       format "%{$fg_bold[red]%}no matches found%{$reset_color%}"
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' \
+        'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+
+
+###############################################################################
+#     PROMPT
+###############################################################################
+
+autoload -U promptinit && promptinit
+
+setopt prompt_subst
+setopt transient_rprompt
+
+autoload -U vcs_info
+zstyle ':vcs_info:*' formats "%{${fg_no_bold[magenta]}%}(%{${fg_bold[white]}%}%s%{${fg_no_bold[magenta]}%})[%{${fg_bold[green]}%}%b%{${fg_no_bold[magenta]}%}]%{$reset_color%}"
+zstyle ':vcs_info:*' actionformats "(%s)-[%b] (%a)"
+
+PROMPT='%{${fg_bold[green]}%}%n@%m %{${fg_bold[blue]}%}%30<…<%~%<<%{${reset_color}%} %# '
+RPROMPT='%(?.${vcs_info_msg_0_}$(git_info).%{${fg_bold[red]}%}↪%?%{${reset_color}%})'
+PS2='\`%_> '
+PS3='?# '
+PS4='+%N:%i:%_> '
+
+git_info() {
+    if ( git rev-parse --is-inside-work-tree 1>/dev/null 2>&1 ); then
+        outgoing=$(git cherry 2>/dev/null | wc -l)
+        staged=$(git diff --staged --name-status 2>/dev/null | wc -l)
+        unstaged=$(git diff --name-status 2>/dev/null | wc -l)
+        untracked=$(git ls-files --others --exclude-standard \
+                "$(command git rev-parse --show-toplevel)" 2>/dev/null | wc -l)
+        stashed=$(git stash list 2>/dev/null 2>/dev/null | wc -l)
+        conflicts=$(git diff --staged --name-status 2>/dev/null | sed '/^[^U]/d' | wc -l)
+
+        info_string=''
+
+        if [[ $outgoing != 0 ]]; then
+            info_string="$info_string%{${fg_bold[white]}%} ↑$outgoing"
+        fi
+        if [[ $staged != 0 ]]; then
+            info_string="$info_string%{${fg_bold[blue]}%} ●$staged"
+        fi
+        if [[ $unstaged != 0 ]]; then
+            info_string="$info_string%{${fg_bold[yellow]}%} ✚$unstaged"
+        fi
+        if [[ $untracked != 0 ]]; then
+            info_string="$info_string%{${fg_bold[white]}%} …$untracked"
+        fi
+        if [[ $stashed != 0 ]]; then
+            info_string="$info_string%{${fg_bold[blue]}%} ⚑$stashed"
+        fi
+        if [[ $conflicts != 0 ]]; then
+            info_string="$info_string%{${fg_bold[red]}%} ✖$conflicts"
+        fi
+
+        if [[ $info_string == '' ]]; then
+            info_string="%{${fg_bold[green]}%}✔"
+        fi
+
+        builtin print -n "%{${fg_no_bold[magenta]}%}[$info_string%{${fg_no_bold[magenta]}%}]%{$reset_color%}"
+    fi
+}
+
+add-zsh-hook precmd vcs_info
+
+
+###############################################################################
+#     TERMINAL TITLE
+###############################################################################
+
+set_title() {
+    case $TERM in
+        (xterm*|rxvt*)
+            builtin print -n "\e]0;$*\a"
+            ;;
+    esac
+}
+
+set_title_program_name() {
+    set_title "${(%):-"%n@%m:"} $1"
+}
+
+set_title_pwd() {
+    set_title ${(%):-"%n@%m: %~"}
+}
+
+add-zsh-hook preexec set_title_program_name
+add-zsh-hook precmd set_title_pwd
+
+
+###############################################################################
+#     MISC
+###############################################################################
+
+# standard math functions like sin()
+zmodload zsh/mathfunc
+
+# some useful modules
+zmodload -a zsh/stat zstat
+zmodload -a zsh/zpty zpty
+zmodload -ap zsh/mapfile mapfile
+
+# zmv for batch renaming/moving
+autoload -U zmv
+
+source ${HOME}/.zsh/zshrc.$(hostname)
+
