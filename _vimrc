@@ -55,9 +55,6 @@ autocmd! bufwritepost .vimrc source ~/.vimrc
 " enable syntax highlighting
 syntax on
 
-" enable filetype detection
-filetype on
-
 " enable filetype-specific indenting
 filetype indent on
 
@@ -221,4 +218,25 @@ autocmd QuickFixCmdPost    l* nested lwindow
 " show overlong lines
 highlight OverLength ctermfg=darkgray
 match OverLength /\%81v.*/
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"     Vundle
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" call
+"    git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+" to install vundle,
+"     vim +BundleInstall +qall
+" to install configured bundles
+
+" vundle requires this
+filetype off
+
+" init it
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" let vundle manage vundle
+Bundle 'gmarik/vundle'
 
