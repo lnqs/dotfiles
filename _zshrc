@@ -27,6 +27,10 @@ export WINEARCH="win32"
 export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
 export LESS=' -R '
 
+# enable 265 colors
+if [[ "$TERM" = "xterm" ]]; then
+    export TERM="xterm-256color"
+fi
 
 ###############################################################################
 #     ALIASES

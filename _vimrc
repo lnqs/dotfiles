@@ -164,11 +164,11 @@ if has("gui_running")
     set background=dark
 
     " set overall colorscheme
-    colorscheme peaksea
-else
-    " set overall colorscheme
-    colorscheme slate
+    colorscheme codeschool
 endif
+
+" set overall colorscheme
+colorscheme lynx
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -197,7 +197,7 @@ match OverLength /\%81v.*/
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "     Vundle
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " call
 "    git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
@@ -215,7 +215,7 @@ Bundle 'gmarik/vundle'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "     Powerline
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Bundle 'Lokaltog/powerline'
 set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
