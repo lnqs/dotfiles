@@ -225,3 +225,11 @@ set laststatus=2
 
 " mode is displayed in powerline, we don't need it below again
 set noshowmode
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"     vimpager
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Bundle 'rkitover/vimpager'
+

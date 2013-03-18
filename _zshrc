@@ -20,12 +20,13 @@ export EDITOR=${EDITOR:-vim}
 export PAGER=${PAGER:-less}
 export MANSECT=3:2:9:8:1:5:4:7:6:n
 
-export PATH="/usr/lib/ccache/bin:$HOME/.bin:$HOME/.local/bin:$PATH"
+export PATH="/usr/lib/ccache/bin:$HOME/.bin:$HOME/.local/bin:$HOME/.vim/bundle/vimpager:$PATH"
 export WINEARCH="win32"
 
-# syntax-highlighting in less with source-highlight
-export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
-export LESS=' -R '
+# use vimpager as pager/less-replacement
+export PAGER=vimpager
+alias less=$PAGER
+alias zless=$PAGER
 
 # enable 265 colors
 if [[ "$TERM" = "xterm" ]]; then
