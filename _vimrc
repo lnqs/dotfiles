@@ -222,3 +222,6 @@ set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
 
 " always show the statusline
 set laststatus=2
+
+" mode is displayed in powerline, we don't need it below again
+set noshowmode
