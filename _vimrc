@@ -186,10 +186,6 @@ map <down> <nop>
 "     Helpers
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" automatically open quickfix window
-autocmd QuickFixCmdPost [^l]* nested cwindow
-autocmd QuickFixCmdPost    l* nested lwindow
-
 " show overlong lines
 highlight OverLength ctermfg=darkgray
 match OverLength /\%81v.*/
@@ -233,3 +229,20 @@ set noshowmode
 
 Bundle 'rkitover/vimpager'
 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"     clang complete
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Bundle 'Rip-Rip/clang_complete'
+let g:clang_auto_select=1
+let g:clang_hl_errors=1
+let g:clang_periodic_quickfix=1
+let g:clang_snippets=1
+let g:clang_trailing_placeholder=1
+let g:clang_user_options='-std=c++11'
+let g:clang_use_library=1
+let g:clang_complete_macros=1
+let g:clang_complete_patterns=1
+
+set completeopt=menu,menuone
