@@ -255,7 +255,7 @@ let g:clang_use_library=1
 let g:clang_complete_macros=1
 let g:clang_complete_patterns=1
 
-set completeopt=menu,menuone
+autocmd FileType c,cpp let g:SuperTabDefaultCompletionType='<c-x><c-u>'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -263,5 +263,18 @@ set completeopt=menu,menuone
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Bundle 'ervandew/supertab'
-let g:SuperTabDefaultCompletionType = '<c-x><c-u>'
+
+set completeopt=menu,menuone
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"     Python-mode
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Bundle 'klen/python-mode.git'
+
+let g:pymode_folding=0
+let g:pymode_lint_onfly=1
+
+autocmd FileType python let g:SuperTabDefaultCompletionType='<c-x><c-o>'
 
