@@ -244,8 +244,10 @@ Bundle 'rkitover/vimpager'
 
 Bundle 'Rip-Rip/clang_complete'
 let g:clang_auto_select=1
-let g:clang_hl_errors=1
+let g:clang_complete_auto=0
+let g:clang_complete_copen=1
 let g:clang_periodic_quickfix=1
+let g:clang_hl_errors=1
 let g:clang_snippets=1
 let g:clang_trailing_placeholder=1
 let g:clang_user_options='-std=c++11'
@@ -254,3 +256,12 @@ let g:clang_complete_macros=1
 let g:clang_complete_patterns=1
 
 set completeopt=menu,menuone
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"     SuperTab
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Bundle 'ervandew/supertab'
+let g:SuperTabDefaultCompletionType = '<c-x><c-u>'
+
