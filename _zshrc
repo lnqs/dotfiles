@@ -250,49 +250,10 @@ zstyle ':vcs_info:*' formats "%{${fg_no_bold[magenta]}%}(%{${fg_bold[white]}%}%s
 zstyle ':vcs_info:*' actionformats "(%s)-[%b] (%a)"
 
 PROMPT='%{${fg_bold[green]}%}%n@%m %{${fg_bold[blue]}%}%30<…<%~%<<%{${reset_color}%} %# '
-RPROMPT='%(?.${vcs_info_msg_0_}$(git_info).%{${fg_bold[red]}%}↪%?%{${reset_color}%})'
+RPROMPT='%(?.${vcs_info_msg_0_}.%{${fg_bold[red]}%}↪%?%{${reset_color}%})'
 PS2='\`%_> '
 PS3='?# '
 PS4='+%N:%i:%_> '
-
-git_info() {
-    if ( git rev-parse --is-inside-work-tree 1>/dev/null 2>&1 ); then
-        outgoing=$(git cherry 2>/dev/null | wc -l)
-        staged=$(git diff --staged --name-status 2>/dev/null | wc -l)
-        unstaged=$(git diff --name-status 2>/dev/null | wc -l)
-        untracked=$(git ls-files --others --exclude-standard \
-                "$(command git rev-parse --show-toplevel)" 2>/dev/null | wc -l)
-        stashed=$(git stash list 2>/dev/null 2>/dev/null | wc -l)
-        conflicts=$(git diff --staged --name-status 2>/dev/null | sed '/^[^U]/d' | wc -l)
-
-        info_string=''
-
-        if [[ $outgoing != 0 ]]; then
-            info_string="$info_string%{${fg_bold[white]}%} ↑$outgoing"
-        fi
-        if [[ $staged != 0 ]]; then
-            info_string="$info_string%{${fg_bold[blue]}%} ●$staged"
-        fi
-        if [[ $unstaged != 0 ]]; then
-            info_string="$info_string%{${fg_bold[yellow]}%} ✚$unstaged"
-        fi
-        if [[ $untracked != 0 ]]; then
-            info_string="$info_string%{${fg_bold[white]}%} …$untracked"
-        fi
-        if [[ $stashed != 0 ]]; then
-            info_string="$info_string%{${fg_bold[blue]}%} ⚑$stashed"
-        fi
-        if [[ $conflicts != 0 ]]; then
-            info_string="$info_string%{${fg_bold[red]}%} ✖$conflicts"
-        fi
-
-        if [[ $info_string == '' ]]; then
-            info_string="%{${fg_bold[green]}%}✔"
-        fi
-
-        builtin print -n "%{${fg_no_bold[magenta]}%}[$info_string%{${fg_no_bold[magenta]}%}]%{$reset_color%}"
-    fi
-}
 
 add-zsh-hook precmd vcs_info
 
