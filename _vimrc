@@ -335,3 +335,12 @@ let g:pymode_lint_onfly=1
 
 autocmd FileType python let g:SuperTabDefaultCompletionType='<c-x><c-o>'
 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"     Clojure
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Bundle 'guns/vim-clojure-static'
+Bundle 'tpope/vim-classpath'
+Bundle 'tpope/vim-fireplace'
+
