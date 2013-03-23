@@ -135,7 +135,9 @@ export ZLSCOLORS="${LS_COLORS}"
 #     KEYBINDINGS
 ###############################################################################
 
-bindkey -v
+
+# initialize
+bindkey -e
 
 # ctrl+h sends command to history without executing it
 commit-to-history() {
@@ -143,7 +145,7 @@ commit-to-history() {
     zle send-break
 }
 zle -N commit-to-history
-bindkey "^h" commit-to-history
+bindkey '^H' commit-to-history
 
 # ctrl+z continues the last stopped job
 raise-stopped-to-fg() {
@@ -157,16 +159,14 @@ raise-stopped-to-fg() {
     fi
 }
 zle -N raise-stopped-to-fg
-bindkey '^z' raise-stopped-to-fg
+bindkey '^Z' raise-stopped-to-fg
 
-# ctrl+j/ctrl+k search the history incremental
+# ctrl+up/ctrl+down search the history incremental
 autoload -U history-search-end
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end  history-search-end
-bindkey "^J" history-beginning-search-backward-end
-bindkey "^K" history-beginning-search-forward-end
-bindkey -a "^J" history-beginning-search-backward-end
-bindkey -a "^K" history-beginning-search-forward-end
+bindkey '^[[1;5A' history-beginning-search-backward-end
+bindkey '^[[1;5B' history-beginning-search-forward-end
 
 # ctrl+f inserts filenames by wildcards
 autoload -U insert-files
@@ -187,6 +187,9 @@ autoload -U predict-on
 zle -N toggle-predict
 bindkey '^P' toggle-predict
 
+# ctrl+left/ctrl+right jumps to previous/next word
+bindkey '^[[1;5C' emacs-forward-word
+bindkey '^[[1;5D' emacs-backward-word
 
 ###############################################################################
 #     DIRSTACK HANDLING
