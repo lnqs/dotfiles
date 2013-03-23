@@ -250,10 +250,13 @@ Bundle 'kien/ctrlp.vim'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"     Snip-Mate
+"     UltiSnips
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-Bundle 'msanders/snipmate.vim'
+Bundle 'vim-scripts/UltiSnips'
+
+" no idea why I need to call this explicitly, but, well...
+autocmd FileType * call UltiSnips_FileTypeChanged()
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -317,7 +320,7 @@ let g:clang_complete_auto=0
 let g:clang_complete_copen=1
 let g:clang_periodic_quickfix=1
 let g:clang_hl_errors=1
-let g:clang_snippets=1
+let g:clang_snippets_engine='ultisnips'
 let g:clang_trailing_placeholder=1
 let g:clang_use_library=1
 let g:clang_complete_macros=1
