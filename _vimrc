@@ -188,6 +188,12 @@ highlight OverLength ctermfg=darkgray
 match OverLength /\%81v.*/
 
 
+" automatically close if quickfix is the only window
+aug QFClose
+  au!
+  au WinEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&buftype") == "quickfix"|q|endif
+aug END
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "     Access to man pages
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
