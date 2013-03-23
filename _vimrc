@@ -162,13 +162,10 @@ if has("gui_running")
 
     " window background
     set background=dark
-
-    " set overall colorscheme
-    colorscheme codeschool
 endif
 
 " set overall colorscheme
-colorscheme lynx
+colorscheme wombat256
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
