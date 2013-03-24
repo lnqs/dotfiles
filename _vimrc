@@ -339,6 +339,19 @@ autocmd FileType c,cpp let g:SuperTabDefaultCompletionType='<c-x><c-u>'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"     ctags
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Bundle 'vim-scripts/taglist.vim'
+Bundle 'vim-scripts/easytags.vim'
+
+let Tlist_Ctags_Cmd='/usr/bin/ctags'
+let Tlist_WinWidth=50
+let Tlist_Use_Right_Window=1
+map <F4> :TlistToggle<cr>
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "     SuperTab
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
