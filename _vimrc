@@ -199,6 +199,9 @@ function! MyLastWindow()
   endif
 endfunction
 
+" move quickfix to the bottom as soon as it's opened
+:autocmd FileType qf wincmd J
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "     Access to man pages
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -326,7 +329,7 @@ Bundle 'Townk/vim-autoclose'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Bundle 'Rip-Rip/clang_complete'
-let g:clang_auto_select=1
+let g:clang_auto_select=0
 let g:clang_complete_auto=0
 let g:clang_complete_copen=1
 let g:clang_periodic_quickfix=1
@@ -351,7 +354,6 @@ Bundle 'vim-scripts/taglist.vim'
 Bundle 'vim-scripts/easytags.vim'
 
 let Tlist_Ctags_Cmd='/usr/bin/ctags'
-let Tlist_WinWidth=50
 let Tlist_Use_Right_Window=1
 map <F4> :TlistToggle<cr>
 
