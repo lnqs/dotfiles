@@ -341,7 +341,8 @@ map <F4> :TlistToggle<cr>
 
 Bundle 'ervandew/supertab'
 
-set completeopt=menu,menuone
+set completeopt=menu,menuone,longest
+let g:SuperTabLongestHighlight=1
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
