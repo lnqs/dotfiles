@@ -307,7 +307,7 @@ Bundle 'tpope/vim-fugitive'
 
 Bundle 'Rip-Rip/clang_complete'
 let g:clang_auto_select=0
-let g:clang_complete_auto=0
+let g:clang_complete_auto=1
 let g:clang_complete_copen=1
 let g:clang_periodic_quickfix=1
 let g:clang_hl_errors=1
@@ -332,6 +332,9 @@ Bundle 'vim-scripts/easytags.vim'
 
 let Tlist_Ctags_Cmd='/usr/bin/ctags'
 let Tlist_Use_Right_Window=1
+
+let easytags_updatetime_autodisable=1
+
 map <F4> :TlistToggle<cr>
 
 
