@@ -20,7 +20,7 @@ export EDITOR=${EDITOR:-vim}
 export PAGER=${PAGER:-less}
 export MANSECT=3:2:9:8:1:5:4:7:6:n
 
-export PATH="/usr/lib/ccache/bin:$HOME/.bin:$HOME/.local/bin:$HOME/.vim/bundle/vimpager:$PATH"
+export PATH="/usr/lib/ccache:$HOME/.bin:$HOME/.local/bin:$HOME/.vim/bundle/vimpager:$PATH"
 export WINEARCH="win32"
 
 # use vimpager as pager/less-replacement
