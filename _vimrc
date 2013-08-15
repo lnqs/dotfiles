@@ -327,7 +327,8 @@ autocmd FileType c,cpp let g:SuperTabDefaultCompletionType='<c-x><c-u>'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Bundle 'vim-scripts/taglist.vim'
-Bundle 'vim-scripts/easytags.vim'
+Bundle 'xolox/vim-misc'
+Bundle 'xolox/vim-easytags'
 
 let Tlist_Ctags_Cmd='/usr/bin/ctags'
 let Tlist_Use_Right_Window=1
