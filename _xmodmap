@@ -7,3 +7,6 @@ keycode 0x40 = Alt_L Meta_L
 keycode 108 = Mode_switch Multi_key
 keycode 0x6D = Control_R Multi_key
 add Mod4 = Super_L Super_R
+
+remove Lock = Caps_Lock
+keysym Caps_Lock = Escape
