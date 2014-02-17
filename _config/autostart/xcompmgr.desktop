@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=xcompmgr
+Exec=xcompmgr
+X-GNOME-Autostart-enabled=true
+Comment=Composition manager

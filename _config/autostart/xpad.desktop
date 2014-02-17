@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=zim
+Exec=zim
+X-GNOME-Autostart-enabled=true
+Comment=Start zim

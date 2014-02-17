@@ -178,6 +178,15 @@ map <left> :bp<cr>
 map <up> <nop>
 map <down> <nop>
 
+" for some reason, we have to set these explicitly for urxvt
+map Oa <C-Up>
+map Ob <C-Down>
+map Od <C-Left>
+map Oc <C-Right>
+imap Oa <C-Up>
+imap Ob <C-Down>
+imap Od <C-Left>
+imap Oc <C-Right>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "     Helpers
@@ -229,17 +238,26 @@ Bundle 'gmarik/vundle'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"     Powerline
+"     Airline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-Bundle 'Lokaltog/powerline'
-set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
+Bundle 'bling/vim-airline'
+let g:airline_powerline_fonts=1
 
 " always show the statusline
 set laststatus=2
 
 " mode is displayed in powerline, we don't need it below again
 set noshowmode
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"     Bufferline
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Bundle 'bling/vim-bufferline'
+
+let g:bufferline_echo=0
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -358,6 +376,13 @@ let g:pymode_folding=0
 let g:pymode_lint_onfly=1
 
 autocmd FileType python let g:SuperTabDefaultCompletionType='<c-x><c-o>'
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"     Virtualenv
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Bundle 'jmcantrell/vim-virtualenv'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

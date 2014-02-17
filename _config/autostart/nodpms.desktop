@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=nodpms
+Exec=sh -c "xset -dpms; xset s off"
+X-GNOME-Autostart-enabled=true
+Comment=Disable powersaving of monitor

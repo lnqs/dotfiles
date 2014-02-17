@@ -1,0 +1,15 @@
+export SHELL='/bin/zsh'
+export EDITOR=${EDITOR:-vim}
+export PAGER=${PAGER:-less}
+export MANSECT=3:2:9:8:1:5:4:7:6:n
+
+export PATH="/usr/lib/ccache:$HOME/.bin:$HOME/.local/bin:$HOME/.vim/bundle/vimpager:$HOME/.local/opt/android-sdk-linux/tools:$HOME/.local/opt/android-sdk-linux/platform-tools:$PATH"
+export WINEARCH="win32"
+export ANDROID_SDK_ROOT="$HOME/.local/opt/android-sdk-linux"
+export NDK_ROOT="$HOME/.local/opt/android-ndk-r9c"
+
+# use vimpager as pager/less-replacement
+export PAGER=vimpager
+alias less=$PAGER
+alias zless=$PAGER
+

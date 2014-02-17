@@ -15,19 +15,6 @@ autoload -U add-zsh-hook
 #     SETUP ENVIRONMENT
 ###############################################################################
 
-export SHELL='/bin/zsh'
-export EDITOR=${EDITOR:-vim}
-export PAGER=${PAGER:-less}
-export MANSECT=3:2:9:8:1:5:4:7:6:n
-
-export PATH="/usr/lib/ccache:$HOME/.bin:$HOME/.local/bin:$HOME/.vim/bundle/vimpager:$PATH"
-export WINEARCH="win32"
-
-# use vimpager as pager/less-replacement
-export PAGER=vimpager
-alias less=$PAGER
-alias zless=$PAGER
-
 # enable 265 colors
 if [[ "$TERM" = "xterm" ]]; then
     export TERM="xterm-256color"
@@ -139,13 +126,59 @@ export ZLSCOLORS="${LS_COLORS}"
 # initialize
 bindkey -e
 
+# create a zkbd compatible hash;
+# to add other keys to this hash, see: man 5 terminfo
+typeset -A key
+
+key[Home]=${terminfo[khome]}
+key[End]=${terminfo[kend]}
+key[Insert]=${terminfo[kich1]}
+key[Delete]=${terminfo[kdch1]}
+key[Up]=${terminfo[kcuu1]}
+key[Down]=${terminfo[kcud1]}
+key[Left]=${terminfo[kcub1]}
+key[Right]=${terminfo[kcuf1]}
+key[PageUp]=${terminfo[kpp]}
+key[PageDown]=${terminfo[knp]}
+key[Ctrl+H]='^H'
+key[Ctrl+Z]='^Z'
+key[Ctrl+Up]='^[Oa'
+key[Ctrl+Down]='^[Ob'
+key[Ctrl+Left]='^[Od'
+key[Ctrl+Right]='^[Oc'
+
+# setup key accordingly
+bindkey "${key[Home]}"     beginning-of-line
+bindkey "${key[End]}"      end-of-line
+bindkey "${key[Insert]}"   overwrite-mode
+bindkey "${key[Delete]}"   delete-char
+bindkey "${key[Up]}"       up-line-or-history
+bindkey "${key[Down]}"     down-line-or-history
+bindkey "${key[Left]}"     backward-char
+bindkey "${key[Right]}"    forward-char
+bindkey "${key[PageUp]}"   beginning-of-buffer-or-history
+bindkey "${key[PageDown]}" end-of-buffer-or-history
+
+# Finally, make sure the terminal is in application mode, when zle is
+# active. Only then are the values from $terminfo valid.
+if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
+    function zle-line-init () {
+        printf '%s' "${terminfo[smkx]}"
+    }
+    function zle-line-finish () {
+        printf '%s' "${terminfo[rmkx]}"
+    }
+    zle -N zle-line-init
+    zle -N zle-line-finish
+fi
+
 # ctrl+h sends command to history without executing it
 commit-to-history() {
     print -s ${(z)BUFFER}
     zle send-break
 }
 zle -N commit-to-history
-bindkey '^H' commit-to-history
+bindkey "${key[Ctrl+H]}" commit-to-history
 
 # ctrl+z continues the last stopped job
 raise-stopped-to-fg() {
@@ -159,37 +192,19 @@ raise-stopped-to-fg() {
     fi
 }
 zle -N raise-stopped-to-fg
-bindkey '^Z' raise-stopped-to-fg
+bindkey "${key[Ctrl+Z]}" raise-stopped-to-fg
 
 # ctrl+up/ctrl+down search the history incremental
 autoload -U history-search-end
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end  history-search-end
-bindkey '^[[1;5A' history-beginning-search-backward-end
-bindkey '^[[1;5B' history-beginning-search-forward-end
-
-# ctrl+f inserts filenames by wildcards
-autoload -U insert-files
-zle -N insert-files
-bindkey '^F' insert-files
-
-# ctrl+p toggles command prediction
-function toggle-predict() {
-    if [[ $prediction_on == 1 ]]; then
-        predict-off
-        prediction_on=0
-    else
-        predict-on
-        prediction_on=1
-    fi
-}
-autoload -U predict-on
-zle -N toggle-predict
-bindkey '^P' toggle-predict
+bindkey "${key[Ctrl+Up]}" history-beginning-search-backward-end
+bindkey "${key[Ctrl+Down]}" history-beginning-search-forward-end
 
 # ctrl+left/ctrl+right jumps to previous/next word
-bindkey '^[[1;5C' emacs-forward-word
-bindkey '^[[1;5D' emacs-backward-word
+bindkey "${key[Ctrl+Left]}" backward-word
+bindkey "${key[Ctrl+Right]}" forward-word
+
 
 ###############################################################################
 #     DIRSTACK HANDLING
@@ -240,6 +255,23 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' \
 
 
 ###############################################################################
+#     VIRTUALENV
+###############################################################################
+
+VIRTUAL_ENV_DISABLE_PROMPT=1
+
+virtualenv_prompt() {
+    if [[ -n $VIRTUAL_ENV ]]; then
+        _virtualenv_prompt="%{${fg_no_bold[magenta]}%}(%{${fg_bold[white]}%}⚑$(basename $VIRTUAL_ENV)%{${fg_no_bold[magenta]}%})%{$reset_color%}"
+    fi
+}
+
+add-zsh-hook precmd virtualenv_prompt
+
+source /usr/bin/virtualenvwrapper.sh
+
+
+###############################################################################
 #     PROMPT
 ###############################################################################
 
@@ -253,7 +285,7 @@ zstyle ':vcs_info:*' formats "%{${fg_no_bold[magenta]}%}(%{${fg_bold[white]}%}%s
 zstyle ':vcs_info:*' actionformats "%{${fg_no_bold[magenta]}%}(%{${fg_bold[white]}%}%s%{${fg_no_bold[magenta]}%})[%{${fg_bold[green]}%}%b%{${fg_no_bold[magenta]}%}] (%{${fg_bold[white]}%}%a%{${fg_no_bold[magenta]}%})%{$reset_color%}"
 
 PROMPT='%{${fg_bold[green]}%}%n@%m %{${fg_bold[blue]}%}%30<…<%~%<<%{${reset_color}%} %# '
-RPROMPT='%(?.${vcs_info_msg_0_}.%{${fg_bold[red]}%}↪%?%{${reset_color}%})'
+RPROMPT='%(?.${vcs_info_msg_0_}${_virtualenv_prompt}.%{${fg_bold[red]}%}↪%?%{${reset_color}%})'
 PS2='\`%_> '
 PS3='?# '
 PS4='+%N:%i:%_> '
@@ -299,6 +331,4 @@ zmodload -ap zsh/mapfile mapfile
 
 # zmv for batch renaming/moving
 autoload -U zmv
-
-source ${HOME}/.zsh/zshrc.$(hostname)
 
