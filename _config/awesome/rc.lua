@@ -135,8 +135,6 @@ vicious.register(updateswidget, vicious.widgets.pkg,
                     if args[1] > 0 then
                         local s = io.popen("pacman -Qu")
                         tooltip = "\n Updates available: \n\n"
-
-                        tooltip = "\n Updates available: \n\n"
                         for line in s:lines() do
                             tooltip = tooltip .. " - " .. line .. " \n"
                         end
@@ -405,17 +403,17 @@ root.keys(globalkeys)
 -- {{{ Rules
 awful.rules.rules = {
     -- All clients will match this rule.
-    { rule = { },
+    { rule       = { },
       properties = { border_width = beautiful.border_width,
                      border_color = beautiful.border_normal,
                      focus = awful.client.focus.filter,
                      size_hints_honor = false,
                      keys = clientkeys,
                      buttons = clientbuttons } },
-    { rule = { class = "gimp" },
+    { rule       = { class = "Gimp" },
       properties = { floating = true } },
-    { rule = { instance = "exe" },
-      properties = { floating = true, fullscreen = true } },
+    { rule       = { class = "Exe" },
+      properties = { floating = true, titlebar = false } },
 }
 -- }}}
 
@@ -497,7 +495,21 @@ for s = 1, screen.count() do
         local floating = awful.layout.getname(awful.layout.get(s)) == "floating"
         for _, c in pairs(awful.client.visible(s)) do
             floating = floating or c.fullscreen or awful.client.floating.get(c)
-            if floating then
+
+            for _, e in pairs(awful.rules.rules) do
+                if (awful.rules.match(c, e.rule) or awful.rules.match_any(c, e.rule_any)) and
+                    (not awful.rules.match(c, e.except) and not awful.rules.match_any(c, e.except_any)) then
+                    forced = e.properties.titlebar
+                end
+            end
+
+            if forced == nil then
+                if floating then
+                    awful.titlebar.show(c)
+                else
+                    awful.titlebar.hide(c)
+                end
+            elseif forced then
                 awful.titlebar.show(c)
             else
                 awful.titlebar.hide(c)
@@ -506,5 +518,4 @@ for s = 1, screen.count() do
     end)
 end
 -- }}}
-
 
