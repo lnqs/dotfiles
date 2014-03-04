@@ -6,7 +6,7 @@ theme.wallpaper        = "/home/lynx/.wallpapers/Cracked Screen.jpg"
 theme.font             = "sans 7"
 theme.border_width     = 1
 
-theme.separator_color  = "#708070"
+theme.separator_color  = "#808080"
 theme.warning_color    = "#ff8700"
 
 theme.statusbar_height = 14
