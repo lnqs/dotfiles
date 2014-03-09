@@ -94,14 +94,15 @@ end
 -- }}}
 
 -- {{{ Wibox
-local fs = " <span color='" .. beautiful.separator_color .. "'>[</span> "
-local fe = " <span color='" .. beautiful.separator_color .. "'>]</span> "
+function colored(text, color)
+    return "<span color='" .. color .. "'>" .. text .. "</span>"
+end
 
 -- Create the date and time widget
 calendar = require('calendar')
 datewidget = wibox.widget.textbox()
 calendar.addCalendarToWidget(datewidget)
-vicious.register(datewidget, vicious.widgets.date, fs .. "%a, %b %d %H:%M" .. fe)
+vicious.register(datewidget, vicious.widgets.date, colored(" | ", beautiful.fg_shaded) .. "%a, %b %d %H:%M ")
 
 -- Create the Gmail widget
 gmailwidget = wibox.widget.textbox()
@@ -115,13 +116,11 @@ vicious.register(gmailwidget, vicious.widgets.gmail,
             str = "\n " .. args["{subject}"] .. " \n"
         end
         gmailwidget_tooltip:set_text(tooltip)
-        local cs = ""
-        local ce = ""
+        local c = theme.fg_shaded
         if args["{count}"] > 0 then
-            cs = "<span color='" .. beautiful.warning_color .. "'>"
-            ce = "</span>"
+            c = beautiful.fg_urgent
         end
-        return fs .. cs .. "Mails: " .. args["{count}"] .. ce .. fe
+        return colored(" | ", beautiful.fg_shaded) .. colored("Mails: ", c) .. args["{count}"]
     end, 120)
 
 -- Create the updates widget
@@ -130,8 +129,7 @@ updateswidget_tooltip = awful.tooltip({ objects = { updateswidget }})
 vicious.register(updateswidget, vicious.widgets.pkg,
                 function(widget,args)
                     local tooltip = ""
-                    local cs = ""
-                    local ce = ""
+                    local c = theme.fg_shaded
                     if args[1] > 0 then
                         local s = io.popen("pacman -Qu")
                         tooltip = "\n Updates available: \n\n"
@@ -139,25 +137,24 @@ vicious.register(updateswidget, vicious.widgets.pkg,
                             tooltip = tooltip .. " - " .. line .. " \n"
                         end
                         s:close()
-                        cs = "<span color='" .. beautiful.warning_color .. "'>"
-                        ce = "</span>"
+                        c = fg_urgent
                     end
                     updateswidget_tooltip:set_text(tooltip)
-                    return fs .. cs .. "Updates: " .. args[1] .. ce .. fe
+                    return colored(" | ", beautiful.fg_shaded) .. colored("Updates: ", c) .. args[1]
                  end, 300, "Arch")
 
 -- Create the cpu usage widget
 cpuwidget = wibox.widget.textbox()
-vicious.register(cpuwidget, vicious.widgets.cpu, fs .. "CPU: $1%" .. fe)
+vicious.register(cpuwidget, vicious.widgets.cpu, colored(" | CPU: ", beautiful.fg_shaded) .. "$1%")
 
 -- Create the memory usage widget
 memwidget = wibox.widget.textbox()
-vicious.register(memwidget, vicious.widgets.mem, fs .. "Mem: $1%" .. fe)
+vicious.register(memwidget, vicious.widgets.mem, colored(" | Mem: ", beautiful.fg_shaded) .. "$1%")
 
 -- Create the audio volume widget
 volwidget = wibox.widget.textbox()
-vicious.register(volwidget, vicious.widgets.volume, fs .. "Vol: $1%" .. fe, 0.3, "Master")
-
+vicious.register(volwidget, vicious.widgets.volume, colored("Vol: ", beautiful.fg_shaded) .. "$1%", 0.3, "Master")
+ 
 -- Create a wibox for each screen and add it
 mywibox = {}
 mypromptbox = {}
