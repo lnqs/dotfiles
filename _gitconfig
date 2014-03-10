@@ -2,3 +2,5 @@
 name = Lynx
 email = simon.schoenfeld@googlemail.com
 
+[push]
+	default = simple
