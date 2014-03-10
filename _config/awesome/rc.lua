@@ -137,7 +137,7 @@ vicious.register(updateswidget, vicious.widgets.pkg,
                             tooltip = tooltip .. " - " .. line .. " \n"
                         end
                         s:close()
-                        c = fg_urgent
+                        c = theme.fg_urgent
                     end
                     updateswidget_tooltip:set_text(tooltip)
                     return colored(" | ", beautiful.fg_shaded) .. colored("Updates: ", c) .. args[1]
