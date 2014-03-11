@@ -113,14 +113,18 @@ vicious.register(gmailwidget, vicious.widgets.gmail,
     function (widget, args)
         local tooltip = ""
         if args["{count}"] > 0 then
-            str = "\n " .. args["{subject}"] .. " \n"
+            tooltip = "\n   " .. args["{subject}"] .. "   \n"
         end
         gmailwidget_tooltip:set_text(tooltip)
-        local c = theme.fg_shaded
+        local color_text = theme.fg_shaded
+        local color_count = theme.fg_normal
         if args["{count}"] > 0 then
-            c = beautiful.fg_urgent
+            color_text = beautiful.fg_urgent
+            color_count = beautiful.fg_urgent
         end
-        return colored(" | ", beautiful.fg_shaded) .. colored("Mails: ", c) .. args["{count}"]
+        return colored(" | ", beautiful.fg_shaded) ..
+                colored("Mails: ", color_text) ..
+                colored(args["{count}"], color_count)
     end, 120)
 
 -- Create the updates widget
@@ -129,7 +133,8 @@ updateswidget_tooltip = awful.tooltip({ objects = { updateswidget }})
 vicious.register(updateswidget, vicious.widgets.pkg,
                 function(widget,args)
                     local tooltip = ""
-                    local c = theme.fg_shaded
+                    local color_text = theme.fg_shaded
+                    local color_count = theme.fg_normal
                     if args[1] > 0 then
                         local s = io.popen("pacman -Qu")
                         tooltip = "\n Updates available: \n\n"
@@ -137,10 +142,13 @@ vicious.register(updateswidget, vicious.widgets.pkg,
                             tooltip = tooltip .. " - " .. line .. " \n"
                         end
                         s:close()
-                        c = theme.fg_urgent
+                        color_text = beautiful.fg_urgent
+                        color_count = beautiful.fg_urgent
                     end
                     updateswidget_tooltip:set_text(tooltip)
-                    return colored(" | ", beautiful.fg_shaded) .. colored("Updates: ", c) .. args[1]
+                    return colored(" | ", beautiful.fg_shaded) ..
+                            colored("Updates: ", color_text) ..
+                            colored(args[1], color_count)
                  end, 300, "Arch")
 
 -- Create the cpu usage widget
