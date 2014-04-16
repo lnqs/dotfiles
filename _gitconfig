@@ -4,3 +4,5 @@ email = simon.schoenfeld@googlemail.com
 
 [push]
 	default = simple
+[core]
+	excludesfile = /home/lynx/.gitignore_global
