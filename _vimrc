@@ -261,6 +261,15 @@ let g:bufferline_echo=0
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"     YouCompleteMe
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Bundle "Valloric/YouCompleteMe"
+
+let g:ycm_path_to_python_interpreter = '/usr/bin/python2'
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "     vimpager
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -319,28 +328,6 @@ Bundle 'tpope/vim-fugitive'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"     clang complete
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-Bundle 'Rip-Rip/clang_complete'
-let g:clang_auto_select=0
-let g:clang_complete_auto=1
-let g:clang_complete_copen=1
-let g:clang_periodic_quickfix=1
-let g:clang_hl_errors=1
-let g:clang_snippets_engine='ultisnips'
-let g:clang_trailing_placeholder=1
-let g:clang_use_library=1
-let g:clang_complete_macros=1
-let g:clang_complete_patterns=1
-
-autocmd FileType cpp let g:clang_user_options='-std=c++11'
-autocmd FileType c let g:clang_user_options='-std=c99'
-
-autocmd FileType c,cpp let g:SuperTabDefaultCompletionType='<c-x><c-u>'
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "     ctags
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -354,16 +341,6 @@ let Tlist_Use_Right_Window=1
 let easytags_updatetime_autodisable=1
 
 map <F4> :TlistToggle<cr>
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"     SuperTab
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-Bundle 'ervandew/supertab'
-
-set completeopt=menu,menuone,longest
-let g:SuperTabLongestHighlight=1
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
