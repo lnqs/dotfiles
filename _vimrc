@@ -266,7 +266,8 @@ let g:bufferline_echo=0
 
 Bundle "Valloric/YouCompleteMe"
 
-let g:ycm_path_to_python_interpreter = '/usr/bin/python2'
+let g:ycm_path_to_python_interpreter='/usr/bin/python2'
+let g:ycm_confirm_extra_conf=0
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
