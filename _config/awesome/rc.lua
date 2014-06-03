@@ -18,6 +18,9 @@ local menubar = require("menubar")
 -- extra libraries
 local vicious = require("vicious")
 
+-- filesystem
+local lfs = require("lfs")
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -159,10 +162,14 @@ vicious.register(cpuwidget, vicious.widgets.cpu, colored(" | CPU: ", beautiful.f
 memwidget = wibox.widget.textbox()
 vicious.register(memwidget, vicious.widgets.mem, colored(" | Mem: ", beautiful.fg_shaded) .. "$1%")
 
+-- Create the battery widget
+batwidget = wibox.widget.textbox()
+vicious.register(batwidget, vicious.widgets.bat, colored(" | Bat: ", beautiful.fg_shaded) .. "$2% ($1$3)", 61, "BAT0")
+
 -- Create the audio volume widget
 volwidget = wibox.widget.textbox()
 vicious.register(volwidget, vicious.widgets.volume, colored("Vol: ", beautiful.fg_shaded) .. "$1%", 0.3, "Master")
- 
+
 -- Create a wibox for each screen and add it
 mywibox = {}
 mypromptbox = {}
@@ -240,6 +247,9 @@ for s = 1, screen.count() do
     local right_layout = wibox.layout.fixed.horizontal()
     if s == screen.count() then
         right_layout:add(volwidget)
+        if lfs.attributes("/sys/class/power_supply/BAT0/capacity") ~= nil then
+            right_layout:add(batwidget)
+        end
         right_layout:add(memwidget)
         right_layout:add(cpuwidget)
         right_layout:add(updateswidget)
