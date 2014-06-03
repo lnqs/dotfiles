@@ -230,11 +230,11 @@ source $VIMRUNTIME/ftplugin/man.vim
 " to install configured bundles
 
 " init it
-set rtp+=~/.vim/bundle/vundle/
+set rtp+=~/.vim/bundle/Vundle.vim/
 call vundle#rc()
 
 " let vundle manage vundle
-Bundle 'gmarik/vundle'
+Bundle 'gmarik/Vundle.vim'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -289,9 +289,6 @@ Bundle 'kien/ctrlp.vim'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Bundle 'vim-scripts/UltiSnips'
-
-" no idea why I need to call this explicitly, but, well...
-autocmd FileType * call UltiSnips_FileTypeChanged()
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
