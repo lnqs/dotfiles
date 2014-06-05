@@ -307,6 +307,10 @@ globalkeys = awful.util.table.join(
     awful.key({     }, "XF86AudioRaiseVolume", function() awful.util.spawn("amixer set Master 5%+", false) end),
     awful.key({     }, "XF86AudioLowerVolume", function() awful.util.spawn("amixer set Master 5%-", false) end),
     awful.key({     }, "XF86AudioMute", function() awful.util.spawn("amixer sset Master toggle", false) end),
+    awful.key({     }, "XF86AudioMicMute", function() awful.util.spawn("amixer sset Capture toggle", false) end),
+    awful.key({     }, "XF86ScreenSaver", function() awful.util.spawn("dm-tool lock") end),
+    awful.key({     }, "XF86MonBrightnessDown", function() awful.util.spawn("xbacklight -dec 10") end),
+    awful.key({     }, "XF86MonBrightnessUp", function() awful.util.spawn("xbacklight -inc 10") end),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
