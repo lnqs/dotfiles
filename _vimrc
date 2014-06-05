@@ -350,6 +350,9 @@ Bundle 'klen/python-mode.git'
 let g:pymode_folding=0
 let g:pymode_lint_onfly=1
 
+" we see the overly long lines anyway by turning the color to the gray
+let g:pymode_lint_ignore='E501'
+
 autocmd FileType python let g:SuperTabDefaultCompletionType='<c-x><c-o>'
 
 
