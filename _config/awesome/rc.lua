@@ -56,9 +56,6 @@ editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 mailclient = "chromium https://mail.google.com/"
 
-xrandr_mobile = "xrandr --output LVDS1 --auto --pos 0x0 --output DP2 --off --output DP3 --off"
-xrandr_docking = "xrandr --output LVDS1 --auto --pos 0x0 --output DP2 --auto --right-of LVDS1 --output DP3 --auto --right-of DP2"
-
 -- Default modkey.
 modkey = "Mod4"
 
@@ -298,10 +295,6 @@ globalkeys = awful.util.table.join(
 
     -- lock screen
     awful.key({ modkey,           }, "l", function () awful.util.spawn("dm-tool lock") end),
-
-    -- xrandr controls
-    awful.key({ modkey, "Control", "Shift"}, "m", function () awful.util.spawn(xrandr_mobile) end),
-    awful.key({ modkey, "Control", "Shift"}, "d", function () awful.util.spawn(xrandr_docking) end),
 
     -- volume control
     awful.key({     }, "XF86AudioRaiseVolume", function() awful.util.spawn("amixer set Master 5%+", false) end),
