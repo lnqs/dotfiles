@@ -304,6 +304,7 @@ globalkeys = awful.util.table.join(
     awful.key({     }, "XF86ScreenSaver", function() awful.util.spawn("dm-tool lock") end),
     awful.key({     }, "XF86MonBrightnessDown", function() awful.util.spawn("xbacklight -dec 10") end),
     awful.key({     }, "XF86MonBrightnessUp", function() awful.util.spawn("xbacklight -inc 10") end),
+    awful.key({     }, "XF86Display", function() awful.util.spawn("xset dpms force off") end),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
