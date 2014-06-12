@@ -342,25 +342,15 @@ map <F4> :TlistToggle<cr>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"     Python-mode
+"     Python
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-Bundle 'klen/python-mode.git'
-
-let g:pymode_folding=0
-let g:pymode_lint_onfly=1
-
-" we see the overly long lines anyway by turning the color to the gray
-let g:pymode_lint_ignore='E501'
-
-autocmd FileType python let g:SuperTabDefaultCompletionType='<c-x><c-o>'
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"     Virtualenv
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
+Bundle 'andviro/flake8-vim'
 Bundle 'jmcantrell/vim-virtualenv'
+
+let g:PyFlakeOnWrite=1
+let g:PyFlakeSigns=0
+let g:PyFlakeDisabledMessages='E501'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
