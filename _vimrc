@@ -337,7 +337,7 @@ map <F4> :TlistToggle<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Bundle 'andviro/flake8-vim'
-Bundle 'jmcantrell/vim-virtualenv'
+Bundle 'lynxed/vim-virtualenv'
 
 let g:PyFlakeOnWrite=1
 let g:PyFlakeSigns=0
