@@ -334,6 +334,7 @@ Bundle 'lynxed/vim-virtualenv'
 
 let g:PyFlakeOnWrite=1
 let g:PyFlakeSigns=0
+let g:PyFlakeDefaultComplexity=15
 let g:PyFlakeDisabledMessages='E501'
 
 
