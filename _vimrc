@@ -320,7 +320,7 @@ Bundle 'xolox/vim-easytags'
 let Tlist_Ctags_Cmd='/usr/bin/ctags'
 let Tlist_Use_Right_Window=1
 
-let easytags_updatetime_autodisable=1
+let g:easytags_updatetime_warn=0
 
 map <F4> :TlistToggle<cr>
 
