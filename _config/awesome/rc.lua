@@ -310,6 +310,7 @@ globalkeys = awful.util.table.join(
     awful.key({     }, "XF86MonBrightnessUp", function() awful.util.spawn("xbacklight -inc 10") end),
     awful.key({     }, "XF86Display", function() awful.util.spawn("xset dpms force off") end),
     awful.key({     }, "XF86WebCam", function() awful.util.spawn("guvcview") end),
+    awful.key({     }, "XF86Launch1", function() awful.util.spawn("playsound.sh") end),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
