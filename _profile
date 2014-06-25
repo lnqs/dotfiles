@@ -8,3 +8,4 @@ export WINEARCH="win32"
 export ANDROID_SDK_ROOT="$HOME/.local/opt/android-sdk-linux"
 export NDK_ROOT="$HOME/.local/opt/android-ndk-r9c"
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
+export _JAVA_AWT_WM_NONREPARENTING=1
