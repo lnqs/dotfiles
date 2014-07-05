@@ -429,6 +429,8 @@ awful.rules.rules = {
       properties = { floating = true } },
     { rule       = { class = "Exe" },
       properties = { floating = true, titlebar = false } },
+    { rule       = { class = "Wine" },
+      properties = { floating = true, border_width = 0, titlebar = false } }
 }
 -- }}}
 
