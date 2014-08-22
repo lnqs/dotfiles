@@ -55,6 +55,7 @@ terminal = "urxvt"
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 mailclient = "chromium https://mail.google.com/"
+screenlock = "dm-tool lock"
 
 -- Default modkey.
 modkey = "Mod4"
@@ -294,12 +295,22 @@ globalkeys = awful.util.table.join(
         end),
 
     -- lock screen
-    awful.key({ modkey,           }, "l", function () awful.util.spawn("dm-tool lock") end),
+    awful.key({ modkey,           }, "l", function () awful.util.spawn(screenlock) end),
 
     -- volume control
     awful.key({     }, "XF86AudioRaiseVolume", function() awful.util.spawn("amixer set Master 5%+", false) end),
     awful.key({     }, "XF86AudioLowerVolume", function() awful.util.spawn("amixer set Master 5%-", false) end),
     awful.key({     }, "XF86AudioMute", function() awful.util.spawn("amixer sset Master toggle", false) end),
+    awful.key({     }, "XF86AudioMicMute", function() awful.util.spawn("amixer sset Capture toggle", false) end),
+    awful.key({     }, "XF86AudioPrev", function() awful.util.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous", false) end),
+    awful.key({     }, "XF86AudioPlay", function() awful.util.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause", false) end),
+    awful.key({     }, "XF86AudioNext", function() awful.util.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next", false) end),
+    awful.key({     }, "XF86ScreenSaver", function() awful.util.spawn(screenlock) end),
+    awful.key({     }, "XF86MonBrightnessDown", function() awful.util.spawn("xbacklight -dec 10") end),
+    awful.key({     }, "XF86MonBrightnessUp", function() awful.util.spawn("xbacklight -inc 10") end),
+    awful.key({     }, "XF86Display", function() awful.util.spawn("xset dpms force off") end),
+    awful.key({     }, "XF86WebCam", function() awful.util.spawn("guvcview") end),
+    awful.key({     }, "XF86Launch1", function() awful.util.spawn("playsound.sh") end),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
@@ -535,4 +546,15 @@ for s = 1, screen.count() do
     end)
 end
 -- }}}
+
+-- Activate screenlock on suspend/hibernate
+prepare_for_sleep = function(...)
+    local data = {...}
+    if data[2] == true then
+        awful.util.spawn(screenlock)
+    end
+end
+
+dbus.add_match("system", "type='signal',path='/org/freedesktop/login1',interface='org.freedesktop.login1.Manager',member='PrepareForSleep'")
+dbus.connect_signal("org.freedesktop.login1.Manager", prepare_for_sleep)
 

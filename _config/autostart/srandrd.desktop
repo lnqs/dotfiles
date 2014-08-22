@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=srandrd
+Exec=sh -c "setup-displays.sh; srandrd -n setup-displays.sh"
+X-GNOME-Autostart-enabled=true
+Comment=Display managment

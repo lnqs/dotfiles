@@ -271,24 +271,10 @@ let g:ycm_confirm_extra_conf=0
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"     vimpager
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-Bundle 'rkitover/vimpager'
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "     Ctrlp
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Bundle 'kien/ctrlp.vim'
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"     UltiSnips
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-Bundle 'vim-scripts/UltiSnips'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -310,12 +296,10 @@ nnoremap <F6> :BufExplorer<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"     NERDTree
+"     Vinegar
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-Bundle 'scrooloose/nerdtree'
-
-nnoremap <F7> :NERDTreeToggle<CR>
+Bundle 'tpope/vim-vinegar.git'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -336,28 +320,22 @@ Bundle 'xolox/vim-easytags'
 let Tlist_Ctags_Cmd='/usr/bin/ctags'
 let Tlist_Use_Right_Window=1
 
-let easytags_updatetime_autodisable=1
+let g:easytags_updatetime_warn=0
 
 map <F4> :TlistToggle<cr>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"     Python-mode
+"     Python
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-Bundle 'klen/python-mode.git'
+Bundle 'andviro/flake8-vim'
+Bundle 'lynxed/vim-virtualenv'
 
-let g:pymode_folding=0
-let g:pymode_lint_onfly=1
-
-autocmd FileType python let g:SuperTabDefaultCompletionType='<c-x><c-o>'
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"     Virtualenv
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-Bundle 'jmcantrell/vim-virtualenv'
+let g:PyFlakeOnWrite=1
+let g:PyFlakeSigns=0
+let g:PyFlakeDefaultComplexity=15
+let g:PyFlakeDisabledMessages='E501'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -382,4 +360,3 @@ autocmd BufNewFile,BufRead *.vp,*.fp,*.gp,*.vs,*.fs,*.gs,*.tcs,*.tes,*.cs,*.vert
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Bundle 'vim-scripts/hexman.vim'
-
