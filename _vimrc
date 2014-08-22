@@ -224,7 +224,7 @@ source $VIMRUNTIME/ftplugin/man.vim
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " call
-"    git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+"    git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 " to install vundle,
 "     vim +BundleInstall +qall
 " to install configured bundles
