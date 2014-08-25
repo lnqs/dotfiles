@@ -1,6 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=wmname
-Exec=wmname Sawfish
-X-GNOME-Autostart-enabled=true
-Comment=Fake wmname to avoid java problems
