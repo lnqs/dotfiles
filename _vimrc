@@ -44,6 +44,9 @@ set novisualbell
 set t_vb=
 set tm=500
 
+" Should be fast enough
+set ttyfast
+
 " when vimrc is edited, reload it
 autocmd! bufwritepost .vimrc source ~/.vimrc
 
@@ -320,7 +323,7 @@ Bundle 'xolox/vim-easytags'
 let Tlist_Ctags_Cmd='/usr/bin/ctags'
 let Tlist_Use_Right_Window=1
 
-let g:easytags_updatetime_warn=0
+let g:easytags_async=1
 
 map <F4> :TlistToggle<cr>
 
