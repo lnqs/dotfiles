@@ -1,4 +1,9 @@
 export SHELL='/bin/zsh'
+
+export LANGUAGE=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LC_COLLATE=de_DE.UTF-8
+
 export EDITOR=${EDITOR:-vim}
 export PAGER=${PAGER:-less}
 export MANSECT=3:2:9:8:1:5:4:7:6:n
