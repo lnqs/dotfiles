@@ -359,4 +359,4 @@ ssh-add -l >/dev/null || alias ssh='ssh-add -l >/dev/null || ssh-add && unalias 
 # has to stay at the end of the file
 # community/zsh-syntax-highlighting
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
-
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
