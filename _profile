@@ -12,6 +12,9 @@ export PAGER=${PAGER:-less}
 export MANSECT=3:2:9:8:1:5:4:7:6:n
 export MANPATH="$NPM_PACKAGES/share/man:$MANPATH"
 
+export LESS='-R'
+export LESSOPEN='|~/.bin/lessfilter %s'
+
 export PATH="/usr/lib/ccache/bin:$HOME/.bin:$HOME/.local/bin:$HOME/.local/opt/android-sdk-linux/tools:$HOME/.local/opt/android-sdk-linux/platform-tools:$NPM_PACKAGES/bin:$HOME/.composer/vendor/bin:$PATH"
 export WINEARCH="win32"
 export ANDROID_SDK_ROOT="$HOME/.local/opt/android-sdk-linux"
