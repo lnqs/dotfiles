@@ -54,7 +54,7 @@ beautiful.init(home .. "/.config/awesome/theme.lua")
 terminal = "urxvt"
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
-mailclient = "chromium https://mail.google.com/"
+mailclient = "chromium https://inbox.google.com/"
 screenlock = "dm-tool lock"
 
 -- Default modkey.
