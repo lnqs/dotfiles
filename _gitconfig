@@ -6,3 +6,5 @@ email = simon.schoenfeld@gmail.com
 	default = simple
 [core]
 	excludesfile = /home/lynx/.gitignore_global
+[merge]
+	tool = meld
