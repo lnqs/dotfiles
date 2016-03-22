@@ -47,8 +47,8 @@ set tm=500
 " Should be fast enough
 set ttyfast
 
-" when vimrc is edited, reload it
-autocmd! bufwritepost .vimrc source ~/.vimrc
+" use system-clipboard by default
+set clipboard+=unnamedplus
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -227,24 +227,24 @@ source $VIMRUNTIME/ftplugin/man.vim
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " call
-"    git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+"    git clone https://github.com/gmarik/Vundle.vim.git ~/.config/nvim/bundle/Vundle.vim
 " to install vundle,
-"     vim +BundleInstall +qall
+"     vim +PluginInstall +qall
 " to install configured bundles
 
 " init it
-set rtp+=~/.vim/bundle/Vundle.vim/
-call vundle#rc()
+set rtp+=~/.config/nvim/bundle/Vundle.vim/
+call vundle#begin('~/.config/nvim/bundle')
 
 " let vundle manage vundle
-Bundle 'gmarik/Vundle.vim'
+Plugin 'gmarik/Vundle.vim'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "     Airline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-Bundle 'bling/vim-airline'
+Plugin 'bling/vim-airline'
 let g:airline_powerline_fonts=1
 
 " always show the statusline
@@ -258,7 +258,7 @@ set noshowmode
 "     Bufferline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-Bundle 'bling/vim-bufferline'
+Plugin 'bling/vim-bufferline'
 
 let g:bufferline_echo=0
 
@@ -267,9 +267,9 @@ let g:bufferline_echo=0
 "     YouCompleteMe
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-Bundle "Valloric/YouCompleteMe"
+Plugin 'Valloric/YouCompleteMe'
 
-let g:ycm_path_to_python_interpreter='/usr/bin/python2'
+let g:ycm_path_to_python_interpreter='/usr/bin/python3'
 let g:ycm_confirm_extra_conf=0
 
 
@@ -277,14 +277,14 @@ let g:ycm_confirm_extra_conf=0
 "     Ctrlp
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-Bundle 'kien/ctrlp.vim'
+Plugin 'kien/ctrlp.vim'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "     Gundo
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-Bundle 'vim-scripts/Gundo'
+Plugin 'vim-scripts/Gundo'
 
 nnoremap <F5> :GundoToggle<CR>
 
@@ -293,31 +293,15 @@ nnoremap <F5> :GundoToggle<CR>
 "     Vinegar
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-Bundle 'tpope/vim-vinegar.git'
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"     ctags
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-Bundle 'vim-scripts/taglist.vim'
-Bundle 'xolox/vim-misc'
-Bundle 'xolox/vim-easytags'
-
-let Tlist_Ctags_Cmd='/usr/bin/ctags'
-let Tlist_Use_Right_Window=1
-
-let g:easytags_async=1
-
-map <F4> :TlistToggle<cr>
+Plugin 'tpope/vim-vinegar.git'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "     Python
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-Bundle 'andviro/flake8-vim'
-Bundle 'lynxed/vim-virtualenv'
+Plugin 'andviro/flake8-vim'
+Plugin 'lynxed/vim-virtualenv'
 
 let g:PyFlakeOnWrite=1
 let g:PyFlakeSigns=0
@@ -329,7 +313,7 @@ let g:PyFlakeDisabledMessages='E501'
 "     GLSL
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-Bundle 'beyondmarc/glsl.vim'
+Plugin 'beyondmarc/glsl.vim'
 
 autocmd BufNewFile,BufRead *.vp,*.fp,*.gp,*.vs,*.fs,*.gs,*.tcs,*.tes,*.cs,*.vert,*.frag,*.geom,*.tess,*.shd,*.gls,*.glsl,*.*shader set ft=glsl430
 
@@ -338,4 +322,8 @@ autocmd BufNewFile,BufRead *.vp,*.fp,*.gp,*.vs,*.fs,*.gs,*.tcs,*.tes,*.cs,*.vert
 "     Hex-editing
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-Bundle 'vim-scripts/hexman.vim'
+Plugin 'vim-scripts/hexman.vim'
+
+" Keep at bottom:
+call vundle#end()
+

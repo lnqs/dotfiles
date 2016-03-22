@@ -52,7 +52,7 @@ beautiful.init(home .. "/.config/awesome/theme.lua")
 
 -- This is used later as the default software to run.
 terminal = "urxvt"
-editor = os.getenv("EDITOR") or "vim"
+editor = os.getenv("EDITOR") or "nvim"
 editor_cmd = terminal .. " -e " .. editor
 mailclient = "chromium https://inbox.google.com/"
 screenlock = "dm-tool lock"
