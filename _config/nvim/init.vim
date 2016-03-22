@@ -274,6 +274,15 @@ let g:ycm_confirm_extra_conf=0
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"     NeoMake
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Plugin 'benekastah/neomake'
+autocmd! BufWritePost,BufEnter * Neomake
+autocmd! QuitPre * let g:neomake_verbose = 0
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "     Ctrlp
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -300,7 +309,6 @@ Plugin 'tpope/vim-vinegar.git'
 "     Python
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-Plugin 'andviro/flake8-vim'
 Plugin 'lynxed/vim-virtualenv'
 
 let g:PyFlakeOnWrite=1
