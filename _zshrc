@@ -364,7 +364,19 @@ ssh-add -l >/dev/null || alias ssh='ssh-add -l >/dev/null || ssh-add && unalias 
 ###############################################################################
 #     fzf
 ###############################################################################
+
 source /etc/profile.d/fzf.zsh
+
+
+###############################################################################
+#     Google Cloud SDK
+###############################################################################
+
+# The next line updates PATH for the Google Cloud SDK.
+source '/home/lynx/.google-cloud-sdk/path.zsh.inc'
+
+# The next line enables shell command completion for gcloud.
+source '/home/lynx/.google-cloud-sdk/completion.zsh.inc'
 
 
 ###############################################################################
@@ -374,3 +386,4 @@ source /etc/profile.d/fzf.zsh
 # community/zsh-syntax-highlighting
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
+
