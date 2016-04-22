@@ -277,6 +277,13 @@ add-zsh-hook precmd virtualenv_prompt
 
 source /usr/bin/virtualenvwrapper.sh
 
+cd () {
+    builtin cd $*
+    if [[ -f .venv ]]; then
+        workon "$(cat .venv)"
+    fi
+}
+
 
 ###############################################################################
 #     PROMPT
