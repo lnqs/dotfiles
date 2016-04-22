@@ -265,6 +265,7 @@ call <SID>X("WarningMsg",	"ff0000",	"",			"")
 			"DiffChange
 			"DiffDelete
 			"DiffText
+call <SID>X("SignColumn",	"ff0000",	"242424",	"none")
 
 " syntax highlighting
 call <SID>X("Number",		"e5786d",	"",			"none")
