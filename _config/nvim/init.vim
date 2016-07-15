@@ -311,6 +311,8 @@ Plugin 'tpope/vim-vinegar.git'
 
 Plugin 'mustache/vim-mustache-handlebars'
 
+au BufNewFile,BufRead *.hbs set filetype=html
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "     Python
