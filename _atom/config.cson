@@ -1,0 +1,22 @@
+"*":
+  core:
+    autoHideMenuBar: true
+    automaticallyUpdate: false
+    disabledPackages: []
+    projectHome: "/home/lynx/Projects"
+    themes: [
+      "atom-dark-ui"
+      "atom-dark-syntax"
+    ]
+  editor:
+    fontFamily: "Droid Sans Mono"
+    fontSize: 13
+  linter: {}
+  minimap:
+    plugins:
+      "highlight-selected": true
+      "highlight-selectedDecorationsZIndex": 0
+      pigments: true
+      pigmentsDecorationsZIndex: 0
+  welcome:
+    showOnStartup: false
