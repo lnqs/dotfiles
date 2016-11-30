@@ -214,13 +214,6 @@ endfunction
 " move quickfix to the bottom as soon as it's opened
 :autocmd FileType qf wincmd J
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"     Access to man pages
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-runtime ftplugin/man.vim
-source $VIMRUNTIME/ftplugin/man.vim
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "     Vundle
