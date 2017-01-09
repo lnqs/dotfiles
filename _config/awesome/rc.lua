@@ -54,7 +54,6 @@ beautiful.init(home .. "/.config/awesome/theme.lua")
 terminal = "urxvt"
 editor = os.getenv("EDITOR") or "nvim"
 editor_cmd = terminal .. " -e " .. editor
-mailclient = "chromium https://inbox.google.com/"
 screenlock = "dm-tool lock"
 
 -- Default modkey.
@@ -107,29 +106,6 @@ calendar = require('calendar')
 datewidget = wibox.widget.textbox()
 calendar.addCalendarToWidget(datewidget)
 vicious.register(datewidget, vicious.widgets.date, colored(" | ", beautiful.fg_shaded) .. "%a, %b %d %H:%M ")
-
--- Create the Gmail widget
-gmailwidget = wibox.widget.textbox()
-gmailwidget:buttons(awful.util.table.join(awful.button({ }, 1, function () awful.util.spawn(mailclient) end)))
-
-gmailwidget_tooltip = awful.tooltip({ objects = { gmailwidget }})
-vicious.register(gmailwidget, vicious.widgets.gmail,
-    function (widget, args)
-        local tooltip = ""
-        if args["{count}"] > 0 then
-            tooltip = "\n   " .. args["{subject}"] .. "   \n"
-        end
-        gmailwidget_tooltip:set_text(tooltip)
-        local color_text = theme.fg_shaded
-        local color_count = theme.fg_normal
-        if args["{count}"] > 0 then
-            color_text = beautiful.fg_urgent
-            color_count = beautiful.fg_urgent
-        end
-        return colored(" | ", beautiful.fg_shaded) ..
-                colored("Mails: ", color_text) ..
-                colored(args["{count}"], color_count)
-    end, 120)
 
 -- Create the updates widget
 updateswidget = wibox.widget.textbox()
@@ -254,7 +230,6 @@ for s = 1, screen.count() do
         right_layout:add(memwidget)
         right_layout:add(cpuwidget)
         right_layout:add(updateswidget)
-        right_layout:add(gmailwidget)
         right_layout:add(datewidget)
         right_layout:add(wibox.widget.systray())
     end
