@@ -1,3 +1,7 @@
 Host *
   ServerAliveInterval 60
   HashKnownHosts no
+
+Host lnqs.io
+  HostName home666496760.1and1-data.host
+  User u88055886
