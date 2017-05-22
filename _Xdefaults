@@ -26,11 +26,3 @@ URxvt*color13:         #75507b
 
 URxvt*font:            xft:Droid Sans Mono for Powerline:pixelsize=12
 URxvt*boldFont:        xft:Droid Sans Mono for Powerline:pixelsize=12
-URxvt*letterSpace:     -1
-
-!! xft settings
-Xft.dpi:               96
-Xft.antialias:         true
-Xft.rgba:              rgb
-Xft.hinting:           true
-Xft.hintstyle:         hintslight

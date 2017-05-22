@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Kalu
+Exec=kalu
+X-GNOME-Autostart-enabled=true
+Comment=Kalu

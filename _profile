@@ -4,7 +4,7 @@ export LANGUAGE=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LC_COLLATE=de_DE.UTF-8
 
-export NPM_PACKAGES="$HOME/.npm-packages"
+export NPM_PACKAGES="$HOME/.node_modules"
 export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
 
 export EDITOR=${EDITOR:-nvim}
@@ -13,12 +13,11 @@ export MANSECT=3:2:9:8:1:5:4:7:6:n
 export MANPATH="$NPM_PACKAGES/share/man:$MANPATH"
 
 export LESS='-R'
-export LESSOPEN='|~/.bin/lessfilter %s'
+export LESSOPEN='|~/.local/bin/lessfilter %s'
 
-export PATH="/usr/lib/ccache/bin:$HOME/.bin:$HOME/.local/bin:$HOME/.local/opt/android-sdk-linux/tools:$HOME/.local/opt/android-sdk-linux/platform-tools:$HOME/.local/opt/dex2jar:$HOME/.gem/ruby/2.3.0/bin:$NPM_PACKAGES/bin:$HOME/.composer/vendor/bin:$PATH"
+export PATH="/usr/lib/ccache/bin:$HOME/.local/bin:$HOME/.local/opt/android-sdk-linux/tools:$HOME/.local/opt/android-sdk-linux/platform-tools:$HOME/.local/opt/dex2jar:$HOME/.gem/ruby/2.3.0/bin:$NPM_PACKAGES/bin:$HOME/.composer/vendor/bin:$PATH"
 export WINEARCH="win32"
 export ANDROID_SDK_ROOT="$HOME/.local/opt/android-sdk-linux"
 export ANDROID_HOME="$ANDROID_SDK_ROOT"
 export NDK_ROOT="$HOME/.local/opt/android-ndk-r9c"
-export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
-export _JAVA_AWT_WM_NONREPARENTING=1
+export QT_QPA_PLATFORMTHEME="gtk2"

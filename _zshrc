@@ -1,5 +1,5 @@
 ###############################################################################
-# Lynx' .zshrc
+# lnqs' .zshrc
 # A lot of stuff is taken from grml's zshrc (see <http://grml.org/zsh/>, GPLv2)
 ###############################################################################
 
@@ -380,10 +380,10 @@ bindkey '^P' fzf-file-widget
 ###############################################################################
 
 # The next line updates PATH for the Google Cloud SDK.
-source '/home/lynx/.google-cloud-sdk/path.zsh.inc'
+source '/home/lnqs/.local/opt/google-cloud-sdk/path.zsh.inc'
 
 # The next line enables shell command completion for gcloud.
-source '/home/lynx/.google-cloud-sdk/completion.zsh.inc'
+source '/home/lnqs/.local/opt/google-cloud-sdk/completion.zsh.inc'
 
 # And for kubectl
 source <(kubectl completion zsh)

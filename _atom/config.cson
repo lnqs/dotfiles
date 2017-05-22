@@ -3,7 +3,7 @@
     autoHideMenuBar: true
     automaticallyUpdate: false
     disabledPackages: []
-    projectHome: "/home/lynx/Projects"
+    projectHome: "/home/lnqs/Projects"
     themes: [
       "atom-dark-ui"
       "atom-dark-syntax"

@@ -1,2 +1,0 @@
-Avoid Flash from leaving fullscreen when losing focus:
-    sudo sed -i -re s/_NET_ACTIVE_WINDOW/XNET_ACTIVE_WINDOW/ /usr/lib/mozilla/plugins/libflashplayer.so
