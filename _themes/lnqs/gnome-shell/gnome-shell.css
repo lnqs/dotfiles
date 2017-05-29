@@ -1,0 +1,16 @@
+#panel {
+  font-size: 80%;
+  font-weight: bold;
+  height: 1.49em;
+}
+
+#dash {
+  width: 0;
+  height: 0;
+}
+
+#panelActivities {
+  width: 0;
+  height: 0;
+}
+
