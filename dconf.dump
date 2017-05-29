@@ -7,6 +7,9 @@ name='urxvt'
 enabled-extensions=['launch-new-instance@gnome-shell-extensions.gcampax.github.com', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'mediaplayer@patapon.info', 'nohotcorner@azuri.free.fr', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'TopIcons@phocean.net', 'system-monitor@paradoxxx.zero.gmail.com', 'native-window-placement@gnome-shell-extensions.gcampax.github.com', 'windowsNavigator@gnome-shell-extensions.gcampax.github.com', 'pixel-saver@deadalnix.me']
 favorite-apps=@as []
 
+[org/gnome/shell/extensions/user-theme]
+name='lnqs'
+
 [org/gnome/shell/extensions/system-monitor]
 center-display=false
 icon-display=false
