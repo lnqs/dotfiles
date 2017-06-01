@@ -4,6 +4,7 @@
     automaticallyUpdate: false
     disabledPackages: []
     projectHome: "/home/lnqs/Projects"
+    telemetryConsent: "no"
     themes: [
       "atom-dark-ui"
       "atom-dark-syntax"
@@ -11,6 +12,8 @@
   editor:
     fontFamily: "Droid Sans Mono"
     fontSize: 13
+  "exception-reporting":
+    userId: "361c340d-edd7-42de-8696-b44dd04fdaf7"
   linter: {}
   minimap:
     plugins:
