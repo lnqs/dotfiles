@@ -155,10 +155,10 @@ key[PageUp]=${terminfo[kpp]}
 key[PageDown]=${terminfo[knp]}
 key[Ctrl+H]='^H'
 key[Ctrl+Z]='^Z'
-key[Ctrl+Up]='^[Oa'
-key[Ctrl+Down]='^[Ob'
-key[Ctrl+Left]='^[Od'
-key[Ctrl+Right]='^[Oc'
+key[Shift+Up]='^[[1;2A'
+key[Shift+Down]='^[[1;2B'
+key[Shift+Left]='^[[1;2D'
+key[Shift+Right]='^[[1;2C'
 
 # setup key accordingly
 bindkey "${key[Home]}"     beginning-of-line
@@ -211,12 +211,12 @@ bindkey "${key[Ctrl+Z]}" raise-stopped-to-fg
 autoload -U history-search-end
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end  history-search-end
-bindkey "${key[Ctrl+Up]}" history-beginning-search-backward-end
-bindkey "${key[Ctrl+Down]}" history-beginning-search-forward-end
+bindkey "${key[Shift+Up]}" history-beginning-search-backward-end
+bindkey "${key[Shift+Down]}" history-beginning-search-forward-end
 
 # ctrl+left/ctrl+right jumps to previous/next word
-bindkey "${key[Ctrl+Left]}" backward-word
-bindkey "${key[Ctrl+Right]}" forward-word
+bindkey "${key[Shift+Left]}" backward-word
+bindkey "${key[Shift+Right]}" forward-word
 
 
 ###############################################################################
