@@ -1,0 +1,26 @@
+#!/bin/bash
+
+while [[ $# -ge 1 ]]; do
+    case "$1" in
+        -e)
+            shift
+            COMMAND="-e $1"
+            shift
+        ;;
+        --command=*)
+            COMMAND="-e ${1#*=}"
+            shift
+        ;;
+        -x|--execute)
+            shift
+            COMMAND="-e $*"
+            break
+        ;;
+        *)
+            urxvt -e sh -c "echo -e 'Unhandled option in wrapper: $1\nPress any key to continue' >&2 && read"
+            exit 1
+        ;;
+    esac
+done
+
+exec urxvt $COMMAND
