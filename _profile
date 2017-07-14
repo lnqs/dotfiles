@@ -12,7 +12,8 @@ export MANPATH="$HOME/.local/share/man:$MANPATH"
 export LESS='-R'
 export LESSOPEN='|~/.local/bin/lessfilter %s'
 
-export PATH="/usr/lib/ccache/bin:$HOME/.local/bin:$HOME/.local/opt/android-sdk-linux/tools:$HOME/.local/opt/android-sdk-linux/platform-tools:$HOME/.local/opt/dex2jar:$HOME/.gem/ruby/2.3.0/bin:$PATH"
+export GOPATH="$HOME/Projects/go"
+export PATH="/usr/lib/ccache/bin:$HOME/.local/bin:$HOME/.local/opt/android-sdk-linux/tools:$HOME/.local/opt/android-sdk-linux/platform-tools:$HOME/.local/opt/dex2jar:$HOME/.gem/ruby/2.3.0/bin:$GOPATH/bin:$PATH"
 export WINEARCH="win32"
 export ANDROID_SDK_ROOT="$HOME/.local/opt/android-sdk-linux"
 export ANDROID_HOME="$ANDROID_SDK_ROOT"
