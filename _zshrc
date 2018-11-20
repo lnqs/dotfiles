@@ -299,7 +299,7 @@ zstyle ':vcs_info:*' formats "%{${fg_no_bold[magenta]}%}(%{${fg_bold[white]}%}%s
 zstyle ':vcs_info:*' actionformats "%{${fg_no_bold[magenta]}%}(%{${fg_bold[white]}%}%s%{${fg_no_bold[magenta]}%})[%{${fg_bold[green]}%}%b%{${fg_no_bold[magenta]}%}] (%{${fg_bold[white]}%}%a%{${fg_no_bold[magenta]}%})%{$reset_color%}"
 
 PROMPT='%{${fg_bold[green]}%}%n@%m %{${fg_bold[blue]}%}%30<…<%~%<<%{${reset_color}%} %# '
-RPROMPT='%(?.${vcs_info_msg_0_//./,}${_virtualenv_prompt}${_kubeenv_prompt}${_awsenv_prompt}.%{${fg_bold[red]}%}↪%?%{${reset_color}%})'
+RPROMPT='%(?.${vcs_info_msg_0_//./,}${_virtualenv_prompt}${_kubeenv_prompt}${_awsenv_prompt}.%{${fg_bold[red]}%}⇒%?%{${reset_color}%})'
 PS2='\`%_> '
 PS3='?# '
 PS4='+%N:%i:%_> '
@@ -397,7 +397,7 @@ KUBEENV_DISABLE_PROMPT=1
 
 kubeenv_prompt() {
     if [[ -n $KUBEENV ]]; then
-        _kubeenv_prompt="%{${fg_no_bold[cyan]}%}(%{${fg_bold[white]}%}☁$KUBEENV%{${fg_no_bold[cyan]}%})%{$reset_color%}"
+        _kubeenv_prompt="%{${fg_no_bold[cyan]}%}(%{${fg_bold[white]}%}웃$KUBEENV%{${fg_no_bold[cyan]}%})%{$reset_color%}"
     fi
 }
 
@@ -415,7 +415,7 @@ AWSENV_DISABLE_PROMPT=1
 
 awsenv_prompt() {
     if [[ -n $AWS_PROFILE ]]; then
-        _awsenv_prompt="%{${fg_no_bold[cyan]}%}(%{${fg_bold[white]}%}☁$AWS_PROFILE%{${fg_no_bold[cyan]}%})%{$reset_color%}"
+        _awsenv_prompt="%{${fg_no_bold[cyan]}%}(%{${fg_bold[white]}%}웃$AWS_PROFILE%{${fg_no_bold[cyan]}%})%{$reset_color%}"
     fi
 }
 
@@ -423,6 +423,13 @@ add-zsh-hook precmd awsenv_prompt
 
 source "$HOME/Projects/awsenv/awsenv.sh"
 source "$HOME/Projects/awsenv/completion.bash"
+
+
+###############################################################################
+#     NVM
+###############################################################################
+
+source /usr/share/nvm/init-nvm.sh
 
 
 ###############################################################################

@@ -1,6 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Setup Displays
-Exec=setup-displays.sh
-X-GNOME-Autostart-enabled=true
-Comment=Display managment

@@ -24,5 +24,5 @@ URxvt*color11:         #FCE94F
 URxvt*color12:         #729FCF
 URxvt*color13:         #75507b
 
-URxvt*font:            xft:Droid Sans Mono for Powerline:pixelsize=12
-URxvt*boldFont:        xft:Droid Sans Mono for Powerline:pixelsize=12
+URxvt*font:            xft:Droid Sans Mono for Powerline:size=8
+URxvt*boldFont:        xft:Droid Sans Mono for Powerline:size=8

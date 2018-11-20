@@ -1,14 +1,27 @@
+[system/locale]
+region='de_DE.UTF-8'
+
+[org/gnome/settings-daemon/plugins/power]
+power-button-action='interactive'
+
+[org/gnome/settings-daemon/plugins/media-keys]
+custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']
+
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0]
 binding='<Super>Return'
 command='urxvt'
 name='urxvt'
 
-[org/gnome/shell]
-enabled-extensions=['launch-new-instance@gnome-shell-extensions.gcampax.github.com', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'mediaplayer@patapon.info', 'nohotcorner@azuri.free.fr', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'TopIcons@phocean.net', 'system-monitor@paradoxxx.zero.gmail.com', 'native-window-placement@gnome-shell-extensions.gcampax.github.com', 'windowsNavigator@gnome-shell-extensions.gcampax.github.com', 'pixel-saver@deadalnix.me']
-favorite-apps=@as []
+[org/gnome/settings-daemon/plugins/xsettings]
+antialiasing='grayscale'
+hinting='slight'
 
-[org/gnome/shell/extensions/user-theme]
-name='lnqs'
+[org/gnome/settings-daemon/peripherals/keyboard]
+numlock-state='off'
+
+[org/gnome/shell]
+enabled-extensions=['launch-new-instance@gnome-shell-extensions.gcampax.github.com', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'mediaplayer@patapon.info', 'nohotcorner@azuri.free.fr', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'TopIcons@phocean.net', 'system-monitor@paradoxxx.zero.gmail.com', 'native-window-placement@gnome-shell-extensions.gcampax.github.com', 'windowsNavigator@gnome-shell-extensions.gcampax.github.com', 'pixel-saver@deadalnix.me', 'TopIcons@huttli']
+favorite-apps=@as []
 
 [org/gnome/shell/extensions/system-monitor]
 center-display=false
@@ -26,25 +39,76 @@ swap-style='digit'
 fan-display=true
 disk-display=false
 
+[org/gnome/shell/extensions/user-theme]
+name='lnqs'
+
 [org/gnome/shell/extensions/hidetopbar]
 enable-active-window=false
 hot-corner=false
 mouse-sensitive=false
 
 [org/gnome/shell/extensions/topicons]
+icon-opacity=220
+icon-size=16
 icon-spacing=12
 tray-pos='right'
-tray-order=1
+icon-saturation=0.40000000000000002
+tray-order=2
 
 [org/gnome/shell/overrides]
 workspaces-only-on-primary=false
 
+[org/gnome/evolution-data-server]
+network-monitor-gio-name=''
+migrated=true
+
 [org/gnome/desktop/interface]
+clock-show-date=false
 font-name='Cantarell 9'
 document-font-name='Sans 9'
 gtk-im-module='gtk-im-context-simple'
+show-battery-percentage=true
 gtk-theme='Adwaita-dark'
 monospace-font-name='Monospace 9'
+
+[org/gnome/desktop/notifications]
+application-children=['chromium', 'org-keepassxc-keepassxc', 'spotify', 'slack', 'zoom']
+
+[org/gnome/desktop/notifications/application/spotify]
+application-id='spotify.desktop'
+
+[org/gnome/desktop/notifications/application/zoom]
+application-id='Zoom.desktop'
+
+[org/gnome/desktop/notifications/application/org-keepassxc-keepassxc]
+application-id='org.keepassxc.KeePassXC.desktop'
+
+[org/gnome/desktop/notifications/application/chromium]
+application-id='chromium.desktop'
+
+[org/gnome/desktop/notifications/application/slack]
+application-id='slack.desktop'
+
+[org/gnome/desktop/screensaver]
+picture-uri='file:///home/lnqs/Pictures/circuits-hearts_00428111.jpg'
+color-shading-type='solid'
+primary-color='#000000000000'
+picture-options='zoom'
+secondary-color='#000000000000'
+
+[org/gnome/desktop/peripherals/touchpad]
+natural-scroll=false
+click-method='areas'
+edge-scrolling-enabled=false
+
+[org/gnome/desktop/peripherals/tablets/056a:488f]
+display=['SHP', '0x148d', '0x00000000']
+
+[org/gnome/desktop/peripherals/touchscreens/056a:488f]
+display=['SHP', '0x148d', '0x00000000']
+
+[org/gnome/desktop/peripherals/mouse]
+natural-scroll=false
 
 [org/gnome/desktop/calendar]
 show-weekdate=true
@@ -56,8 +120,8 @@ remember-recent-files=false
 remove-old-trash-files=true
 
 [org/gnome/desktop/wm/preferences]
-focus-mode='sloppy'
 resize-with-right-button=true
+focus-mode='sloppy'
 titlebar-font='Cantarell Bold 9'
 
 [org/gnome/desktop/wm/keybindings]
@@ -65,3 +129,56 @@ switch-to-workspace-1=['<Super>1']
 switch-to-workspace-2=['<Super>2']
 switch-to-workspace-3=['<Super>3']
 switch-to-workspace-4=['<Super>4']
+
+[org/gnome/desktop/sound]
+theme-name='__custom'
+event-sounds=true
+
+[org/gnome/desktop/background]
+picture-uri='file:///home/lnqs/Pictures/circuits-hearts_00428111.jpg'
+color-shading-type='solid'
+primary-color='#000000000000'
+picture-options='zoom'
+secondary-color='#000000000000'
+
+[org/gnome/desktop/input-sources]
+sources=[('xkb', 'us+altgr-intl')]
+xkb-options=['compose:menu', 'lv3:ralt_switch']
+
+[org/gnome/cheese]
+photo-y-resolution=480
+burst-delay=1000
+video-y-resolution=480
+camera='Integrated_Webcam_HD: Integrate'
+photo-x-resolution=640
+video-x-resolution=640
+
+[org/gnome/control-center]
+last-panel='region'
+
+[org/gnome/nm-applet/eap/522cc2d7-7c68-4bef-92b6-038c0309f94f]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[org/gnome/nm-applet/eap/755749d8-ef5c-4e60-899c-d61cb1da74e3]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[org/gnome/nm-applet/eap/771bec87-ad6d-4e5d-96b5-c3443b49d00f]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[org/gnome/mutter]
+workspaces-only-on-primary=false
+
+[org/gtk/settings/file-chooser]
+sort-column='name'
+sidebar-width=148
+window-position=(26, 23)
+show-size-column=true
+show-hidden=true
+window-size=(990, 742)
+sort-directories-first=false
+date-format='regular'
+sort-order='ascending'
+location-mode='path-bar'
