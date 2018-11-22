@@ -149,10 +149,18 @@ key[PageUp]=${terminfo[kpp]}
 key[PageDown]=${terminfo[knp]}
 key[Ctrl+H]='^H'
 key[Ctrl+Z]='^Z'
-key[Ctrl+Up]='^[Oa'
-key[Ctrl+Down]='^[Ob'
-key[Ctrl+Left]='^[Od'
-key[Ctrl+Right]='^[Oc'
+
+if [[ "$TERM" =~ "rxvt" ]]; then
+    key[Ctrl+Up]='^[Oa'
+    key[Ctrl+Down]='^[Ob'
+    key[Ctrl+Left]='^[Od'
+    key[Ctrl+Right]='^[Oc'
+else
+    key[Ctrl+Up]=';5A'
+    key[Ctrl+Down]=';5B'
+    key[Ctrl+Left]=';5D'
+    key[Ctrl+Right]=';5C'
+fi
 
 # setup key accordingly
 bindkey "${key[Home]}"     beginning-of-line
