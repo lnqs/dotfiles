@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=KeePassXC
+Exec=keepassxc
+X-GNOME-Autostart-enabled=true
+Comment=KeePassXC
