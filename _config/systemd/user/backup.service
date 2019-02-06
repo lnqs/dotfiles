@@ -1,0 +1,9 @@
+[Unit]
+Description=Backup to Backblaze b2
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/backup
+Restart=on-failure
+RestartSec=3600
