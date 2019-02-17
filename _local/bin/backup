@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# NetworkManager-wait-online.service needs to be enabled for the service to work
+
 set -eo pipefail
 
 trap "notify-send 'Backup' 'Backup failed'" ERR
