@@ -1,0 +1,9 @@
+{
+  "\UF729" = "moveToBeginningOfLine:"; // home
+  "\UF72B" = "moveToEndOfLine:"; // end
+  "^\UF702" = "moveWordBackward:"; // ctrl-left
+  "^\UF703" = "moveWordForward:"; // ctrl-right
+  "^$\UF702" = "moveWordLeftAndModifySelection:"; // ctrl-shift-left
+  "^$\UF703" = "moveWordRightAndModifySelection:"; // ctrl-shift-right
+}
+
