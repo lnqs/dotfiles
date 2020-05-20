@@ -420,7 +420,6 @@ if [[ -e "${HOME}/.local/opt/google-cloud-sdk/completion.zsh.inc" ]]; then
     source <(kubectl completion zsh)
 fi
 
-
 ###############################################################################
 #     KUBEENV
 ###############################################################################
@@ -439,7 +438,6 @@ if [[ -e "${HOME}/Projects/kubeenv/kubeenv.sh" ]]; then
     source "${HOME}/Projects/kubeenv/kubeenv.sh"
     source "${HOME}/Projects/kubeenv/completion.bash"
 fi
-
 
 ###############################################################################
 #     AWSENV
@@ -460,6 +458,13 @@ if [[ -e "${HOME}/Projects/awsenv/awsenv.sh" ]]; then
     source "${HOME}/Projects/awsenv/completion.bash"
 fi
 
+###############################################################################
+#     NVM
+###############################################################################
+
+if [[ -e /usr/share/nvm ]]; then
+    source /usr/share/nvm/init-nvm.sh
+fi
 
 ###############################################################################
 #     NATIVE SCRIPT
