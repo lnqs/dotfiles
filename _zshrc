@@ -329,7 +329,7 @@ zstyle ':vcs_info:*' formats "%{${fg_no_bold[magenta]}%}(%{${fg_bold[white]}%}%s
 zstyle ':vcs_info:*' actionformats "%{${fg_no_bold[magenta]}%}(%{${fg_bold[white]}%}%s%{${fg_no_bold[magenta]}%})[%{${fg_bold[green]}%}%b%{${fg_no_bold[magenta]}%}] (%{${fg_bold[white]}%}%a%{${fg_no_bold[magenta]}%})%{$reset_color%}"
 
 PROMPT='%{${fg_bold[green]}%}%n@%m %{${fg_bold[blue]}%}%30<…<%~%<<%{${reset_color}%} %# '
-RPROMPT='%(?.${vcs_info_msg_0_//./,}${_virtualenv_prompt}${_kubeenv_prompt}${_awsenv_prompt}.%{${fg_bold[red]}%}⇒%?%{${reset_color}%})'
+RPROMPT='%(?.${vcs_info_msg_0_//./,}${_virtualenv_prompt}${_kubeenv_prompt}${_awsenv_prompt}.%{${fg_bold[red]}%}>%?%{${reset_color}%})'
 PS2='\`%_> '
 PS3='?# '
 PS4='+%N:%i:%_> '
