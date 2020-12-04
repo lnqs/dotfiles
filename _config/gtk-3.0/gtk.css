@@ -1,5 +1,6 @@
 /* shrink headerbars */
 headerbar {
+  margin: 0 1em;
   min-height: 0;
 }
 
@@ -7,8 +8,8 @@ headerbar entry,
 headerbar spinbutton,
 headerbar button,
 headerbar separator {
-  margin-top: 0;
-  margin-bottom: 0;
+  margin: 0;
+  padding: 0;
 }
 
 /* shrink ssd titlebars */

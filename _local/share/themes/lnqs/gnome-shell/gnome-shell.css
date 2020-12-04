@@ -1,0 +1,10 @@
+#panel {
+  font-size: 80%;
+  font-weight: bold;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+#dash {
+  width: 0;
+  height: 0;
+}

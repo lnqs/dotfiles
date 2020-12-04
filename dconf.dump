@@ -1,193 +1,77 @@
-[org/gnome/cheese]
-burst-delay=1000
-camera='Integrated_Webcam_HD: Integrate'
-photo-x-resolution=640
-photo-y-resolution=480
-video-x-resolution=640
-video-y-resolution=480
-
-[org/gnome/control-center]
-last-panel='keyboard'
-
 [org/gnome/desktop/background]
-color-shading-type='solid'
-picture-options='zoom'
-picture-uri='file:///usr/share/backgrounds/gnome/LightWaves.jpg'
-primary-color='#ffffff'
-secondary-color='#000000'
-
-[org/gnome/desktop/calendar]
-show-weekdate=true
+picture-uri='file:///home/lnqs/Pictures/Wallpapers/circuits-hearts_00428111.jpg'
 
 [org/gnome/desktop/input-sources]
 sources=[('xkb', 'us+altgr-intl')]
-xkb-options=['compose:menu', 'lv3:ralt_switch']
+xkb-options=['lv3:ralt_switch']
 
 [org/gnome/desktop/interface]
-clock-show-date=false
-document-font-name='Sans 9'
-font-name='Cantarell 9'
+document-font-name='Roboto 10'
+enable-hot-corners=false
+font-name='Roboto 10'
 gtk-im-module='gtk-im-context-simple'
 gtk-theme='Adwaita-dark'
-monospace-font-name='Monospace 9'
-show-battery-percentage=true
+monospace-font-name='Roboto Mono 10'
 
-[org/gnome/desktop/notifications]
-application-children=['chromium', 'org-keepassxc-keepassxc', 'spotify', 'slack', 'zoom']
-show-banners=true
-
-[org/gnome/desktop/notifications/application/chromium]
-application-id='chromium.desktop'
-
-[org/gnome/desktop/notifications/application/org-keepassxc-keepassxc]
-application-id='org.keepassxc.KeePassXC.desktop'
-
-[org/gnome/desktop/notifications/application/slack]
-application-id='slack.desktop'
-
-[org/gnome/desktop/notifications/application/spotify]
-application-id='spotify.desktop'
-
-[org/gnome/desktop/notifications/application/zoom]
-application-id='Zoom.desktop'
-
-[org/gnome/desktop/peripherals/mouse]
-natural-scroll=false
-
-[org/gnome/desktop/peripherals/tablets/056a:488f]
-display=['SHP', '0x148d', '0x00000000']
+[org/gnome/desktop/media-handling]
+autorun-never=true
 
 [org/gnome/desktop/peripherals/touchpad]
 click-method='areas'
-edge-scrolling-enabled=false
 natural-scroll=false
+two-finger-scrolling-enabled=true
 
-[org/gnome/desktop/peripherals/touchscreens/056a:488f]
-display=['SHP', '0x148d', '0x00000000']
-
-[org/gnome/desktop/privacy]
-old-files-age=uint32 1
-remember-recent-files=false
-remove-old-temp-files=true
-remove-old-trash-files=true
-
-[org/gnome/desktop/screensaver]
-color-shading-type='solid'
-picture-options='zoom'
-picture-uri='file:///usr/share/backgrounds/gnome/LightWaves.jpg'
-primary-color='#ffffff'
-secondary-color='#000000'
+[org/gnome/desktop/search-providers]
+disable-external=true
+sort-order=['org.gnome.Contacts.desktop', 'org.gnome.Documents.desktop', 'org.gnome.Nautilus.desktop']
 
 [org/gnome/desktop/sound]
-event-sounds=true
-theme-name='__custom'
-
-[org/gnome/desktop/wm/keybindings]
-switch-to-workspace-1=['<Super>1']
-switch-to-workspace-2=['<Super>2']
-switch-to-workspace-3=['<Super>3']
-switch-to-workspace-4=['<Super>4']
+allow-volume-above-100-percent=true
 
 [org/gnome/desktop/wm/preferences]
 focus-mode='sloppy'
 resize-with-right-button=true
-titlebar-font='Cantarell Bold 9'
-
-[org/gnome/evolution-data-server]
-migrated=true
-network-monitor-gio-name=''
+titlebar-font='Roboto 10'
 
 [org/gnome/mutter]
 workspaces-only-on-primary=false
-
-[org/gnome/nm-applet/eap/522cc2d7-7c68-4bef-92b6-038c0309f94f]
-ignore-ca-cert=false
-ignore-phase2-ca-cert=false
-
-[org/gnome/nm-applet/eap/755749d8-ef5c-4e60-899c-d61cb1da74e3]
-ignore-ca-cert=false
-ignore-phase2-ca-cert=false
-
-[org/gnome/nm-applet/eap/771bec87-ad6d-4e5d-96b5-c3443b49d00f]
-ignore-ca-cert=false
-ignore-phase2-ca-cert=false
-
-[org/gnome/settings-daemon/peripherals/keyboard]
-numlock-state='off'
 
 [org/gnome/settings-daemon/plugins/media-keys]
 custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']
 
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0]
 binding='<Super>Return'
-command='gnome-terminal'
-name='Terminal'
+command='kitty'
+name='Kitty'
 
 [org/gnome/settings-daemon/plugins/power]
 power-button-action='interactive'
 
-[org/gnome/settings-daemon/plugins/xsettings]
-antialiasing='grayscale'
-hinting='slight'
-
 [org/gnome/shell]
-enabled-extensions=['launch-new-instance@gnome-shell-extensions.gcampax.github.com', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'mediaplayer@patapon.info', 'nohotcorner@azuri.free.fr', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'TopIcons@phocean.net', 'system-monitor@paradoxxx.zero.gmail.com', 'native-window-placement@gnome-shell-extensions.gcampax.github.com', 'windowsNavigator@gnome-shell-extensions.gcampax.github.com', 'pixel-saver@deadalnix.me', 'TopIcons@huttli', 'arch-update@RaphaelRochet', 'appindicatorsupport@rgcjonas.gmail.com', 'screenshot-window-sizer@gnome-shell-extensions.gcampax.github.com']
-favorite-apps=@as []
+enabled-extensions=['arch-update@RaphaelRochet', 'appindicatorsupport@rgcjonas.gmail.com', 'launch-new-instance@gnome-shell-extensions.gcampax.github.com', 'native-window-placement@gnome-shell-extensions.gcampax.github.com', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'system-monitor@paradoxxx.zero.gmail.com', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'Hide_Activities@shay.shayel.org', 'pixel-saver@deadalnix.me', 'gsconnect@andyholmes.github.io', 'syncthingicon@jay.strict@posteo.de']
 
-[org/gnome/shell/extensions/hidetopbar]
-enable-active-window=false
-hot-corner=false
-mouse-sensitive=false
+[org/gnome/shell/extensions/arch-update]
+always-visible=false
+notify=true
+update-cmd="kitty -e 'sh -c  \"sudo yay -Syu ; echo Done - Press enter to exit; read\" '"
 
 [org/gnome/shell/extensions/system-monitor]
-center-display=false
-compact-display=false
+cpu-display=true
+cpu-show-menu=true
+cpu-show-text=true
 cpu-style='digit'
-disk-display=false
-fan-display=true
+disk-style='digit'
 fan-style='digit'
 freq-display=false
 freq-style='digit'
+gpu-style='digit'
 icon-display=false
 memory-style='digit'
-move-clock=false
 net-style='digit'
-swap-style='digit'
-thermal-display=false
-
-[org/gnome/shell/extensions/topicons]
-icon-opacity=220
-icon-saturation=0.40000000000000002
-icon-size=16
-icon-spacing=12
-tray-order=2
-tray-pos='right'
+thermal-style='digit'
 
 [org/gnome/shell/extensions/user-theme]
 name='lnqs'
-
-[org/gnome/shell/overrides]
-workspaces-only-on-primary=false
-
-[org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]
-background-transparency-percent=26
-font='Droid Sans Mono 8.5'
-scrollbar-policy='never'
-use-system-font=false
-use-transparent-background=true
-visible-name='lnqs'
-
-[org/gtk/settings/file-chooser]
-date-format='regular'
-location-mode='path-bar'
-show-hidden=true
-show-size-column=true
-sidebar-width=148
-sort-column='name'
-sort-directories-first=false
-sort-order='ascending'
-window-position=(26, 23)
-window-size=(990, 742)
 
 [system/locale]
 region='de_DE.UTF-8'
