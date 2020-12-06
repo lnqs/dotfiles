@@ -34,6 +34,7 @@ gvfs-google
 gvfs-mtp
 gvfs-nfs
 gvfs-smb
+inetutils
 intel-ucode
 iwd
 keepassxc
