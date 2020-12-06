@@ -26,8 +26,7 @@ fi
 ###############################################################################
 
 # colors for ls. Also, human-readable sizes are great.
-#alias ls='ls -b -CF -h --color=auto'
-alias ls='ls -bGFh'
+alias ls='ls -b -CF -h --color=auto'
 
 # don't grep in binary files by default
 alias grep='grep -I'
@@ -38,6 +37,14 @@ alias n=nvim
 # less typing for running ag
 alias a=ag
 
+# sudoedit shortcut
+alias sn=sudoedit
+
+# cat images on commandline
+alias icat="kitty +kitten icat"
+
+# side by side diff
+alias kdiff="kitty +kitten diff"
 
 ###############################################################################
 #     OPTIONS
