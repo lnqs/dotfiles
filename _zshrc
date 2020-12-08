@@ -3,6 +3,8 @@
 # A lot of stuff is taken from grml's zshrc (see <http://grml.org/zsh/>, GPLv2)
 ###############################################################################
 
+source $HOME/.config/environment.d/*
+
 ###############################################################################
 #     PREREQUISITES
 ###############################################################################
@@ -26,7 +28,11 @@ fi
 ###############################################################################
 
 # colors for ls. Also, human-readable sizes are great.
-alias ls='ls -b -CF -h --color=auto'
+if [[ $(uname) != "Darwin" ]]; then
+    alias ls='ls -b -CF -h --color=auto'
+else
+    alias ls='ls -b -CF -h'
+fi
 
 # don't grep in binary files by default
 alias grep='grep -I'
@@ -318,6 +324,9 @@ if [[ -e "/usr/bin/virtualenvwrapper.sh" ]]; then
         if [[ -f .venv ]]; then
             workon "$(cat .venv)"
         fi
+        if [[ -f .nvmrc ]]; then
+            nvm use
+        fi
     }
 fi
 
@@ -483,6 +492,8 @@ init_nvm() {
         source /usr/share/nvm/nvm.sh
         #source /usr/share/nvm/bash_completion
         source /usr/share/nvm/install-nvm-exec
+    elif [[ -e "$HOME/.nvm" ]]; then
+        source "$HOME/.nvm/nvm.sh"
     fi
 }
 
