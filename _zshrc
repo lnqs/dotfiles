@@ -3,7 +3,9 @@
 # A lot of stuff is taken from grml's zshrc (see <http://grml.org/zsh/>, GPLv2)
 ###############################################################################
 
-source $HOME/.config/environment.d/*
+if [[ $(uname) == "Darwin" ]]; then
+    source $HOME/.config/environment.d/*
+fi
 
 ###############################################################################
 #     PREREQUISITES
