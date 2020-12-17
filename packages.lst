@@ -52,8 +52,9 @@ networkmanager
 noto-fonts
 nvm
 openssh
+pyenv
+pyenv-virtualenvwrapper
 python-nautilus
-python-virtualenvwrapper
 qgnomeplatform
 smartmontools
 sudo

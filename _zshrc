@@ -305,12 +305,13 @@ function try_load() {
 
 
 ###############################################################################
-#     VIRTUALENV
+#     PYENV
 ###############################################################################
 
-if [[ -e "/usr/bin/virtualenvwrapper.sh" ]]; then
-    VIRTUAL_ENV_DISABLE_PROMPT=1
+if ( which pyenv >/dev/null ); then
+    eval "$(pyenv init -)"
 
+    VIRTUAL_ENV_DISABLE_PROMPT=1
     virtualenv_prompt() {
         if [[ -n $VIRTUAL_ENV ]]; then
             _virtualenv_prompt="%{${fg_no_bold[magenta]}%}(%{${fg_bold[white]}%}⚑$(basename $VIRTUAL_ENV)%{${fg_no_bold[magenta]}%})%{$reset_color%}"
@@ -319,7 +320,8 @@ if [[ -e "/usr/bin/virtualenvwrapper.sh" ]]; then
 
     add-zsh-hook precmd virtualenv_prompt
 
-    source /usr/bin/virtualenvwrapper.sh
+    export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
+    pyenv virtualenvwrapper_lazy
 
     cd () {
         builtin cd $*
