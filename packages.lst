@@ -28,6 +28,10 @@ gnome-shell-extension-system-monitor-git
 gnome-shell-extensions
 gnome-themes-extra
 gnome-tweaks
+gst-plugins-bad
+gst-plugins-base
+gst-plugins-good
+gst-plugins-ugly
 gvfs
 gvfs-goa
 gvfs-google
