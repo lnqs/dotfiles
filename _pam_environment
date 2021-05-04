@@ -1,1 +1,0 @@
-PATH DEFAULT=/usr/lib/ccache/bin:/home/@{PAM_USER}/.local/bin:/home/@{PAM_USER}/.local/opt/android-sdk/tools:/home/@{PAM_USER}/.local/opt/android-sdk/tools/bin:/home/@{PAM_USER}/.local/opt/android-sdk/platform-tools:/usr/local/bin:/bin:/usr/bin
