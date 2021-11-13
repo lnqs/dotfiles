@@ -6,3 +6,5 @@ email = simon@lnqs.io
 	default = simple
 [core]
 	excludesfile = /home/lnqs/.gitignore_global
+[init]
+	defaultBranch = main
