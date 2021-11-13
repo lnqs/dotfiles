@@ -3,7 +3,6 @@
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 
 const GETTEXT_DOMAIN = "gnome-shell-extension-syncthing";
 const Gettext = imports.gettext.domain(GETTEXT_DOMAIN);
@@ -11,13 +10,12 @@ const _ = Gettext.gettext;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
-const Convenience = Me.imports.convenience;
 
 const SyncthingIconPrefsWidget = GObject.registerClass(
 class SyncthingIconPrefsWidget extends Gtk.Grid {
     _init(params) {
         super._init(params);
-        this._settings = Convenience.getSettings();
+        this._settings = ExtensionUtils.getSettings();
 
         this.margin = 18;
         this.row_spacing = this.column_spacing = 12;
@@ -50,7 +48,7 @@ class SyncthingIconPrefsWidget extends Gtk.Grid {
         let reset_button = new Gtk.Button({ label: "Reset",
                                             halign: Gtk.Align.END,
                                             valign: Gtk.Align.BASELINE });
-        reset_button.connect("clicked", Lang.bind(this, this._onReset));
+        reset_button.connect("clicked", this._onReset.bind(this));
         this.attach(reset_button, 2, 1, 1, 1);
         this._settings.bind("configuration-uri", uriEntry, "text", Gio.SettingsBindFlags.DEFAULT);
 
@@ -80,7 +78,7 @@ class SyncthingIconPrefsWidget extends Gtk.Grid {
         this._settings.bind("external-browser", externalBrowserSwitch, "active", Gio.SettingsBindFlags.DEFAULT);
 
 
-        autoSwitch.connect("notify::active", Lang.bind(this, this._onSwitch));
+        autoSwitch.connect("notify::active", this._onSwitch.bind(this));
         this._onSwitch(autoSwitch);
     }
 
@@ -101,12 +99,11 @@ class SyncthingIconPrefsWidget extends Gtk.Grid {
 });
 
 function init(metadata) {
-    Convenience.initTranslations(GETTEXT_DOMAIN);
+    ExtensionUtils.initTranslations(GETTEXT_DOMAIN);
 }
 
 function buildPrefsWidget() {
     let widget = new SyncthingIconPrefsWidget();
-    widget.show_all();
 
     return widget;
 }

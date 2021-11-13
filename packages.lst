@@ -28,6 +28,7 @@ gnome-settings-daemon
 gnome-shell
 gnome-shell-extension-appindicator
 gnome-shell-extension-arch-update
+gnome-shell-extension-hide-activities-git
 gnome-shell-extension-sound-output-device-chooser
 gnome-shell-extension-system-monitor-git
 gnome-shell-extensions
