@@ -305,60 +305,13 @@ function try_load() {
 
 
 ###############################################################################
-#     PYENV
-###############################################################################
-
-if ( which pyenv >/dev/null ); then
-    export PYENV_ROOT="$HOME/.pyenv"
-    export PATH="$PYENV_ROOT/bin:$PATH"
-    eval "$(pyenv init --path)"
-    eval "$(pyenv init -)"
-
-    VIRTUAL_ENV_DISABLE_PROMPT=1
-    virtualenv_prompt() {
-        if [[ -n $VIRTUAL_ENV ]]; then
-            _virtualenv_prompt="%{${fg_no_bold[magenta]}%}(%{${fg_bold[white]}%}⚑$(basename $VIRTUAL_ENV)%{${fg_no_bold[magenta]}%})%{$reset_color%}"
-        fi
-    }
-
-    add-zsh-hook precmd virtualenv_prompt
-
-    export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
-    pyenv virtualenvwrapper_lazy
-
-    cd () {
-        builtin cd $*
-        if [[ -f .venv ]]; then
-            workon "$(cat .venv)"
-        fi
-        if [[ -f .nvmrc ]]; then
-            nvm use
-        fi
-    }
-fi
-
-
-###############################################################################
 #     PROMPT
 ###############################################################################
 
-autoload -U promptinit && promptinit
+autoload -U promptinit; promptinit
+prompt spaceship
 
-setopt prompt_subst
-setopt transient_rprompt
-
-autoload -U vcs_info
-zstyle ':vcs_info:*' formats "%{${fg_no_bold[magenta]}%}(%{${fg_bold[white]}%}%s%{${fg_no_bold[magenta]}%})[%{${fg_bold[green]}%}%b%{${fg_no_bold[magenta]}%}]%{$reset_color%}"
-zstyle ':vcs_info:*' actionformats "%{${fg_no_bold[magenta]}%}(%{${fg_bold[white]}%}%s%{${fg_no_bold[magenta]}%})[%{${fg_bold[green]}%}%b%{${fg_no_bold[magenta]}%}] (%{${fg_bold[white]}%}%a%{${fg_no_bold[magenta]}%})%{$reset_color%}"
-
-PROMPT='%{${fg_bold[green]}%}%n@%m %{${fg_bold[blue]}%}%30<…<%~%<<%{${reset_color}%} %# '
-RPROMPT='%(?.${vcs_info_msg_0_//./,}${_virtualenv_prompt}${_kubeenv_prompt}${_awsenv_prompt}.%{${fg_bold[red]}%}>%?%{${reset_color}%})'
-PS2='\`%_> '
-PS3='?# '
-PS4='+%N:%i:%_> '
-
-add-zsh-hook precmd vcs_info
-
+SPACESHIP_TIME_SHOW=true
 
 ###############################################################################
 #     TERMINAL TITLE
@@ -444,44 +397,6 @@ if [[ -e "${HOME}/.local/opt/google-cloud-sdk/completion.zsh.inc" ]]; then
 fi
 
 ###############################################################################
-#     KUBEENV
-###############################################################################
-
-if [[ -e "${HOME}/Projects/kubeenv/kubeenv.sh" ]]; then
-    KUBEENV_DISABLE_PROMPT=1
-
-    kubeenv_prompt() {
-        if [[ -n ${KUBEENV} ]]; then
-            _kubeenv_prompt="%{${fg_no_bold[cyan]}%}(%{${fg_bold[white]}%}웃$KUBEENV%{${fg_no_bold[cyan]}%})%{$reset_color%}"
-        fi
-    }
-
-    add-zsh-hook precmd kubeenv_prompt
-
-    source "${HOME}/Projects/kubeenv/kubeenv.sh"
-    source "${HOME}/Projects/kubeenv/completion.bash"
-fi
-
-###############################################################################
-#     AWSENV
-###############################################################################
-
-if [[ -e "${HOME}/Projects/awsenv/awsenv.sh" ]]; then
-    AWSENV_DISABLE_PROMPT=1
-
-    awsenv_prompt() {
-        if [[ -n ${AWS_PROFILE} ]]; then
-            _awsenv_prompt="%{${fg_no_bold[cyan]}%}(%{${fg_bold[white]}%}웃$AWS_PROFILE%{${fg_no_bold[cyan]}%})%{$reset_color%}"
-        fi
-    }
-
-    add-zsh-hook precmd awsenv_prompt
-
-    source "${HOME}/Projects/awsenv/awsenv.sh"
-    source "${HOME}/Projects/awsenv/completion.bash"
-fi
-
-###############################################################################
 #     NVM
 ###############################################################################
 
@@ -502,11 +417,19 @@ init_nvm() {
     elif [[ -e "$HOME/.nvm" ]]; then
         source "$HOME/.nvm/nvm.sh"
     fi
+
+    cd () {
+        builtin cd $*
+        if [[ -f .nvmrc ]]; then
+            nvm use
+        fi
+    }
 }
 
 alias nvm='init_nvm; nvm "$@"'
 alias npm='init_nvm; npm "$@"'
 alias node='init_nvm; node "$@"'
+
 
 ###############################################################################
 #     NATIVE SCRIPT
@@ -515,6 +438,7 @@ alias node='init_nvm; node "$@"'
 if [ -f "${HOME}/.tnsrc" ]; then
     source "${HOME}/.tnsrc"
 fi
+
 
 ###############################################################################
 #     AUTOSUGGESTIONS
