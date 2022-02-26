@@ -14,3 +14,13 @@ fi
 if [[ -e /usr/share/nvm/init-nvm.sh ]]; then
     source /usr/share/nvm/init-nvm.sh
 fi
+
+
+###############################################################################
+#     Rust
+###############################################################################
+
+if [[ -e "${HOME}/.cargo/env" ]]; then
+    source "${HOME}/.cargo/env"
+fi
+
