@@ -1,0 +1,42 @@
+#!/bin/bash
+
+command="$1"
+file="$2"
+
+function print_usage() {
+    echo "$0 COMMAND FILE [CHANNEL]" >&2
+    echo "" >&2
+    echo "Where COMMAND is 'full', 'video' or 'audio'". >&2
+    echo "If 'audio' is selected" an additional audio stream is expected to be set. >&2
+}
+
+if [ -z "$file" ]; then
+    print_usage
+    exit 2
+fi
+
+case "$command" in
+    full)
+        ffmpeg -i "$file" -c:v dnxhd -vf "scale=1920x1080,fps=30,format=yuv422p" -b:v 120M -c:a pcm_s16le "${file%.*}.mov"
+        ;;
+
+    video)
+        ffmpeg -i "$file" -c:v dnxhd -vf "scale=1920x1080,fps=30,format=yuv422p" -b:v 120M -an "${file%.*}.mov"
+        ;;
+
+    audio)
+        re='^[0-9]+$'
+        stream="$3"
+        if ! [[ $stream =~ $re ]]; then
+            print_usage
+            exit 2
+        fi
+
+        ffmpeg -i "$file" -vn -acodec pcm_s16le -ar 48000 -map 0:a:$stream "${file%.*}.$stream.wav"
+        ;;
+
+    *)
+        print_usage
+        exit 2
+        ;;
+esac
