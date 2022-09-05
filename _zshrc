@@ -308,8 +308,7 @@ function try_load() {
 #     PROMPT
 ###############################################################################
 
-autoload -U promptinit; promptinit
-prompt spaceship
+source /usr/lib/spaceship-prompt/spaceship.zsh
 
 SPACESHIP_TIME_SHOW=true
 
