@@ -1,6 +1,6 @@
 acpi_call
 adobe-source-code-pro-fonts
-adwaita-qt
+adwaita-qt5
 adwaita-qt6
 android-udev
 arc-gtk-theme
@@ -66,7 +66,8 @@ nvm
 openssh
 pyenv
 pyenv-virtualenvwrapper
-qgnomeplatform
+qgnomeplatform-qt5
+qgnomeplatform-qt6
 sudo
 syncthing
 the_silver_searcher
