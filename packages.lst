@@ -38,14 +38,14 @@ gst-plugins-bad
 gst-plugins-base
 gst-plugins-good
 gst-plugins-ugly
+gstreamer
+gthumb
 gvfs
 gvfs-goa
 gvfs-google
 gvfs-mtp
 gvfs-nfs
 gvfs-smb
-gstreamer
-gthumb
 inetutils
 intel-ucode
 iwd
@@ -66,6 +66,7 @@ nvm
 openssh
 qgnomeplatform-qt5
 qgnomeplatform-qt6
+starship
 sudo
 syncthing
 the_silver_searcher

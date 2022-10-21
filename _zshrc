@@ -308,9 +308,7 @@ function try_load() {
 #     PROMPT
 ###############################################################################
 
-source /usr/lib/spaceship-prompt/spaceship.zsh
-
-SPACESHIP_TIME_SHOW=true
+eval "$(starship init zsh)"
 
 ###############################################################################
 #     TERMINAL TITLE
