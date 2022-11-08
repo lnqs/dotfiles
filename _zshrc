@@ -375,6 +375,35 @@ fi
 
 
 ###############################################################################
+#     AWS
+###############################################################################
+
+aws-profile() {
+    profile="$1"
+    if ( grep "\[profile $profile\]" "$HOME/.aws/config" >/dev/null ); then
+        export AWS_PROFILE="$profile"
+    else
+        echo "No such aws profile" >&2
+    fi
+}
+
+aws-login() {
+    if [ -z "$AWS_PROFILE" ]; then
+        echo "No aws profile active" >&2
+    else
+        aws-google-auth -p "$AWS_PROFILE"
+    fi
+}
+
+aws-codeartifact() {
+    if [ -z "$AWS_PROFILE" ]; then
+        echo "No aws profile active" >&2
+    else
+        aws codeartifact login --tool=npm --repository=npm-mobimeo --domain=mobimeo --domain-owner=073180495245 --namespace=mobimeo
+    fi
+}
+
+###############################################################################
 #     fzf
 ###############################################################################
 
