@@ -174,10 +174,10 @@ if [[ "$TERM" =~ "rxvt" ]]; then
     key[Ctrl+Left]='^[Od'
     key[Ctrl+Right]='^[Oc'
 else
-    key[Ctrl+Up]=';5A'
-    key[Ctrl+Down]=';5B'
-    key[Ctrl+Left]=';5D'
-    key[Ctrl+Right]=';5C'
+    key[Ctrl+Up]='^[[1;5A'
+    key[Ctrl+Down]='^[[1;5B'
+    key[Ctrl+Left]='^[[1;5D'
+    key[Ctrl+Right]='^[[1;5C'
 fi
 
 # setup key accordingly
@@ -373,35 +373,6 @@ if [[ $(uname) != "Darwin" ]]; then
     ssh-add -l >/dev/null || alias ssh='ssh-add -l >/dev/null || ssh-add && unalias ssh; ssh'
 fi
 
-
-###############################################################################
-#     AWS
-###############################################################################
-
-aws-profile() {
-    profile="$1"
-    if ( grep "\[profile $profile\]" "$HOME/.aws/config" >/dev/null ); then
-        export AWS_PROFILE="$profile"
-    else
-        echo "No such aws profile" >&2
-    fi
-}
-
-aws-login() {
-    if [ -z "$AWS_PROFILE" ]; then
-        echo "No aws profile active" >&2
-    else
-        aws-google-auth -p "$AWS_PROFILE"
-    fi
-}
-
-aws-codeartifact() {
-    if [ -z "$AWS_PROFILE" ]; then
-        echo "No aws profile active" >&2
-    else
-        aws codeartifact login --tool=npm --repository=npm-mobimeo --domain=mobimeo --domain-owner=073180495245 --namespace=mobimeo
-    fi
-}
 
 ###############################################################################
 #     fzf
