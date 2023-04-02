@@ -7,7 +7,14 @@ set -eo pipefail
 trap "notify-send -a 'Backup' 'Backup' 'Backup failed' || true" ERR
 notify-send -a "Backup" "Backup" "Starting Backup" || true
 
-export PASSPHRASE=""
-duplicity --encrypt-key=872F3DE1796A05D70315AE113D115BE027D3E746 --exclude-filelist="$HOME/.config/backup.exclude" "$HOME" "b2://$B2_KEY_ID:$B2_KEY@lnqs-backups/$(hostname)"
+export AWS_ACCESS_KEY_ID="$RESTIC_B2_KEY_ID"
+export AWS_SECRET_ACCESS_KEY="$RESTIC_B2_KEY"
+
+restic -r "$RESTIC_REPOSITORY" backup \
+    --exclude-caches \
+    --one-file-system \
+    --exclude-if-present ".nobackup" \
+    "$HOME"
+restic -r "$RESTIC_REPOSITORY" forget --keep-within 6m
 
 notify-send -a "Backup" "Backup" "Backup Finished" || true

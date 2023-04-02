@@ -8,7 +8,6 @@ bluez
 bluez-utils
 ccache
 dhcpcd
-duplicity
 efibootmgr
 ethtool
 evince
