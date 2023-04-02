@@ -3,7 +3,7 @@ Description=Knoepfe
 
 [Service]
 # Set path to where Knoepfe executable was installed to
-ExecStart=/home/lnqs/.cache/pypoetry/virtualenvs/knoepfe-2V2WlYxm-py3.10/bin/knoepfe
+ExecStart=/bin/knoepfe
 Restart=always
 
 [Install]
