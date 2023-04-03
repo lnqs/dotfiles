@@ -15,6 +15,6 @@ restic -r "$RESTIC_REPOSITORY" backup \
     --one-file-system \
     --exclude-if-present ".nobackup" \
     "$HOME"
-restic -r "$RESTIC_REPOSITORY" forget --keep-within 6m
+restic -r "$RESTIC_REPOSITORY" forget --keep-within 6m --prune
 
 notify-send -a "Backup" "Backup" "Backup Finished" || true
