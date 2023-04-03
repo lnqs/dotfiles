@@ -429,15 +429,6 @@ alias node='init_nvm; node "$@"'
 
 
 ###############################################################################
-#     NATIVE SCRIPT
-###############################################################################
-
-if [ -f "${HOME}/.tnsrc" ]; then
-    source "${HOME}/.tnsrc"
-fi
-
-
-###############################################################################
 #     AUTOSUGGESTIONS
 ###############################################################################
 
@@ -447,6 +438,14 @@ try_load zsh-autosuggestions \
     /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh \
     /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
+
+###############################################################################
+#     DEVICE SPECIFIC
+###############################################################################
+
+if [[ -e "$HOME/.zshrc.$(hostname)" ]]; then
+    source "$HOME/.zshrc.$(hostname)"
+fi
 
 ###############################################################################
 #     SYNTAX HIGHLIGHTING
