@@ -220,9 +220,9 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " call
-"    git clone https://github.com/gmarik/Vundle.vim.git ~/.config/nvim/bundle/Vundle.vim
+"     git clone https://github.com/gmarik/Vundle.vim.git ~/.config/nvim/bundle/Vundle.vim
 " to install vundle,
-"     vim +PluginInstall +qall
+"     nvim +PluginInstall +qall
 " to install configured bundles
 
 " init it
@@ -282,19 +282,10 @@ nnoremap <F5> :GundoToggle<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"     Handlebars
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-Plugin 'mustache/vim-mustache-handlebars'
-
-au BufNewFile,BufRead *.hbs set filetype=html
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "     Python
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-Plugin 'lnqs/vim-virtualenv'
+Plugin 'jmcantrell/vim-virtualenv'
 
 let g:PyFlakeOnWrite=1
 let g:PyFlakeSigns=0
@@ -308,15 +299,6 @@ let g:PyFlakeDisabledMessages='E501'
 
 Plugin 'leafgarland/typescript-vim'
 au BufNewFile,BufRead *.ts set filetype=typescript
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"     GLSL
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-Plugin 'beyondmarc/glsl.vim'
-
-autocmd BufNewFile,BufRead *.vp,*.fp,*.gp,*.vs,*.fs,*.gs,*.tcs,*.tes,*.cs,*.vert,*.frag,*.geom,*.tess,*.shd,*.gls,*.glsl,*.*shader set ft=glsl430
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
