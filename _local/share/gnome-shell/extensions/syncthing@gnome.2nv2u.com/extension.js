@@ -1,5 +1,5 @@
 /* =============================================================================================================
-	SyncthingIndicator 0.27
+	SyncthingIndicator 0.30
 ================================================================================================================
 
 	GJS syncthing gnome-shell panel indicator signalling the Syncthing deamon status.
@@ -40,14 +40,17 @@ class SyncthingPanelIcon {
 		);
 		this._idleIcon = new St.Icon({
 			gicon: Gio.icon_new_for_string(Me.path + '/icons/syncthing-idle.svg'),
+			style_class: 'system-status-icon',
 			icon_size: 20
 		});
 		this._pausedIcon = new St.Icon({
 			gicon: Gio.icon_new_for_string(Me.path + '/icons/syncthing-paused.svg'),
+			style_class: 'system-status-icon',
 			icon_size: 20
 		});
 		this._disconnectedIcon = new St.Icon({
 			gicon: Gio.icon_new_for_string(Me.path + '/icons/syncthing-disconnected.svg'),
+			style_class: 'system-status-icon',
 			icon_size: 20
 		});
 		this.actor = new St.Bin();

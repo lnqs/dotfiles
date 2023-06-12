@@ -1,5 +1,5 @@
 /* =============================================================================================================
-	SyncthingManager 0.27
+	SyncthingManager 0.31
 ================================================================================================================
 
 	GJS syncthing systemd manager
@@ -111,10 +111,10 @@ var EventType = {
 class Item {
 
 	constructor(data, manager) {
-		this._state = State.UNKNOWN,
-			this._stateEmitted = State.UNKNOWN,
-			this._stateEmitDelay = 200,
-			this.id = data.id;
+		this._state = State.UNKNOWN;
+		this._stateEmitted = State.UNKNOWN;
+		this._stateEmitDelay = 200;
+		this.id = data.id;
 		this._name = data.name;
 		this._manager = manager;
 	}
@@ -161,6 +161,9 @@ class Item {
 	}
 
 	destroy() {
+		if (this._stateSource) {
+			this._stateSource.destroy();
+		}
 		this.emit(Signal.DESTROY);
 	}
 
@@ -219,8 +222,8 @@ class Device extends Item {
 
 	constructor(data, manager) {
 		super(data, manager);
-		this._determineStateDelay = 600,
-			this.folders = new ItemCollection();
+		this._determineStateDelay = 600;
+		this.folders = new ItemCollection();
 		this.folders.connect(Signal.ADD, (collection, folder) => {
 			folder.connect(Signal.STATE_CHANGE, this.determineStateDelayed.bind(this));
 		});
@@ -259,6 +262,13 @@ class Device extends Item {
 
 	resume() {
 		this._manager.resume(this);
+	}
+
+	destroy() {
+		if (this._determineSource) {
+			this._determineSource.destroy();
+		}
+		super.destroy();
 	}
 
 }
@@ -465,7 +475,8 @@ var Manager = class Manager {
 		this._pollConfigHook = 45; // Every 15 minutes
 		this._lastEventID = 1;
 		this._hostID = '';
-		this._lastErrorTime = Date.now()
+		this._lastErrorTime = Date.now();
+		this._timedSources = new Object();
 
 		this.connect(Signal.SERVICE_CHANGE, (manager, state) => {
 			switch (state) {
@@ -523,7 +534,7 @@ var Manager = class Manager {
 							if (this.folders.exists(events[i].data.folder) && this.devices.exists(events[i].data.device)) {
 								let device = this.devices.get(events[i].data.device);
 								if (device.folders.exists(events[i].data.folder)) {
-									if (!device.isOnline()) device.setState(State.SCANNING);
+									if (device.isOnline()) device.setState(State.SCANNING);
 									device.folders.get(events[i].data.folder).setCompletion(events[i].data.completion);
 								}
 							}
@@ -579,8 +590,10 @@ var Manager = class Manager {
 			}
 			// Reschedule this event stream
 			let source = GLib.timeout_source_new(50);
+			this._timedSources[source.get_id()] = source;
 			source.set_priority(GLib.PRIORITY_LOW);
 			source.set_callback(() => {
+				delete this._timedSources[source.get_id()];
 				this._callEvents('since=' + this._lastEventID);
 			});
 			source.attach(null);
@@ -800,12 +813,28 @@ var Manager = class Manager {
 			console.debug('Opening connection', msg.method + ':' + msg.uri.get_path());
 			this._httpAborting = false;
 			this._httpSession.send_and_read_async(msg, GLib.PRIORITY_DEFAULT, null, (session, result) => {
-				if (msg.status_code == 200) {
-					let bytes = session.send_and_read_finish(result);
-					let decoder = new TextDecoder('utf-8');
-					let response = decoder.decode(bytes.get_data());
+				if (msg.status_code == Soup.Status.OK) {
+					let response;
 					try {
-						if (callback && response.length > 0) {
+						let bytes = session.send_and_read_finish(result);
+						let decoder = new TextDecoder('utf-8');
+						response = decoder.decode(bytes.get_data());
+					} catch (error) {
+						if (error.code == Gio.IOErrorEnum.TIMED_OUT) {
+							console.info(error.message, 'will retry', msg.method + ':' + msg.uri.get_path());
+							// Retry this connection attempt
+							let source = GLib.timeout_source_new(1000);
+							this._timedSources[source.get_id()] = source;
+							source.set_priority(GLib.PRIORITY_LOW);
+							source.set_callback(() => {
+								delete this._timedSources[source.get_id()];
+								this.openConnectionMessage(msg, callback);
+							});
+							source.attach(null);
+						}
+					}
+					try {
+						if (callback && response && response.length > 0) {
 							console.debug('Callback', msg.method + ':' + msg.uri.get_path(), response);
 							callback(JSON.parse(response));
 						}
@@ -814,19 +843,8 @@ var Manager = class Manager {
 						this.emit(Signal.ERROR, { type: Error.STREAM, message: msg.method + ':' + msg.uri.get_path() });
 					}
 				} else if (!this._httpAborting) {
-					if (msg.status_code < 100) {
-						console.info(msg.reason_phrase, 'will retry', msg.method + ':' + msg.uri.get_path(), msg.status_code);
-						// Retry this connection attempt
-						let source = GLib.timeout_source_new(1000);
-						source.set_priority(GLib.PRIORITY_LOW);
-						source.set_callback(() => {
-							this.openConnectionMessage(msg, callback);
-						});
-						source.attach(null);
-					} else {
-						console.error(Error.CONNECTION, msg.reason_phrase, msg.method + ':' + msg.get_uri().get_path(), msg.status_code);
-						this.emit(Signal.ERROR, { type: Error.CONNECTION, message: msg.reason_phrase + ' - ' + msg.method + ':' + msg.get_uri().get_path() });
-					}
+					console.error(Error.CONNECTION, msg.reason_phrase, msg.method + ':' + msg.get_uri().get_path(), msg.status_code);
+					this.emit(Signal.ERROR, { type: Error.CONNECTION, message: msg.reason_phrase + ' - ' + msg.method + ':' + msg.get_uri().get_path() });
 				}
 			});
 		}
@@ -838,6 +856,9 @@ var Manager = class Manager {
 		}
 		if (this._stateSource) {
 			this._stateSource.destroy();
+		}
+		for (const [key, value] of Object.entries(this._timedSources)) {
+			value.destroy();
 		}
 		this.folders.destroy();
 		this.devices.destroy();
