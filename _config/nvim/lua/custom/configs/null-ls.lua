@@ -17,6 +17,18 @@ local sources = {
 
   -- cpp
   b.formatting.clang_format,
+
+  -- JavaScript/TypeScript
+  b.diagnostics.eslint,
+  b.code_actions.eslint,
+  b.formatting.prettier,
+
+  -- LaTeX
+  b.diagnostics.chktex,
+
+  -- Python
+  b.diagnostics.flake8,
+  b.diagnostics.mypy,
 }
 
 null_ls.setup {
