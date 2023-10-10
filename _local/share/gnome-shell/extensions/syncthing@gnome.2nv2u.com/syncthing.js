@@ -1,27 +1,24 @@
 /* =============================================================================================================
-	SyncthingManager 0.31
+	SyncthingManager 0.33
 ================================================================================================================
 
 	GJS syncthing systemd manager
 
-	Copyright (c) 2019-2022, 2nv2u <info@2nv2u.com>
+	Copyright (c) 2019-2023, 2nv2u <info@2nv2u.com>
 	This work is distributed under GPLv3, see LICENSE for more information.
 ============================================================================================================= */
 
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const Soup = imports.gi.Soup;
-const Signals = imports.signals;
-const ByteArray = imports.byteArray;
 
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import Soup from 'gi://Soup';
 
-const Logger = Me.imports.logger;
-const console = new Logger.Service(Logger.Level.WARN, 'syncthing-indicator-manager');
+import * as Signals from 'resource:///org/gnome/shell/misc/signals.js';
+
+const LOGPRE = 'syncthing-indicator-manager:'
 
 // Error constants
-var Error = {
+export const Error = {
 	LOGIN: "Login attempt failed",
 	DAEMON: "Service failed to start",
 	SERVICE: "Service reported error",
@@ -31,12 +28,12 @@ var Error = {
 };
 
 // Service constants
-var Service = {
+export const Service = {
 	NAME: 'syncthing.service'
 };
 
 // Signal constants
-var Signal = {
+export const Signal = {
 	LOGIN: "login",
 	ADD: "add",
 	DESTROY: "destroy",
@@ -50,7 +47,7 @@ var Signal = {
 };
 
 // State constants
-var State = {
+export const State = {
 	UNKNOWN: "unknown",
 	IDLE: "idle",
 	SCANNING: "scanning",
@@ -61,7 +58,7 @@ var State = {
 };
 
 // Service state constants
-var ServiceState = {
+export const ServiceState = {
 	USER_ACTIVE: "userActive",
 	USER_STOPPED: "userStopped",
 	USER_ENABLED: "userEnabled",
@@ -74,7 +71,7 @@ var ServiceState = {
 };
 
 // Signal constants
-var EventType = {
+export const EventType = {
 	CONFIG_SAVED: "ConfigSaved",
 	DEVICE_CONNECTED: "DeviceConnected",
 	DEVICE_DISCONNECTED: "DeviceDisconnected",
@@ -108,9 +105,10 @@ var EventType = {
 };
 
 // Abstract item used for folders and devices
-class Item {
+class Item extends Signals.EventEmitter {
 
 	constructor(data, manager) {
+		super();
 		this._state = State.UNKNOWN;
 		this._stateEmitted = State.UNKNOWN;
 		this._stateEmitDelay = 200;
@@ -128,14 +126,14 @@ class Item {
 			if (this._stateSource) {
 				this._stateSource.destroy();
 			}
-			console.info('State change', this._name, state);
+			console.info(LOGPRE, 'state change', this._name, state);
 			this._state = state;
 			// Stop items from excessive state changes by only emitting 1 state per stateDelay
 			this._stateSource = GLib.timeout_source_new(this._stateEmitDelay);
 			this._stateSource.set_priority(GLib.PRIORITY_DEFAULT);
 			this._stateSource.set_callback(() => {
 				if (this._stateEmitted != this._state) {
-					console.info('Emit state change', this._name, this._state);
+					console.info(LOGPRE, 'emit state change', this._name, this._state);
 					this._stateEmitted = this._state;
 					this.emit(Signal.STATE_CHANGE, this._state);
 				}
@@ -150,7 +148,7 @@ class Item {
 
 	setName(name) {
 		if (name.length > 0 && this._name != name) {
-			console.info('Emit name change', this._name, name);
+			console.info(LOGPRE, 'Emit name change', this._name, name);
 			this._name = name
 			this.emit(Signal.NAME_CHANGE, this._name);
 		}
@@ -168,12 +166,12 @@ class Item {
 	}
 
 }
-Signals.addSignalMethods(Item.prototype);
 
 // Abstract item collection used for folders and devices
-class ItemCollection {
+class ItemCollection extends Signals.EventEmitter {
 
 	constructor() {
+		super();
 		this._collection = {};
 	}
 
@@ -215,7 +213,6 @@ class ItemCollection {
 	}
 
 }
-Signals.addSignalMethods(ItemCollection.prototype);
 
 // Device
 class Device extends Item {
@@ -249,7 +246,7 @@ class Device extends Item {
 			this.setState(State.PAUSED);
 			this.folders.foreach((folder) => {
 				if (!this.isBusy()) {
-					console.info('Determine device state', this.getName(), folder.getName(), folder.getState());
+					console.info(LOGPRE, 'determine device state', this.getName(), folder.getName(), folder.getState());
 					this.setState(folder.getState());
 				}
 			});
@@ -272,7 +269,6 @@ class Device extends Item {
 	}
 
 }
-Signals.addSignalMethods(Device.prototype);
 
 // Device host
 class HostDevice extends Device {
@@ -292,7 +288,7 @@ class HostDevice extends Device {
 		this.setState(State.PAUSED);
 		this._manager.devices.foreach((device) => {
 			if (this != device && !this.isBusy() && device.isOnline()) {
-				console.info('Determine host device state', this.getName(), device.getName(), device.getState());
+				console.info(LOGPRE, 'determine host device state', this.getName(), device.getName(), device.getState());
 				this.setState(device.getState());
 			}
 		});
@@ -302,7 +298,6 @@ class HostDevice extends Device {
 	}
 
 }
-Signals.addSignalMethods(HostDevice.prototype);
 
 // Folder
 class Folder extends Item {
@@ -318,7 +313,6 @@ class Folder extends Item {
 	}
 
 }
-Signals.addSignalMethods(Folder.prototype);
 
 // Folder completion proxy per device
 class FolderCompletionProxy extends Folder {
@@ -339,14 +333,14 @@ class FolderCompletionProxy extends Folder {
 	}
 
 }
-Signals.addSignalMethods(FolderCompletionProxy.prototype);
 
 // Synthing configuration
 class Config {
 
 	CONFIG_PATH_KEY = 'Configuration file'
 
-	constructor() {
+	constructor(serviceFilePath) {
+		this.serviceFilePath = serviceFilePath;
 		this.clear()
 	}
 
@@ -368,7 +362,7 @@ class Config {
 		try {
 			// Extract syncthing config file location from the synthing path command
 			let result = GLib.spawn_sync(null, ['syncthing', '--paths'], null, GLib.SpawnFlags.SEARCH_PATH, null)[1];
-			let paths = {}, pathArray = ByteArray.toString(result).split('\n\n');
+			let paths = {}, pathArray = new TextDecoder().decode(result).split('\n\n');
 			for (let i = 0; i < pathArray.length; i++) {
 				let items = pathArray[i].split(':\n\t');
 				if (items.length == 2) paths[items[0]] = items[1].split('\n\t');
@@ -380,7 +374,7 @@ class Config {
 				configPath = GLib.get_user_config_dir() + '/syncthing/config.xml';
 			}
 		} catch (error) {
-			console.error('Can\'t find config file');
+			console.error(LOGPRE, 'can\'t find config file');
 		}
 		let configFile = Gio.File.new_for_path(configPath);
 		if (configFile.query_exists(null)) {
@@ -399,9 +393,9 @@ class Config {
 				this._apikey = reMatch[1].fetch(3);
 				this._uri = 'http' + ((reMatch[1].fetch(1) == 'true') ? 's' : '') + '://' + this._address;
 				this._exists = true;
-				console.info('Found config', this._address, this._apikey, this._uri);
+				console.info(LOGPRE, 'found config', this._address, this._apikey, this._uri);
 			} else {
-				console.error('Can\'t find gui xml node in config');
+				console.error(LOGPRE, 'can\'t find gui xml node in config');
 			}
 		}
 	}
@@ -411,7 +405,7 @@ class Config {
 		let systemDConfigPath = GLib.get_user_config_dir() + '/systemd/user';
 		let systemDConfigFileTo = Gio.File.new_for_path(systemDConfigPath + '/' + Service.NAME);
 		if (force || !systemDConfigFileTo.query_exists(null)) {
-			let systemDConfigFileFrom = Gio.File.new_for_path(Me.path + '/' + Service.NAME);
+			let systemDConfigFileFrom = Gio.File.new_for_path(this.serviceFilePath + '/' + Service.NAME);
 			let systemdConfigDirectory = Gio.File.new_for_path(systemDConfigPath);
 			if (!systemdConfigDirectory.query_exists(null)) {
 				systemdConfigDirectory.make_directory_with_parents(null);
@@ -419,9 +413,9 @@ class Config {
 			let copyFlag = Gio.FileCopyFlags.NONE;
 			if (force) copyFlag = Gio.FileCopyFlags.OVERWRITE;
 			if (systemDConfigFileFrom.copy(systemDConfigFileTo, copyFlag, null, null)) {
-				console.info('Systemd configuration file copied to ' + systemDConfigPath + '/' + Service.NAME);
+				console.info(LOGPRE, 'systemd configuration file copied to ' + systemDConfigPath + '/' + Service.NAME);
 			} else {
-				console.warn('Couldn\'t copy systemd configuration file to ' + systemDConfigPath + '/' + Service.NAME);
+				console.warn(LOGPRE, 'couldn\'t copy systemd configuration file to ' + systemDConfigPath + '/' + Service.NAME);
 			}
 		};
 	}
@@ -442,16 +436,15 @@ class Config {
 }
 
 // Main system manager
-var Manager = class Manager {
+export const Manager = class Manager extends Signals.EventEmitter {
 
-	constructor() {
+	constructor(serviceFilePath) {
+		super();
 		this.folders = new ItemCollection();
 		this.devices = new ItemCollection();
-
 		this.folders.connect(Signal.ADD, (collection, folder) => {
 			this.emit(Signal.FOLDER_ADD, folder);
 		});
-
 		this.devices.connect(Signal.ADD, (collection, device) => {
 			if (device instanceof HostDevice) {
 				this.host = device;
@@ -460,9 +453,7 @@ var Manager = class Manager {
 				this.emit(Signal.DEVICE_ADD, device);
 			}
 		});
-
-		this.config = new Config();
-
+		this.config = new Config(serviceFilePath);
 		this._httpSession = new Soup.Session();
 		this._httpSession.ssl_strict = false; // Accept self signed certificates for now
 		this._httpAborting = false;
@@ -477,7 +468,6 @@ var Manager = class Manager {
 		this._hostID = '';
 		this._lastErrorTime = Date.now();
 		this._timedSources = new Object();
-
 		this.connect(Signal.SERVICE_CHANGE, (manager, state) => {
 			switch (state) {
 				case ServiceState.USER_ACTIVE:
@@ -509,7 +499,7 @@ var Manager = class Manager {
 	_callEvents(options) {
 		this.openConnection('GET', '/rest/events?' + options, (events) => {
 			for (let i = 0; i < events.length; i++) {
-				console.debug('Processing event', events[i].type, events[i].data);
+				console.debug(LOGPRE, 'processing event', events[i].type, events[i].data);
 				try {
 					switch (events[i].type) {
 						case EventType.STARTUP_COMPLETE:
@@ -585,7 +575,7 @@ var Manager = class Manager {
 					}
 					this._lastEventID = events[i].id;
 				} catch (error) {
-					console.warn('Event processing failed', error.message);
+					console.warn(LOGPRE, 'event processing failed', error.message);
 				}
 			}
 			// Reschedule this event stream
@@ -720,7 +710,7 @@ var Manager = class Manager {
 						errorTime = new Date(errors[i].when)
 						if (errorTime > this._lastErrorTime) {
 							this._lastErrorTime = errorTime;
-							console.error(Error.SERVICE, errors[i]);
+							console.error(LOGPRE, Error.SERVICE, errors[i]);
 							this.emit(Signal.ERROR, { type: Error.SERVICE, message: errors[i].message });
 						}
 					}
@@ -757,7 +747,7 @@ var Manager = class Manager {
 			if (failed != this._serviceFailed) {
 				this._serviceActive = failed;
 				if (failed) {
-					console.error(Error.DAEMON, Service.NAME);
+					console.error(LOGPRE, Error.DAEMON, Service.NAME);
 					this.emit(Signal.ERROR, { type: Error.DAEMON });
 				}
 			}
@@ -790,8 +780,8 @@ var Manager = class Manager {
 	_serviceCommand(command, user = true) {
 		let args = ['systemctl', command, Service.NAME];
 		if (user) args.splice(1, 0, '--user');
-		let result = ByteArray.toString(GLib.spawn_sync(null, args, null, GLib.SpawnFlags.SEARCH_PATH, null)[1]).trim();
-		console.debug('Calling systemd', command, user, args, result)
+		let result = new TextDecoder().decode(GLib.spawn_sync(null, args, null, GLib.SpawnFlags.SEARCH_PATH, null)[1]).trim();
+		console.debug(LOGPRE, 'calling systemd', command, user, args, result)
 		return result
 	}
 
@@ -810,7 +800,7 @@ var Manager = class Manager {
 
 	openConnectionMessage(msg, callback) {
 		if (this._serviceActive && this.config.exists()) {
-			console.debug('Opening connection', msg.method + ':' + msg.uri.get_path());
+			console.debug(LOGPRE, 'opening connection', msg.method + ':' + msg.uri.get_path());
 			this._httpAborting = false;
 			this._httpSession.send_and_read_async(msg, GLib.PRIORITY_DEFAULT, null, (session, result) => {
 				if (msg.status_code == Soup.Status.OK) {
@@ -821,7 +811,7 @@ var Manager = class Manager {
 						response = decoder.decode(bytes.get_data());
 					} catch (error) {
 						if (error.code == Gio.IOErrorEnum.TIMED_OUT) {
-							console.info(error.message, 'will retry', msg.method + ':' + msg.uri.get_path());
+							console.info(LOGPRE, error.message, 'will retry', msg.method + ':' + msg.uri.get_path());
 							// Retry this connection attempt
 							let source = GLib.timeout_source_new(1000);
 							this._timedSources[source.get_id()] = source;
@@ -835,15 +825,15 @@ var Manager = class Manager {
 					}
 					try {
 						if (callback && response && response.length > 0) {
-							console.debug('Callback', msg.method + ':' + msg.uri.get_path(), response);
+							console.debug(LOGPRE, 'callback', msg.method + ':' + msg.uri.get_path(), response);
 							callback(JSON.parse(response));
 						}
 					} catch (error) {
-						console.error(Error.STREAM, msg.method + ':' + msg.uri.get_path(), error.message, response);
+						console.error(LOGPRE, Error.STREAM, msg.method + ':' + msg.uri.get_path(), error.message, response);
 						this.emit(Signal.ERROR, { type: Error.STREAM, message: msg.method + ':' + msg.uri.get_path() });
 					}
 				} else if (!this._httpAborting) {
-					console.error(Error.CONNECTION, msg.reason_phrase, msg.method + ':' + msg.get_uri().get_path(), msg.status_code);
+					console.error(LOGPRE, Error.CONNECTION, msg.reason_phrase, msg.method + ':' + msg.get_uri().get_path(), msg.status_code);
 					this.emit(Signal.ERROR, { type: Error.CONNECTION, message: msg.reason_phrase + ' - ' + msg.method + ':' + msg.get_uri().get_path() });
 				}
 			});
@@ -867,7 +857,7 @@ var Manager = class Manager {
 
 	attach() {
 		if (!this.config.exists()) {
-			console.error(Error.CONFIG);
+			console.error(LOGPRE, Error.CONFIG);
 			this.emit(Signal.SERVICE_CHANGE, ServiceState.ERROR);
 			this.emit(Signal.ERROR, { type: Error.CONFIG });
 		}
@@ -916,4 +906,3 @@ var Manager = class Manager {
 	}
 
 }
-Signals.addSignalMethods(Manager.prototype);
