@@ -388,35 +388,14 @@ bindkey '^P' fzf-file-widget
 #     NVM
 ###############################################################################
 
-init_nvm() {
-    unalias nvm
-    unalias npm
-    unalias node
-
-    if [[ -e /usr/share/nvm ]]; then
-        # `source /usr/share/nvm/init-nvm.sh` should be enough.
-        # But since the nvm completion script re-initialized the completion,
-        # deleting all previous ones, copy the content of `init-nvm.sh` and skip the
-        # completion part.
-        [ -z "$NVM_DIR" ] && export NVM_DIR="$HOME/.nvm"
-        source /usr/share/nvm/nvm.sh
-        #source /usr/share/nvm/bash_completion
-        source /usr/share/nvm/install-nvm-exec
-    elif [[ -e "$HOME/.nvm" ]]; then
-        source "$HOME/.nvm/nvm.sh"
-    fi
-
+if [[ -n "$NVM_DIR" ]]; then
     cd () {
         builtin cd $*
         if [[ -f .nvmrc ]]; then
             nvm use
         fi
     }
-}
-
-alias nvm='init_nvm; nvm "$@"'
-alias npm='init_nvm; npm "$@"'
-alias node='init_nvm; node "$@"'
+fi
 
 
 ###############################################################################
