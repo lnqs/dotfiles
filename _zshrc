@@ -426,6 +426,19 @@ try_load zsh-autosuggestions \
     /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh \
     /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
+###############################################################################
+#     AWS
+###############################################################################
+
+aws-profile() {
+    profile="$1"
+    if ( grep "\[profile $profile\]" "$HOME/.aws/config" >/dev/null ); then
+        export AWS_PROFILE="$profile"
+        kubectl config use-context "$profile"
+    else
+        echo "No such aws profile" >&2
+    fi
+}
 
 ###############################################################################
 #     DEVICE SPECIFIC
