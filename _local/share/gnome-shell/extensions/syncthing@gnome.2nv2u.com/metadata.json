@@ -4,9 +4,10 @@
   "gettext-domain": "syncthing@gnome.2nv2u.com",
   "name": "Syncthing Indicator",
   "shell-version": [
-    "45"
+    "45",
+    "46"
   ],
   "url": "https://github.com/2nv2u/gnome-shell-extension-syncthing-indicator",
   "uuid": "syncthing@gnome.2nv2u.com",
-  "version": 34
+  "version": 35
 }
