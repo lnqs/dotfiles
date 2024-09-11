@@ -1,7 +1,5 @@
 acpi_call
 adobe-source-code-pro-fonts
-adwaita-qt5
-adwaita-qt6
 android-udev
 arc-gtk-theme
 bluez
@@ -27,7 +25,6 @@ gnome-shell
 gnome-shell-extension-appindicator
 gnome-shell-extension-arch-update
 gnome-shell-extension-hide-activities-git
-gnome-shell-extension-quick-settings-tweaks-git
 gnome-shell-extension-system-monitor-next-git
 gnome-shell-extensions
 gnome-themes-extra
@@ -62,8 +59,6 @@ noto-fonts
 noto-fonts-emoji
 nvm
 openssh
-qgnomeplatform-qt5
-qgnomeplatform-qt6
 ripgrep
 starship
 sudo
