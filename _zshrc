@@ -167,18 +167,10 @@ key[PageUp]=${terminfo[kpp]}
 key[PageDown]=${terminfo[knp]}
 key[Ctrl+H]='^H'
 key[Ctrl+Z]='^Z'
-
-if [[ "$TERM" =~ "rxvt" ]]; then
-    key[Ctrl+Up]='^[Oa'
-    key[Ctrl+Down]='^[Ob'
-    key[Ctrl+Left]='^[Od'
-    key[Ctrl+Right]='^[Oc'
-else
-    key[Ctrl+Up]='^[[1;5A'
-    key[Ctrl+Down]='^[[1;5B'
-    key[Ctrl+Left]='^[[1;5D'
-    key[Ctrl+Right]='^[[1;5C'
-fi
+key[Ctrl+Up]='^[[1;5A'
+key[Ctrl+Down]='^[[1;5B'
+key[Ctrl+Left]='^[[1;5D'
+key[Ctrl+Right]='^[[1;5C'
 
 # setup key accordingly
 bindkey "${key[Home]}"     beginning-of-line
@@ -206,12 +198,15 @@ if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
 fi
 
 # ctrl+h sends command to history without executing it
-commit-to-history() {
-    print -s ${(z)BUFFER}
-    zle send-break
-}
-zle -N commit-to-history
-bindkey "${key[Ctrl+H]}" commit-to-history
+
+if [[ "$TERM" =~ "kitty" ]]; then
+    commit-to-history() {
+        print -s ${(z)BUFFER}
+        zle send-break
+    }
+    zle -N commit-to-history
+    bindkey "${key[Ctrl+H]}" commit-to-history
+fi
 
 # ctrl+z continues the last stopped job
 raise-stopped-to-fg() {
