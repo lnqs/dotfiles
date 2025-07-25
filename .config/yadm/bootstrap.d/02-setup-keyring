@@ -1,0 +1,23 @@
+#!/bin/sh
+
+set -eu
+
+echo -e "\n### Creating login keyring" >&2
+
+if [[ -f ~/.local/share/keyrings/login.keyring ]]; then
+  echo "keyring already present, skipping" >&2
+  exit 0
+fi
+
+mkdir -p ~/.local/share/keyrings/
+echo -n "login" > ~/.local/share/keyrings/default
+cat > ~/.local/share/keyrings/login.keyring << EOF 
+[keyring]
+display-name=login
+ctime=0
+mtime=0
+lock-on-idle=false
+lock-after=false
+EOF
+chmod og= ~/.local/share/keyrings/
+chmod og= ~/.local/share/keyrings/login.keyring

@@ -1,0 +1,7 @@
+#!/bin/sh
+
+set -eu
+
+echo -e "\n### Enabling backup timer" >&2
+
+systemctl --user enable backup.timer

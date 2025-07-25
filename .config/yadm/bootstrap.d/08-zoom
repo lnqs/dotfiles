@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -eu
+
+echo -e "\n### Enabling native Wayland for Zoom" >&2
+
+zoom & sleep 10 && killall zoom
+sed -ie 's/xwayland=true/xwayland=false/' .config/zoomus.conf

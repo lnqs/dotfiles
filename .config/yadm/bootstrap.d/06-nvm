@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -eu
+
+echo -e "\n### Setting up nvm" >&2
+
+source /usr/share/nvm/init-nvm.sh
+nvm install node
+nvm alias default node

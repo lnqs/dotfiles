@@ -1,0 +1,102 @@
+@import "mocha.css";
+
+/* Globals */
+* {
+  font-family: "Roboto";
+  font-size: 12px;
+  border-radius: 12px;
+  font-weight: bold;
+  transition: all .3s ease;
+}
+
+/* Window */
+#window {
+  background: @base;
+}
+
+/* Waybar Window */
+window#waybar {
+  background: transparent;
+}
+
+/* Tooltip */
+tooltip {
+  background: @base;
+  border: 2px solid @blue;
+  border-radius: 12px;
+}
+
+tooltip label {
+  color: @text;
+}
+
+/* Workspaces */
+#workspaces {
+  background: @base;
+  margin: 0px 6px;
+  padding: 0px 8px;
+}
+
+#workspaces button {
+  color: @text;
+  padding: 0px 2px;
+}
+
+#workspaces button.active {
+  color: @green;
+}
+
+#workspaces button:hover {
+  color: @blue;
+}
+
+#workspaces button.urgent {
+  color: @red;
+}
+
+/* Hardware */
+#hardware {
+  background: @base;
+  margin: 0px 6px;
+  padding: 0px 12px;
+}
+
+#network, #cpu, #temperature, #memory, #battery {
+  color: @text;
+  padding: 0px 8px;
+}
+
+/* Status */
+#status {
+  background: @base;
+  padding: 0px 12px;
+}
+
+#custom-pacman, #tray, #pulseaudio, #idle_inhibitor {
+  padding: 0px 8px;
+  color: @text;
+  background: @base;
+}
+
+#tray, #pulseaudio, #network, #battery {
+  color: @text;
+}
+
+/* Notifications */
+#notifications {
+  background: @base;
+  margin: 0px 6px;
+  padding: 0px 28px 0px 12px;
+  font-weight: bolder;
+  font-size: 13px;
+}
+
+#custom-swaync {
+  color: @maroon;
+  padding: 0px 12px;
+}
+
+#clock {
+  color: @teal;
+}
+

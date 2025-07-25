@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -eu
+
+echo -e "\n### Enabling syncthing" >&2
+
+echo "If the there's state to be copied back from an old installation, do it now!" >&2
+echo '(Copy `.local/state/syncthing` from old install to do so, **BUT NOT index-*.db/**)' >&2
+echo "" >&2
+echo "Press enter to continue." >&2
+read
+
+systemctl --user enable syncthing
+systemctl --user start syncthing

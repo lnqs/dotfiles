@@ -1,0 +1,7 @@
+#!/bin/sh
+
+set -eu
+
+echo -e "\n### Applying GTK theme" >&2
+
+nwg-look -a

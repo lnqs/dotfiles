@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# Note: Has to be executed *after* ??-nvm as a node installation is required
+
+set -eu
+
+echo -e "\n### Configuring nvim" >&2
+
+echo -e 'About to start nvim, run `:MasonInstallAll` command after lazy.nvim finishes downloading plugins.' >&2
+echo -e "Press enter to continue." >&2
+read
+
+nvim
