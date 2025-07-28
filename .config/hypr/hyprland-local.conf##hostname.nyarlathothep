@@ -1,0 +1,33 @@
+################
+### MONITORS ###
+################
+
+# See https://wiki.hyprland.org/Configuring/Monitors/
+monitor = eDP-1, preferred, -1920x0, 1
+monitor = DP-8, preferred, 0x0, 1
+monitor = DP-9, preferred, 1920x0, 1
+
+# Disable Laptop screen if lid is closed
+bindl = , switch:Lid Switch, exec, swaylock
+bindl = , switch:on:Lid Switch, exec, hyprctl keyword monitor "eDP-1, disable"
+bindl = , switch:off:Lid Switch, exec, hyprctl keyword monitor "eDP-1, preferred"
+exec = grep closed /proc/acpi/button/lid/LID*/state >/dev/null && hyprctl keyword monitor "eDP-1, disable"
+
+##################
+### WORKSPACES ###
+##################
+
+workspace = 1, persistent:true, monitor:DP-9
+workspace = 2, persistent:true, monitor:DP-9
+workspace = 3, persistent:true, monitor:DP-9
+workspace = 4, persistent:true, monitor:DP-9
+
+workspace = 5, persistent:true, monitor:DP-8
+workspace = 6, persistent:true, monitor:DP-8
+workspace = 7, persistent:true, monitor:DP-8
+workspace = 8, persistent:true, monitor:DP-8
+
+workspace = 9, persistent:true, monitor:eDP-1
+workspace = 10, persistent:true, monitor:eDP-1
+workspace = 11, persistent:true, monitor:eDP-1
+workspace = 12, persistent:true, monitor:eDP-1

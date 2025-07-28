@@ -1,6 +1,8 @@
 base-devel
 blueman
 bluez
+brightnessctl
+ccache
 cnijfilter2
 cups
 discord
@@ -45,6 +47,7 @@ openssh
 otf-font-awesome
 pacman-contrib
 papirus-icon-theme
+pavucontrol
 pyenv
 qt5-wayland
 qt5ct
