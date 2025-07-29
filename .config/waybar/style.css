@@ -6,7 +6,7 @@
   font-size: 12px;
   border-radius: 12px;
   font-weight: bold;
-  transition: all .3s ease;
+  transition: all .1s ease;
 }
 
 /* Window */
@@ -44,10 +44,6 @@ tooltip label {
 
 #workspaces button.active {
   color: @green;
-}
-
-#workspaces button:hover {
-  color: @blue;
 }
 
 #workspaces button.urgent {
