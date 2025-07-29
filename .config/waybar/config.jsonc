@@ -46,12 +46,12 @@
   },
   
   "cpu": {
-    "format": "⚙ {}%",
+    "format": " {}%",
     "tooltip": true
   },
 
   "memory": {
-    "format": "🐏 {}%"
+    "format": " {}%"
   },
 
   "temperature": {
@@ -60,16 +60,16 @@
   },
   
   "network": {
-    "format-disconnected": "󰖪 0% ",
-    "format-ethernet": "󰈀  ⇅ {bandwidthTotalBytes}",
+    "format-disconnected": "󰖪",
+    "format-ethernet": "󰈀 ⇅ {bandwidthTotalBytes}",
     "format-linked": "{ifname} (No IP)",
-    "format-wifi": "  {signalStrength}%   ⇅ {bandwidthTotalBytes}",
+    "format-wifi": " {signalStrength}%  ⇅ {bandwidthTotalBytes}",
     "tooltip-format": "Connected to {essid} {ifname} via {gwaddr}",
     "on-click": "nm-connection-editor"
   },
   
   "battery": {
-    "format": "{icon}  {capacity}%",
+    "format": "{icon} {capacity}%",
     "format-alt": "{icon} {time}",
     "format-charging": " {capacity}%",
     "format-icons": ["", "", "", "", ""],
@@ -94,7 +94,7 @@
   },
 
   "custom/pacman": {
-    "format": "󰅢  {}",
+    "format": "󰅢 {}",
     "interval": 600,   
     "exec": "CHECKUPDATES_DB=\"/tmp/checkup-db-${UID}-$$\" checkupdates --nocolor | jq -c --raw-input --slurp 'split(\"\n\") | map(select(. != \"\")) | {text: . | length | tostring, tooltip: . | join(\"\n\")}'",
     "exec-if": "exit 0",
@@ -112,9 +112,9 @@
   "pulseaudio": {
     "format": "{icon} {volume}%",
     "format-icons": {
-      "default": ["󰕿", "󰖀", "󰕾"]
+      "default": ["", "", ""]
     },
-    "format-muted": "󰝟",
+    "format-muted": "",
     "on-click": "pavucontrol",
     "scroll-step": 5
   },
