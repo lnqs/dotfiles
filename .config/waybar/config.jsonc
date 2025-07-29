@@ -116,7 +116,7 @@
     },
     "format-muted": "",
     "on-click": "pavucontrol",
-    "scroll-step": 5
+    "scroll-step": 1
   },
 
   "idle_inhibitor": {
