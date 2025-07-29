@@ -102,6 +102,8 @@ visual-studio-code-bin
 waybar
 wl-clipboard
 wlogout
+xdg-desktop-portal-gtk
+xdg-desktop-portal-hyprland
 yadm
 yay
 zoom
