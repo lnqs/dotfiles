@@ -1,6 +1,7 @@
 require "nvchad.options"
 
--- add yours here!
+local o = vim.o
 
--- local o = vim.o
--- o.cursorlineopt ='both' -- to enable cursorline!
+o.spelllang = "en,de"
+
+vim.api.nvim_exec2("aunmenu PopUp.How-to\\ disable\\ mouse\naunmenu PopUp.-2-", {})
