@@ -11,12 +11,6 @@
   "keybind": "r"
 }
 {
-  "label": "logout",
-  "action": "loginctl kill-session $XDG_SESSION_ID",
-  "text": "Logout",
-  "keybind": "e"
-}
-{
   "label": "lock",
   "action": "loginctl lock-session",
   "text": "Lock",

@@ -1,4 +1,6 @@
 * {
+  font-family: Roboto;
+  font-size: 11pt;
 	background-image: none;
 	box-shadow: none;
 }
@@ -12,8 +14,8 @@ button {
 	border-color: #89b4fa;
 	text-decoration-color: #cdd6f4;
 	color: #cdd6f4;
-	background-color: #181825;
-  margin: 16px;
+	background-color: rgba(24, 24, 37, 0.4);
+  margin: 0px 80px;
 	border-style: solid;
 	border-width: 1px;
   border-radius: 24px;
@@ -26,22 +28,11 @@ button:focus, button:active, button:hover {
 	/* 20% Overlay 2, 80% mantle */
 	background-color: rgb(48, 50, 66);
 	outline-style: none;
+	background-size: 30%;
 }
 
 #lock {
   background-image: url("icons/lock.svg");
-}
-
-#logout {
-  background-image: url("icons/logout.svg");
-}
-
-#suspend {
-  background-image: url("icons/suspend.svg");
-}
-
-#hibernate {
-  background-image: url("icons/hibernate.svg");
 }
 
 #shutdown {
