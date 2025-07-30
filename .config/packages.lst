@@ -56,7 +56,6 @@ qt6ct
 reflector
 restic
 ripgrep
-rofi-calc
 rofi-wayland
 rofimoji
 sbctl
@@ -102,6 +101,7 @@ visual-studio-code-bin
 waybar
 wl-clipboard
 wlogout
+wtype
 xdg-desktop-portal-gtk
 xdg-desktop-portal-hyprland
 yadm
