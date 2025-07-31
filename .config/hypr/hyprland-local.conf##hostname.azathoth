@@ -12,6 +12,7 @@ monitor = HDMI-A-1, preferred, 1920x0, 1
 ### WORKSPACES ###
 ##################
 
+# See https://wiki.hyprland.org/Configuring/Workspace-Rules/ for workspace rules
 workspace = 1, persistent:true, monitor:HDMI-A-1
 workspace = 2, persistent:true, monitor:HDMI-A-1
 workspace = 3, persistent:true, monitor:HDMI-A-1

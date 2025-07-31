@@ -68,7 +68,7 @@ tooltip label {
   padding: 0px 12px;
 }
 
-#custom-pacman, #tray, #pulseaudio, #idle_inhibitor {
+#custom-pacman, #tray, #pulseaudio {
   padding: 0px 8px;
   color: @text;
   background: @base;
