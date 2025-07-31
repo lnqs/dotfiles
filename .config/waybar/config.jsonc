@@ -79,8 +79,7 @@
     "modules": [
       "custom/pacman",
       "tray",
-      "pulseaudio",
-      "idle_inhibitor"
+      "pulseaudio"
     ]
   },
 
@@ -110,14 +109,6 @@
     "scroll-step": 1
   },
 
-  "idle_inhibitor": {
-    "format": "{icon}",
-    "format-icons": {
-      "activated": "",
-      "deactivated": ""
-    }
-  },
-  
   // Clock
   "group/notifications": {
     "orientation": "horizontal",
