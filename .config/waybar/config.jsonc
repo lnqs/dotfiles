@@ -40,7 +40,6 @@
       "cpu",
       "memory",
       "temperature",
-      "network",
       "battery"
     ]
   },
@@ -57,15 +56,6 @@
   "temperature": {
     "critical-threshold": 80,
     "format": " {}°"
-  },
-  
-  "network": {
-    "format-disconnected": "󰖪",
-    "format-ethernet": "󰈀 ⇅ {bandwidthTotalBytes}",
-    "format-linked": "{ifname} (No IP)",
-    "format-wifi": " {signalStrength}%  ⇅ {bandwidthTotalBytes}",
-    "tooltip-format": "Connected to {essid} {ifname} via {gwaddr}",
-    "on-click": "nm-connection-editor"
   },
   
   "battery": {

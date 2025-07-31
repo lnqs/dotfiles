@@ -57,7 +57,7 @@ tooltip label {
   padding: 0px 12px;
 }
 
-#network, #cpu, #temperature, #memory, #battery {
+#cpu, #temperature, #memory, #battery {
   color: @text;
   padding: 0px 8px;
 }
@@ -74,7 +74,7 @@ tooltip label {
   background: @base;
 }
 
-#tray, #pulseaudio, #network, #battery {
+#tray, #pulseaudio, #battery {
   color: @text;
 }
 

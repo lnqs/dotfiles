@@ -35,6 +35,7 @@ libnewt
 lvm2
 neovim
 materia-gtk-theme
+network-manager-applet
 networkmanager
 nm-connection-editor
 noto-fonts
