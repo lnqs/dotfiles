@@ -4,14 +4,12 @@
 * {
   font-family: "RobotoMono Nerd Font Propo";
   font-size: 12px;
-  border-radius: 12px;
   font-weight: bold;
   transition: all .1s ease;
 }
 
 /* Window */
 #window {
-  background: @base;
 }
 
 /* Waybar Window */
@@ -33,6 +31,8 @@ tooltip label {
 /* Workspaces */
 #workspaces {
   background: @base;
+  border: 1.5px solid alpha(@surface2, 0.6);
+  border-radius: 12px;
   margin: 0px 6px;
   padding: 0px 8px;
 }
@@ -53,6 +53,8 @@ tooltip label {
 /* Hardware */
 #hardware {
   background: @base;
+  border: 1.5px solid alpha(@surface2, 0.6);
+  border-radius: 12px;
   margin: 0px 6px;
   padding: 0px 12px;
 }
@@ -65,6 +67,8 @@ tooltip label {
 /* Status */
 #status {
   background: @base;
+  border: 1.5px solid alpha(@surface2, 0.6);
+  border-radius: 12px;
   padding: 0px 12px;
 }
 
@@ -81,15 +85,15 @@ tooltip label {
 /* Notifications */
 #notifications {
   background: @base;
+  border: 1.5px solid alpha(@surface2, 0.6);
+  border-radius: 12px;
   margin: 0px 6px;
-  padding: 0px 28px 0px 12px;
-  font-weight: bolder;
-  font-size: 13px;
+  padding: 0px 24px 0px 12px;
 }
 
 #custom-swaync {
   color: @maroon;
-  padding: 0px 12px;
+  padding: 0px 8px;
 }
 
 #clock {
