@@ -23,12 +23,12 @@ configuration {
 
 /*****----- Global Properties -----*****/
 * {
-  background: var(base);
-  background-alt: var(crust);
+  background: var(base-alpha);
+  background-alt: var(mantle-alpha);
   foreground: var(text);
-  selected: var(blue);
-  active: var(green);
-  urgent: var(red);
+  selected: var(blue-alpha);
+  active: var(green-alpha);
+  urgent: var(red-alpha);
 
   font: "Roboto 10";
   border-color: var(selected);
@@ -83,9 +83,9 @@ mainbox {
   enabled: true;
   spacing: 10px;
   margin: 0px;
-  padding: 30px;
-  border: 0px solid;
-  border-radius: 0px 0px 0px 0px;
+  padding: 24px;
+  border: 2px solid;
+  border-radius: 12px;
   border-color: @border-color;
   background-color: transparent;
   children: [ "inputbar", "message", "listview" ];
