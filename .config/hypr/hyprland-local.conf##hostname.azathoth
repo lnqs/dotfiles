@@ -8,6 +8,15 @@ monitor = DP-1, preferred, -1920x0, 1
 monitor = DP-2, preferred, 0x0, 1
 monitor = HDMI-A-1, preferred, 1920x0, 1
 
+#############################
+### ENVIRONMENT VARIABLES ###
+#############################
+
+# See https://wiki.hyprland.org/Configuring/Environment-variables/
+env = LIBVA_DRIVER_NAME,nvidia
+env = __GLX_VENDOR_LIBRARY_NAME,nvidia
+env = NVD_BACKEND,direct
+
 ##################
 ### WORKSPACES ###
 ##################
