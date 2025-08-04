@@ -20,7 +20,7 @@ window#waybar {
 /* Tooltip */
 tooltip {
   background: @base;
-  border: 2px solid @blue;
+  border: 1.5px solid @blue;
   border-radius: 12px;
 }
 
@@ -72,7 +72,7 @@ tooltip label {
   padding: 0px 12px;
 }
 
-#custom-pacman, #tray, #pulseaudio {
+#custom-pacman, #custom-syncthing, #tray, #pulseaudio {
   padding: 0px 8px;
   color: @text;
   background: @base;

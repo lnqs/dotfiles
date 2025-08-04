@@ -1,0 +1,51 @@
+#!/bin/bash
+
+set -euo pipefail
+
+icon_disconnected="󰨹"
+icon_syncing="󰅢"
+icon_synced="󰅠"
+icon_user_required="󰧠"
+
+output() {
+  icon="$1"
+  tooltip="$2"
+  class="$3"
+  percentage="$4"
+
+  echo "{\"text\": \"$icon\", \"tooltip\": \"$tooltip\", \"class\": \"$class\", \"percentage\": $percentage}"
+  exit 0
+}
+
+if ! syncthing cli show system >/dev/null; then
+  output "$icon_disconnected" "Syncthing disconnected" "disconnected" 0
+fi
+
+connected="$(syncthing cli show connections | jq '.connections | map(select(.connected)) | length')"
+completion="$(curl -H"X-Api-Key: $(syncthing cli config gui apikey get)" http://$(syncthing cli config gui raw-address get)/rest/db/completion 2>/dev/null | jq '.completion')"
+
+if [[ $completion == 100 ]]; then
+  status_text="Synced"
+else
+  status_text="$completion% synced"
+fi
+status_text="$status_text\n$connected devices connected"
+
+if syncthing cli show pending devices | jq -e '. != {}' >/dev/null; then
+  output "$icon_user_required" "Pending devices\n\n$status_text" "pending" $completion
+fi
+
+if syncthing cli show pending folders | jq -e '. != {}' >/dev/null; then
+  output "$icon_user_required" "Pending folders\n\n$status_text" "pending" $completion
+fi
+
+if syncthing cli errors show | jq -e '.errors != null' >/dev/null; then
+  output "$icon_user_required" "Pending errors\n\n$status_text" "errors" $completion
+fi
+
+if [[ $completion != 100 ]]; then
+  output "$icon_syncing" "$status_text" "syncing" $completion
+fi
+
+output "$icon_synced" "$status_text" "synced" $completion
+
