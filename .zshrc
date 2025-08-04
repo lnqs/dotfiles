@@ -380,6 +380,28 @@ bindkey '^P' fzf-file-widget
 
 
 ###############################################################################
+#     NEOVIM
+###############################################################################
+
+# Use `nn` to open a file in the latest nvim instance that's a child process
+
+function nn() {
+  for cpid in $(tac "/proc/$$/task/$$/children"); do
+    if [[ "$(readlink /proc/$cpid/exe)" == "$(which nvim)" ]]; then
+      ccpid="$(cat "/proc/$cpid/task/$cpid/children" | head -n1 | xargs)"
+      
+      for arg in "$@"; do
+        nvim --server "$XDG_RUNTIME_DIR/nvim.$ccpid.0" --remote "$PWD/$arg"
+      done
+      return
+    fi
+  done
+
+  echo "No running nvim instance. Doing nothing." >&2
+}
+
+
+###############################################################################
 #     NVM
 ###############################################################################
 
