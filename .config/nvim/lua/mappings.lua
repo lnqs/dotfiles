@@ -5,6 +5,7 @@ local map = vim.keymap.set
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
 
+-- right click menu
 map("n", "<C-t>", function()
   require("menu").open("default")
 end, {})
@@ -20,3 +21,4 @@ map({ "n", "v" }, "<RightMouse>", function()
 
   require("menu").open(options, { mouse = true })
 end, {})
+

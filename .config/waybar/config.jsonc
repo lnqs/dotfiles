@@ -86,8 +86,9 @@
 
   "custom/pacman": {
     "format": "󰣇 {}",
+    "hide-empty-text": true,
     "interval": 600,
-    "exec": "CHECKUPDATES_DB=\"/tmp/checkup-db-${UID}-$$\" checkupdates --nocolor | jq -c --raw-input --slurp 'split(\"\n\") | map(select(. != \"\")) | {text: . | length | tostring, tooltip: . | join(\"\n\")}'",
+    "exec": "CHECKUPDATES_DB=\"/tmp/checkup-db-${UID}-$$\" checkupdates --nocolor | jq -c --raw-input --slurp 'split(\"\n\") | map(select(. != \"\")) | {text: if . | length == 0 then \"\" else . | length | tostring end, tooltip: . | join(\"\n\")}'",
     "exec-if": "exit 0",
     "signal": 8,
     "return-type": "json",
