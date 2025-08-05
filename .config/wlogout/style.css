@@ -1,3 +1,5 @@
+@import "mocha.css";
+
 * {
   font-family: Roboto;
   font-size: 11pt;
@@ -6,29 +8,33 @@
 }
 
 window {
-	background-color: rgba(30, 30, 46, 0.4);
+  background: alpha(@base, 0.85);
 }
 
 button {
-	border-radius: 0;
-	border-color: #89b4fa;
-	text-decoration-color: #cdd6f4;
-	color: #cdd6f4;
-	background-color: rgba(24, 24, 37, 0.4);
+	color: @text;
+  background: alpha(@overlay0, 0.1);
   margin: 0px 80px;
-	border-style: solid;
-	border-width: 1px;
+	border: 1.5px solid @blue;
   border-radius: 24px;
-	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 25%;
+	background-repeat: no-repeat;
 }
 
-button:focus, button:active, button:hover {
-	/* 20% Overlay 2, 80% mantle */
-	background-color: rgb(48, 50, 66);
-	outline-style: none;
+button:hover {
 	background-size: 30%;
+  background-color: alpha(shade(@overlay0, 1.1), 0.5);
+}
+
+button:focus {
+	background-size: 30%;
+  background-color: alpha(shade(@overlay0, 0.8), 0.5);
+}
+
+button:active {
+	background-size: 30%;
+  background-color: alpha(shade(@overlay0, 0.9), 0.5);
 }
 
 #lock {
