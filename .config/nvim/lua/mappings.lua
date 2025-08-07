@@ -22,3 +22,6 @@ map({ "n", "v" }, "<RightMouse>", function()
   require("menu").open(options, { mouse = true })
 end, {})
 
+map({ "i" }, "<RightMouse>", function()
+  require('menu.utils').delete_old_menus()
+end, {})
