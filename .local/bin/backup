@@ -5,7 +5,7 @@
 set -eo pipefail
 
 trap "notify-send -a 'Backup' 'Backup' 'Backup failed' || true" ERR
-notify-send -a "Backup" "Backup" "Starting Backup" || true
+notification_id="$(notify-send -a "Backup" -p "Backup" "Starting Backup")"
 
 export AWS_ACCESS_KEY_ID="$RESTIC_B2_KEY_ID"
 export AWS_SECRET_ACCESS_KEY="$RESTIC_B2_KEY"
@@ -17,4 +17,4 @@ restic -r "$RESTIC_REPOSITORY" backup \
     "$HOME"
 restic -r "$RESTIC_REPOSITORY" forget --keep-within 6m --prune
 
-notify-send -a "Backup" "Backup" "Backup Finished" || true
+notify-send -a "Backup" -r "$notification_id" "Backup" "Backup Finished" || true
