@@ -87,13 +87,10 @@
   "custom/pacman": {
     "format": "󰣇 {}",
     "hide-empty-text": true,
-    "interval": 600,
-    "exec": "CHECKUPDATES_DB=\"/tmp/checkup-db-${UID}-$$\" checkupdates --nocolor | jq -c --raw-input --slurp 'split(\"\n\") | map(select(. != \"\")) | {text: if . | length == 0 then \"\" else . | length | tostring end, tooltip: . | join(\"\n\")}'",
-    "exec-if": "exit 0",
-    "signal": 8,
+    "exec": "~/.config/waybar/scripts/pacman",
     "return-type": "json",
     "tooltip": true,
-    "on-click": "kitty -- sh -c \"yay -Syu; pkill -SIGRTMIN+8 waybar; echo -e '\nPress enter to exit'; read\""
+    "on-click": "kitty -- sh -c \"yay -Syu; echo -e '\nPress enter to exit'; read\""
   },
 
   "custom/syncthing": {
