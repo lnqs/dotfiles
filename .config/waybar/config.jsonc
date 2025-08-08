@@ -94,9 +94,14 @@
   },
 
   "custom/syncthing": {
-    "interval": 30,
+    "format": "{icon}",
+    "format-icons": {
+      "disconnected": "󰨹",
+      "idle": "󰅠",
+      "syncing": "󰅢",
+      "interaction-required": "󰧠"
+    },
     "exec": "~/.config/waybar/scripts/syncthing",
-    "exec-if": "exit 0",
     "return-type": "json",
     "tooltip": true,
     "on-click": "xdg-open \"http://$(syncthing cli config gui raw-address get)/\""
