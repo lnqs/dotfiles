@@ -56,7 +56,10 @@
 
   "temperature": {
     "critical-threshold": 80,
-    "format": " {}°"
+    "format": " {}°",
+    {% if yadm.hostname == "azathoth" %}
+    "hwmon-path": "/sys/class/hwmon/hwmon4/temp2_input"
+    {% endif %}
   },
   
   "battery": {
