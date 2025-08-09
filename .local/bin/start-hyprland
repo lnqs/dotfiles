@@ -1,4 +1,0 @@
-#!/bin/bash
-
-source "$HOME"/.config/environment.d/*
-exec uwsm start -- hyprland.desktop >/dev/null
