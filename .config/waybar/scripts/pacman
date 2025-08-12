@@ -14,6 +14,7 @@ from os import fsencode, fsdecode
 from select import poll
 from struct import unpack_from, calcsize
 from termios import FIONREAD
+from time import sleep
 
 import dbus
 
@@ -153,13 +154,18 @@ class Module:
 
     def run(self):
         os.makedirs(CHECKUPDATES_DB_PATH, exist_ok=True)
+        backoff = 0
 
         while True:
             try:
                 self._perform_check()
                 self._wait_for_trigger()
+                backoff = 0
             except Exception as e:
+                backoff = min(backoff + 3, 60 * 10)
+                log(f"Error (backoff {backoff} secs): {e}")
                 self._publish_error(e)
+                sleep(backoff)
 
     def _wait_for_trigger(self):
         events = list(self._inotify.read(timeout=CHECK_INTERVAL))
