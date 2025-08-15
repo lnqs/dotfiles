@@ -58,7 +58,8 @@
     "critical-threshold": 80,
     "format": " {}°",
     {% if yadm.hostname == "azathoth" %}
-    "hwmon-path": "/sys/class/hwmon/hwmon4/temp2_input"
+    "hwmon-path-abs": "/sys/devices/platform/nct6775.656/hwmon",
+    "input-filename": "temp2_input"
     {% endif %}
   },
   
