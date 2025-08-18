@@ -329,7 +329,7 @@ scale trough {
 .widget-backlight {
   font-size: 20px;
   color: @yellow;
-  margin-top: 24px;
+  margin: 12px 0px 12px 10px;
 }
 
 .widget-backlight label {
