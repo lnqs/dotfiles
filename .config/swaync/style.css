@@ -338,6 +338,7 @@ scale trough {
 
 .widget-backlight trough {
   min-height: 6px;
+  border-radius: 12px;
 }
 
 .widget-backlight trough highlight {
