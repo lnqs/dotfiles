@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -eu
+
+systemctl --user enable arch-update-notifier
+systemctl --user start arch-update-notifier
