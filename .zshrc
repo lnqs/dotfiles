@@ -42,12 +42,6 @@ alias grep='grep -I'
 # less typing for starting nvim
 alias n=nvim
 
-# less typing for running ag
-alias a=ag
-
-# sudoedit shortcut
-alias sn=sudoedit
-
 # cat images on commandline
 alias icat="kitty +kitten icat"
 
