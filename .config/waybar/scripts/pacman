@@ -29,7 +29,7 @@ def readlines(sock):
         if len(new_data) == 0:
             raise StopIteration("connection to server closed")
 
-        data += data + new_data
+        data += new_data
         while "\n" in data:
             line, data = data.split("\n", 1)
             yield line
