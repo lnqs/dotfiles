@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -eu
+
+systemctl --user enable ada
+systemctl --user start ada
