@@ -4,14 +4,18 @@ set -eu
 
 echo -e "\n### Enabling desktop environment services" >&2
 
-systemctl --user enable waybar.service
-systemctl --user start waybar.service
+if [[ ! -e ~/.config/quickshell ]]; then
+    git clone git@github.com:lnqs/quickshell.git ~/.config/quickshell
+fi
 
 systemctl --user enable hypridle.service
 systemctl --user start hypridle.service
 
-systemctl --user enable hyprpaper.service
-systemctl --user start hyprpaper.service
-
 systemctl --user enable swaync.service
 systemctl --user start swaync.service
+
+systemctl --user enable arch-update-notifier
+systemctl --user start arch-update-notifier
+
+systemctl --user enable quickshell
+systemctl --user start quickshell

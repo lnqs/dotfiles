@@ -19,7 +19,6 @@ hunspell-en_us
 hypridle
 hyprland
 hyprlock
-hyprpaper
 hyprshot
 imagemagick
 inetutils
@@ -35,8 +34,9 @@ libappindicator-gtk3
 libnewt
 libva-nvidia-driver
 lvm2
-neovim
 materia-gtk-theme
+matugen
+neovim
 network-manager-applet
 networkmanager
 nm-connection-editor
@@ -97,12 +97,13 @@ ttf-ms-win11-auto
 ttf-roboto
 ttf-roboto-mono
 ttf-roboto-mono-nerd
+quickshell
 udiskie
 ufw
 unzip
+upower
 uwsm
 visual-studio-code-bin
-waybar
 wl-clipboard
 wlogout
 wtype
