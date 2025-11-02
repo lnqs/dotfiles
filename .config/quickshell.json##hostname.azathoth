@@ -1,0 +1,5 @@
+{
+  "system": {
+    "thermalPath": "/sys/devices/platform/nct6775.656/hwmon/hwmon7/temp2_input"
+  }
+}
