@@ -11,9 +11,6 @@ fi
 systemctl --user enable hypridle.service
 systemctl --user start hypridle.service
 
-systemctl --user enable swaync.service
-systemctl --user start swaync.service
-
 systemctl --user enable arch-update-notifier
 systemctl --user start arch-update-notifier
 
