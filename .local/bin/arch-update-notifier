@@ -219,12 +219,16 @@ class Server:
 
 class NotificationClient:
     def __init__(self):
-        self.interface = dbus.Interface(
-            dbus.SessionBus().get_object(
-                "org.freedesktop.Notifications", "/org/freedesktop/Notifications"
-            ),
-            "org.freedesktop.Notifications",
-        )
+        self.interface = None
+
+    def _ensure_connection(self):
+        if not self.interface:
+            self.interface = dbus.Interface(
+                dbus.SessionBus().get_object(
+                    "org.freedesktop.Notifications", "/org/freedesktop/Notifications"
+                ),
+                "org.freedesktop.Notifications",
+            )
 
     def notify(
         self,
@@ -237,19 +241,27 @@ class NotificationClient:
         replaces_id=0,
         expire_timeout=-1,
     ):
-        return self.interface.Notify(
-            app_name,
-            replaces_id,
-            app_icon,
-            summary,
-            body,
-            actions,
-            hints,
-            expire_timeout,
-        )
+        try:
+            self._ensure_connection()
+            return self.interface.Notify(
+                app_name,
+                replaces_id,
+                app_icon,
+                summary,
+                body,
+                actions,
+                hints,
+                expire_timeout,
+            )
+        except dbus.exceptions.DBusException as e:
+            log(f"failed to connect to notification service: {e}")
 
     def close(self, notification_id):
-        self.interface.CloseNotification(notification_id)
+        try:
+            self._ensure_connection()
+            self.interface.CloseNotification(notification_id)
+        except dbus.exceptions.DBusException as e:
+            log(f"failed to connect to notification service: {e}")
 
 
 class Daemon:
