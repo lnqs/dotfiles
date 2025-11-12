@@ -12,6 +12,7 @@ geeqie
 gimp
 git
 gnome-keyring
+gnome-themes-extra
 greetd
 greetd-tuigreet
 gtk4-layer-shell
@@ -34,7 +35,6 @@ libappindicator-gtk3
 libnewt
 libva-nvidia-driver
 lvm2
-materia-gtk-theme
 matugen
 neovim
 network-manager-applet
