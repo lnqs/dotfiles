@@ -4,8 +4,8 @@ set -eu
 
 echo -e "\n### Enabling desktop environment services" >&2
 
-if [[ ! -e ~/.config/quickshell ]]; then
-    git clone git@github.com:lnqs/quickshell.git ~/.config/quickshell
+if [[ ! -e ~/.local/opt/axiom ]]; then
+    git clone git@github.com:lnqs/axiom.git ~/.local/opt/axiom
 fi
 
 systemctl --user enable hypridle.service
@@ -14,5 +14,5 @@ systemctl --user start hypridle.service
 systemctl --user enable arch-update-notifier
 systemctl --user start arch-update-notifier
 
-systemctl --user enable quickshell
-systemctl --user start quickshell
+systemctl --user enable axiom
+systemctl --user start axiom

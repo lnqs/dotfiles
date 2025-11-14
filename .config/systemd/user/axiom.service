@@ -1,12 +1,12 @@
 [Unit]
-Description=Highly customable desktop shell
-Documentation=https://github.com/lnqs/quickshell
+Description=Axiom desktop shell
+Documentation=https://github.com/lnqs/axiom
 PartOf=graphical-session.target
 After=graphical-session.target
 Requisite=graphical-session.target
 
 [Service]
-ExecStart=/usr/bin/quickshell
+ExecStart=%h/.local/opt/axiom/axiom start
 Restart=on-failure
 
 [Install]
