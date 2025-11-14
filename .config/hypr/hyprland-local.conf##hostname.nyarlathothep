@@ -8,7 +8,6 @@ monitor = DP-8, preferred, 0x0, 1
 monitor = DP-9, preferred, 1920x0, 1
 
 # Disable Laptop screen if lid is closed
-bindl = , switch:Lid Switch, exec, swaylock
 bindl = , switch:on:Lid Switch, exec, hyprctl keyword monitor "eDP-1, disable"
 bindl = , switch:off:Lid Switch, exec, hyprctl keyword monitor "eDP-1, preferred"
 exec = grep closed /proc/acpi/button/lid/LID*/state >/dev/null && hyprctl keyword monitor "eDP-1, disable"
