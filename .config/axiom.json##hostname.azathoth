@@ -1,5 +1,23 @@
 {
   "system": {
-    "thermalPath": "/sys/devices/platform/nct6775.656/hwmon/hwmon7/temp2_input"
+    "thermal": [
+      {
+        "type": "sensors",
+        "label": "System",
+        "description": "ROG STRIX B550-F",
+        "path": "nct6798-isa-0290.SYSTIN"
+      },
+      {
+        "type": "sensors",
+        "label": "CPU",
+        "description": "AMD Ryzen 5 5600X",
+        "path": "nct6798-isa-0290.CPUTIN"
+      },
+      {
+        "type": "nvidia-smi",
+        "label": "GPU",
+        "description": "NVIDIA GeForce RTX 3080"
+      }
+    ]
   }
 }

@@ -1,5 +1,24 @@
 {
   "system": {
-    "thermalPath": "/sys/class/thermal/thermal_zone0/temp"
+    "thermal": [
+      {
+        "type": "sensors",
+        "label": "CPU",
+        "description": "AMD Ryzen 7 PRO 6850H",
+        "path": "thinkpad-isa-0000.CPU"
+      },
+      {
+        "type": "sensors",
+        "label": "GPU",
+        "description": "AMD Radeon 680M",
+        "path": "thinkpad-isa-0000.GPU"
+      },
+      {
+        "type": "sensors",
+        "label": "GPU",
+        "description": "Radeon RX 6400/6500 XT/6500M",
+        "path": "amdgpu-pci-6700.edge"
+      }
+    ]
   }
 }

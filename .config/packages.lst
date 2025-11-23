@@ -54,6 +54,7 @@ pavucontrol
 pyenv
 qt5-wayland
 qt5ct
+qt6-charts
 qt6-wayland
 qt6ct
 reflector
