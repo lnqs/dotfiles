@@ -1,11 +1,18 @@
+
+
 ###############################################################################
 # lnqs' .zshrc
 # A lot of stuff is taken from grml's zshrc (see <http://grml.org/zsh/>, GPLv2)
 ###############################################################################
 
-if [[ $(uname) == "Darwin" ]]; then
-    source $HOME/.config/environment.d/*
+###############################################################################
+#     PROFILING
+###############################################################################
+
+if [ -n "${ZSH_DEBUGRC+1}" ]; then
+    zmodload zsh/zprof
 fi
+
 
 ###############################################################################
 #     PREREQUISITES
@@ -22,6 +29,10 @@ autoload -U add-zsh-hook
 # enable 265 colors
 if [[ "$TERM" = "xterm" ]]; then
     export TERM="xterm-256color"
+fi
+
+if [[ $(uname) == "Darwin" ]]; then
+    source $HOME/.config/environment.d/*
 fi
 
 
@@ -399,15 +410,33 @@ function nn() {
 #     NVM
 ###############################################################################
 
-source /usr/share/nvm/init-nvm.sh
+if [[ -e /usr/share/nvm/init-nvm.sh ]]; then
+  load_nvm() {
+    unset -f node nvm npx
+    source /usr/share/nvm/init-nvm.sh
+  }
 
-if [[ -n "$NVM_DIR" ]]; then
-    cd () {
-        builtin cd $*
-        if [[ -f .nvmrc ]]; then
-            nvm use
-        fi
-    }
+  node() {
+    load_nvm
+    node $@
+  }
+
+  nvm() {
+    load_nvm
+    nvm $@
+  }
+
+  npx() {
+    load_npx
+    npx $@
+  }
+
+  cd () {
+    builtin cd $*
+    if [[ -f .nvmrc ]]; then
+      nvm use
+    fi
+  }
 fi
 
 
@@ -474,4 +503,10 @@ try_load zsh-syntax-highlighting \
 
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 
+###############################################################################
+#     PROFILING
+###############################################################################
 
+if [ -n "${ZSH_DEBUGRC+1}" ]; then
+    zprof
+fi
