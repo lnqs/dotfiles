@@ -19,5 +19,18 @@
         "description": "NVIDIA GeForce RTX 3080"
       }
     ]
+  },
+  "idle": {
+    "timeouts": [{
+        "timeout": 300,
+        "type": "command",
+        "idleAction": "loginctl lock-session"
+      }, {
+        "timeout": 900,
+        "type": "dispatch",
+        "idleAction": "dpms off",
+        "resumeAction": "dpms on"
+      }
+    ]
   }
 }

@@ -20,5 +20,27 @@
         "path": "amdgpu-pci-6700.edge"
       }
     ]
+  },
+  "idle": {
+    "timeouts": [{
+      "timeout": 150,
+        "type": "command",
+        "idleAction": "brightnessctl -s set 10",
+        "resumeAction": "brightnessctl -r"
+      }, {
+        "timeout": 300,
+        "type": "command",
+        "idleAction": "loginctl lock-session"
+      }, {
+        "timeout": 330,
+        "type": "dispatch",
+        "idleAction": "dpms off",
+        "resumeAction": "dpms on"
+      }, {
+        "timeout": 900,
+        "type": "command",
+        "idleAction": "systemd-ac-power || systemctl suspend"
+      }
+    ]
   }
 }
