@@ -8,5 +8,8 @@ if [[ ! -e ~/.local/opt/axiom ]]; then
     git clone git@github.com:lnqs/axiom.git ~/.local/opt/axiom
 fi
 
+systemctl --user enable hypridle
+systemctl --user start hypridle
+
 systemctl --user enable axiom
 systemctl --user start axiom
