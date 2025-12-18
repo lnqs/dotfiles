@@ -437,6 +437,10 @@ if [[ -e /usr/share/nvm/init-nvm.sh ]]; then
       nvm use
     fi
   }
+  
+  if [[ -f .nvmrc ]]; then
+    nvm use
+  fi
 fi
 
 
