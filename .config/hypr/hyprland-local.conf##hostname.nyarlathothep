@@ -21,13 +21,19 @@ workspace = 1, persistent:true, monitor:DP-9
 workspace = 2, persistent:true, monitor:DP-9
 workspace = 3, persistent:true, monitor:DP-9
 workspace = 4, persistent:true, monitor:DP-9
+workspace = 5, persistent:true, monitor:DP-9
+workspace = 6, persistent:true, monitor:DP-9
 
-workspace = 5, persistent:true, monitor:DP-8
-workspace = 6, persistent:true, monitor:DP-8
 workspace = 7, persistent:true, monitor:DP-8
 workspace = 8, persistent:true, monitor:DP-8
+workspace = 9, persistent:true, monitor:DP-8
+workspace = 10, persistent:true, monitor:DP-8
+workspace = 11, persistent:true, monitor:DP-8
+workspace = 12, persistent:true, monitor:DP-8
 
-workspace = 9, persistent:true, monitor:eDP-1
-workspace = 10, persistent:true, monitor:eDP-1
-workspace = 11, persistent:true, monitor:eDP-1
-workspace = 12, persistent:true, monitor:eDP-1
+workspace = 13, persistent:true, monitor:eDP-1
+workspace = 14, persistent:true, monitor:eDP-1
+workspace = 15, persistent:true, monitor:eDP-1
+workspace = 16, persistent:true, monitor:eDP-1
+workspace = 17, persistent:true, monitor:eDP-1
+workspace = 18, persistent:true, monitor:eDP-1
