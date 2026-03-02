@@ -427,7 +427,7 @@ if [[ -e /usr/share/nvm/init-nvm.sh ]]; then
   }
 
   npx() {
-    load_npx
+    load_nvm
     npx $@
   }
 
