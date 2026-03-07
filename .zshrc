@@ -487,6 +487,19 @@ aws-profile() {
 }
 
 ###############################################################################
+#     GOOGLE CLOUD
+###############################################################################
+
+if [ -f '/home/lnqs/.local/opt/google-cloud-sdk/path.zsh.inc' ]; then
+  source '/home/lnqs/.local/opt/google-cloud-sdk/path.zsh.inc'
+fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/lnqs/.local/opt/google-cloud-sdk/completion.zsh.inc' ]; then
+  source '/home/lnqs/.local/opt/google-cloud-sdk/completion.zsh.inc'
+fi
+
+###############################################################################
 #     DEVICE SPECIFIC
 ###############################################################################
 
@@ -514,3 +527,4 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 if [ -n "${ZSH_DEBUGRC+1}" ]; then
     zprof
 fi
+
