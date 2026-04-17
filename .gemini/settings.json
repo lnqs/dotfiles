@@ -18,7 +18,15 @@
   },
   "ui": {
     "footer": {
-      "hideContextPercentage": false
+      "hideContextPercentage": false,
+      "items": [
+        "workspace",
+        "git-branch",
+        "model-name",
+        "context-used",
+        "quota",
+        "code-changes"
+      ]
     },
     "showModelInfoInChat": true
   }
