@@ -52,6 +52,7 @@ otf-font-awesome
 pacman-contrib
 papirus-icon-theme
 pavucontrol
+playerctl
 pyenv
 qt5-wayland
 qt5ct
@@ -95,7 +96,7 @@ ttf-ms-win11-auto
 ttf-roboto
 ttf-roboto-mono
 ttf-roboto-mono-nerd
-quickshell-git
+quickshell
 udiskie
 ufw
 unzip
