@@ -223,8 +223,9 @@ hl.config({
 
 hl.config({
   misc = {
-    enable_swallow = true,
-    swallow_regex  = "kitty",
+    enable_swallow         = true,
+    swallow_regex          = "kitty",
+    disable_hyprland_logo  = true,
   },
 })
 
@@ -313,25 +314,25 @@ hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = tr
 --------------------
 
 if hostname() == "azathoth" then
-  for i = 1, 6 do
+  for i = 1, 8 do
     hl.workspace_rule({ workspace = tostring(i), persistent = true, monitor = "DP-1" })
   end
-  for i = 7, 12 do
+  for i = 9, 16 do
     hl.workspace_rule({ workspace = tostring(i), persistent = true, monitor = "DP-2" })
   end
-  for i = 13, 18 do
+  for i = 17, 24 do
     hl.workspace_rule({ workspace = tostring(i), persistent = true, monitor = "HDMI-A-1" })
   end
 end
 
 if hostname() == "nyarlathothep" then
-  for i = 1, 6 do
+  for i = 1, 8 do
     hl.workspace_rule({ workspace = tostring(i), persistent = lidOpen(), monitor = "eDP-1" })
   end
-  for i = 7, 12 do
+  for i = 9, 17 do
     hl.workspace_rule({ workspace = tostring(i), persistent = true, monitor = "DP-8" })
   end
-  for i = 13, 18 do
+  for i = 18, 24 do
     hl.workspace_rule({ workspace = tostring(i), persistent = true, monitor = "DP-9" })
   end
 end
@@ -438,5 +439,11 @@ hl.window_rule({
 hl.window_rule({
   match = { class = "zoom", title = "annotate_toolbar" },
   decorate = false,
+})
+
+-- Godot
+hl.window_rule({
+  match = { class = "Godot", title = "negative:Godot" },
+  float = true,
 })
 
