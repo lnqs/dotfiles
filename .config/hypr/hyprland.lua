@@ -70,6 +70,9 @@ if hostname() == "nyarlathothep" then
 
   hl.bind("switch:on:Lid Switch", hl.dsp.exec_cmd("hyprctl reload"), { locked = true })
   hl.bind("switch:off:Lid Switch", hl.dsp.exec_cmd("hyprctl reload"), { locked = true })
+
+  hl.on("monitor.added", function () hl.exec_cmd("hyprctl reload") end)
+  hl.on("monitor.removed", function () hl.exec_cmd("hyprctl reload") end)
 end
 
 hl.monitor({
