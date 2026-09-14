@@ -1,0 +1,69 @@
+#!/bin/bash
+set -euo pipefail
+
+uid="$(id -u)"
+gid="$(id -g)"
+user="$(id -un)"
+
+exec bwrap \
+    --unshare-user \
+    --uid "$uid" \
+    --gid "$gid" \
+    --die-with-parent \
+    --new-session \
+    --share-net \
+    \
+    --ro-bind /usr /usr \
+    --ro-bind /bin /bin \
+    --ro-bind /lib /lib \
+    --ro-bind /lib64 /lib64 \
+    --ro-bind /opt /opt \
+    --ro-bind /etc /etc \
+    \
+    --dev /dev \
+    --proc /proc \
+    --tmpfs /tmp \
+    \
+    --dir "/home/$user" \
+    --dir "/home/$user/.config" \
+    --dir "/home/$user/.cache" \
+    --dir "/home/$user/.local" \
+    --dir "/home/$user/.local/state" \
+    \
+    --bind "$HOME/Projects" \
+           "/home/$user/Projects" \
+    \
+    --bind "$HOME/.cursor" \
+           "/home/$user/.cursor" \
+    \
+    --bind "$HOME/.config/Cursor" \
+           "/home/$user/.config/Cursor" \
+    \
+    --bind "$HOME/.config/cursor" \
+           "/home/$user/.config/cursor" \
+    \
+    --bind "$HOME/.cache/cursor-compile-cache" \
+           "/home/$user/.cache/cursor-compile-cache" \
+    --bind "$HOME/.local/state/cursor" \
+            "/home/$user/.local/state/cursor" \
+    \
+    --ro-bind "/run/user/$uid/$WAYLAND_DISPLAY" \
+              "/run/user/$uid/$WAYLAND_DISPLAY" \
+    \
+    --ro-bind "/run/systemd/resolve" \
+              "/run/systemd/resolve" \
+    \
+    --ro-bind "/run/user/$uid/bus" \
+              "/run/user/$uid/bus" \
+    \
+    --setenv HOME "/home/$user" \
+    --setenv USER "$user" \
+    --setenv LOGNAME "$user" \
+    --setenv XDG_CONFIG_HOME "/home/$user/.config" \
+    --setenv XDG_CACHE_HOME "/home/$user/.cache" \
+    --setenv XDG_RUNTIME_DIR "/run/user/$uid" \
+    --setenv WAYLAND_DISPLAY "$WAYLAND_DISPLAY" \
+    \
+    --chdir "/home/$user/Projects" \
+    \
+    /usr/bin/cursor "$@"
