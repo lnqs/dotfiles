@@ -265,8 +265,8 @@ hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd(screenlock))
 hl.bind(mainMod .. " + space", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + tab", hl.dsp.exec_cmd(workspaceManager))
-hl.bind("print", hl.dsp.exec_cmd(screenshotOutput))
-hl.bind("SHIFT + print", hl.dsp.exec_cmd(screenshotRegion))
+hl.bind(mainMod .. " + P", hl.dsp.exec_cmd(screenshotOutput))
+hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd(screenshotRegion))
 
 -- Move focus with mainMod + arrow keys
 hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
