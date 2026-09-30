@@ -50,8 +50,8 @@ exec bwrap \
     --ro-bind "/run/user/$uid/$WAYLAND_DISPLAY" \
               "/run/user/$uid/$WAYLAND_DISPLAY" \
     \
-    --ro-bind "/run/systemd/resolve" \
-              "/run/systemd/resolve" \
+    --ro-bind "/run/systemd" \
+              "/run/systemd" \
     \
     --ro-bind "/run/user/$uid/bus" \
               "/run/user/$uid/bus" \
