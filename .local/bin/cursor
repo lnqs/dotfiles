@@ -55,14 +55,24 @@ exec bwrap \
     \
     --ro-bind "/run/user/$uid/bus" \
               "/run/user/$uid/bus" \
+    --ro-bind "/run/dbus/system_bus_socket" \
+              "/run/dbus/system_bus_socket" \
     \
+    --clearenv \
+    --setenv PATH "/usr/bin:/bin" \
     --setenv HOME "/home/$user" \
     --setenv USER "$user" \
     --setenv LOGNAME "$user" \
+    --setenv SHELL "/bin/bash" \
+    --setenv LANG "${LANG:-C.UTF-8}" \
     --setenv XDG_CONFIG_HOME "/home/$user/.config" \
     --setenv XDG_CACHE_HOME "/home/$user/.cache" \
+    --setenv XDG_DATA_HOME "/home/$user/.local/share" \
     --setenv XDG_RUNTIME_DIR "/run/user/$uid" \
     --setenv WAYLAND_DISPLAY "$WAYLAND_DISPLAY" \
+    --setenv DBUS_SESSION_BUS_ADDRESS "unix:path=/run/user/$uid/bus" \
+    --setenv XDG_SESSION_TYPE "$XDG_SESSION_TYPE" \
+    --setenv ELECTRON_OZONE_PLATFORM_HINT "$ELECTRON_OZONE_PLATFORM_HINT" \
     \
     --chdir "/home/$user/Projects" \
     \
