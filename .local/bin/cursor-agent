@@ -1,0 +1,92 @@
+#!/bin/bash
+set -euo pipefail
+
+shopt -s nullglob
+versions=( "$HOME"/.local/share/cursor-agent/versions/*/cursor-agent )
+
+if ((${#versions[@]} == 0)); then
+    echo "No Cursor agent versions found" >&2
+    exit 1
+fi
+
+executable=$(
+    printf '%s\n' "${versions[@]}" |
+        sort -V |
+        tail -n1
+)
+
+if [[ ! -x "$executable" ]]; then
+    echo "Cursor agent is not executable: $executable" >&2
+    exit 1
+fi
+
+uid="$(id -u)"
+gid="$(id -g)"
+user="$(id -un)"
+
+exec bwrap \
+    --unshare-user \
+    --uid "$uid" \
+    --gid "$gid" \
+    --die-with-parent \
+    --new-session \
+    --share-net \
+    \
+    --ro-bind /usr /usr \
+    --ro-bind /bin /bin \
+    --ro-bind /lib /lib \
+    --ro-bind /lib64 /lib64 \
+    --ro-bind /opt /opt \
+    --ro-bind /etc /etc \
+    \
+    --dev /dev \
+    --proc /proc \
+    --tmpfs /tmp \
+    \
+    --dir "/home/$user" \
+    --dir "/home/$user/.config" \
+    --dir "/home/$user/.cache" \
+    --dir "/home/$user/.local" \
+    --dir "/home/$user/.local/state" \
+    \
+    --bind "$PWD" \
+           "$PWD" \
+    \
+    --bind "$HOME/.local/share/cursor-agent" \
+           "/home/$user/.local/share/cursor-agent" \
+    \
+    --bind "$HOME/.cursor" \
+           "/home/$user/.cursor" \
+    \
+    --bind "$HOME/.config/Cursor" \
+           "/home/$user/.config/Cursor" \
+    \
+    --bind "$HOME/.config/cursor" \
+           "/home/$user/.config/cursor" \
+    \
+    --bind "$HOME/.cache/cursor-compile-cache" \
+           "/home/$user/.cache/cursor-compile-cache" \
+    --bind "$HOME/.local/state/cursor" \
+            "/home/$user/.local/state/cursor" \
+    \
+    --ro-bind "/run/systemd" \
+              "/run/systemd" \
+    \
+    --ro-bind "/run/user/$uid/bus" \
+              "/run/user/$uid/bus" \
+    \
+    --clearenv \
+    --setenv HOME "$HOME" \
+    --setenv USER "$user" \
+    --setenv LOGNAME "$user" \
+    --setenv PATH "/usr/local/bin:/usr/bin:/bin" \
+    --setenv SHELL "${SHELL:-/bin/bash}" \
+    --setenv TERM "${TERM:-xterm-256color}" \
+    --setenv LANG "${LANG:-C.UTF-8}" \
+    --setenv XDG_CONFIG_HOME "$HOME/.config" \
+    --setenv XDG_CACHE_HOME "$HOME/.cache" \
+    --setenv TMPDIR /tmp \
+    \
+    --chdir "$PWD" \
+    \
+    "$executable" "$@"
