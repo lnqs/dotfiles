@@ -1,0 +1,61 @@
+devices:
+  y_desk:
+    model: H6065
+    id: "3E:E5:D1:C7:C3:06:22:4B"
+  y_bed:
+    model: H6065
+    id: "44:26:D2:C7:C5:86:5E:74"
+  ceiling:
+    model: H60A1
+    id: "22:B9:D0:C9:07:88:20:4E"
+
+groups:
+  y_lights:
+    devices: [y_desk, y_bed]
+  ceiling:
+    devices: [ceiling]
+
+modes:
+  # Quote "on"/"off" — bare YAML `on` is a boolean.
+  work:
+    y_desk: { power: "on", scene: "Aurora", brightness: 70 }
+    y_bed: { power: "on", scene: "Aurora", brightness: 70 }
+    ceiling: { brightness: 80 }
+  chilling:
+    y_desk: { power: "on", scene: "Sunset Glow", brightness: 35 }
+    y_bed: { power: "on", scene: "Sunset Glow", brightness: 35 }
+    ceiling: { brightness: 5 }
+  hacking:
+    y_desk: { power: "on", scene: "Aurora", brightness: 90 }
+    y_bed: { power: "on", scene: "Aurora", brightness: 90 }
+    ceiling: { brightness: 1 }
+
+location:
+  latitude: 52.52
+  longitude: 13.405
+  timezone: "Europe/Berlin"
+
+automation:
+  ambient_group: y_lights
+  sunset:
+    enabled: true
+    offset_minutes: -30
+  session:
+    power_on_at_start_after_threshold: true
+    power_off_on_session_end: true
+
+transport:
+  prefer_lan_for: [power, brightness, state]
+  timeout_seconds: 5
+  retries: 2
+
+observer:
+  mqtt_enabled: true
+  poll_interval_seconds: 30
+  cloud_poll_interval_seconds: 300
+
+socket:
+  path: null
+
+state:
+  path: null
