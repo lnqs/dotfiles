@@ -1,0 +1,539 @@
+#!/usr/bin/env bash
+# locker-backup — commission and update LOCKER-N USB sticks with encrypted archives.
+set -euo pipefail
+
+readonly REQUIRED_HOST="azathoth"
+readonly MOUNTPOINT="/mnt/locker-backup"
+readonly KEEP_GENERATIONS=5
+readonly LABEL_PREFIX="LOCKER-"
+DISK=""
+PART=""
+LABEL=""
+MOUNTED=0
+POWER_OFF_ON_SUCCESS=0
+
+usage() {
+  cat <<'EOF'
+Usage:
+  locker-backup commission <device> <N>
+  locker-backup update <device> [--new-passphrase]
+
+  commission  Wipe <device>, create GPT+ext4 labeled LOCKER-N, run f3 checks.
+  update      Verify stick, write today's encrypted archive, keep 5 generations.
+
+Must run as root on host azathoth (via sudo). Backs up SUDO_USER's:
+  ~/Secrets
+  ~/.config/environment.d
+EOF
+}
+
+die() {
+  printf 'error: %s\n' "$*" >&2
+  exit 1
+}
+
+log() {
+  printf '==> %s\n' "$*"
+}
+
+section() {
+  printf '\n--- %s ---\n' "$*"
+}
+
+require_root() {
+  [[ "$(id -u)" -eq 0 ]] || die "must run as root (use sudo)"
+}
+
+require_host() {
+  local host
+  host="$(hostname -s)"
+  [[ "$host" == "$REQUIRED_HOST" ]] || die "refusing to run on host '${host}' (required: ${REQUIRED_HOST})"
+}
+
+resolve_backup_home() {
+  if [[ -z "${SUDO_USER:-}" ]]; then
+    die "SUDO_USER is unset; run via sudo from your login so ~/Secrets is backed up (not /root)"
+  fi
+  BACKUP_HOME="$(getent passwd "$SUDO_USER" | cut -d: -f6)"
+  [[ -n "$BACKUP_HOME" && -d "$BACKUP_HOME" ]] || die "could not resolve home for SUDO_USER=${SUDO_USER}"
+  log "Backup home: ${BACKUP_HOME} (user ${SUDO_USER})"
+}
+
+require_tools() {
+  local -a tools=("$@")
+  local -a missing=()
+  local t
+  for t in "${tools[@]}"; do
+    command -v "$t" >/dev/null 2>&1 || missing+=("$t")
+  done
+  if ((${#missing[@]} > 0)); then
+    printf 'error: missing required tools: %s\n' "${missing[*]}" >&2
+    exit 1
+  fi
+}
+
+tools_shared=(mount umount lsblk blkid findmnt fsck.ext4 udisksctl sha256sum sync)
+tools_commission=(wipefs sfdisk mkfs.ext4 f3write f3read)
+tools_update=(tar gzip gpg getent)
+
+cleanup() {
+  if [[ "$MOUNTED" -eq 1 ]]; then
+    if findmnt -n "$MOUNTPOINT" >/dev/null 2>&1; then
+      rm -f "${MOUNTPOINT}"/locker-*.tar.gz.gpg.tmp "${MOUNTPOINT}"/locker-*.tar.gz.gpg.tmp.sha256 2>/dev/null || true
+      log "Unmounting ${MOUNTPOINT}"
+      umount "$MOUNTPOINT" || printf 'warning: umount %s failed\n' "$MOUNTPOINT" >&2
+    fi
+    MOUNTED=0
+  fi
+  if [[ "$POWER_OFF_ON_SUCCESS" -eq 1 && -n "$DISK" ]]; then
+    log "Powering off ${DISK}"
+    udisksctl power-off -b "$DISK" || printf 'warning: power-off %s failed\n' "$DISK" >&2
+  fi
+}
+
+trap cleanup EXIT
+
+is_partition() {
+  local dev="$1"
+  [[ -b "$dev" ]] || return 1
+  # Partitions have a PKNAME (parent); disks do not.
+  local pk
+  pk="$(lsblk -ndo PKNAME "$dev" 2>/dev/null || true)"
+  [[ -n "$pk" ]]
+}
+
+disk_of() {
+  local dev="$1"
+  local pk name
+  pk="$(lsblk -ndo PKNAME "$dev" 2>/dev/null || true)"
+  if [[ -n "$pk" ]]; then
+    printf '/dev/%s\n' "$pk"
+  else
+    name="$(lsblk -ndo NAME "$dev")"
+    printf '/dev/%s\n' "$name"
+  fi
+}
+
+partition_for_disk() {
+  local disk="$1"
+  local base part
+  base="$(basename "$disk")"
+  if [[ "$base" =~ [0-9]$ ]]; then
+    part="${disk}p1"
+  else
+    part="${disk}1"
+  fi
+  [[ -b "$part" ]] || die "expected partition ${part} not found on ${disk}"
+  printf '%s\n' "$part"
+}
+
+assert_not_system_disk() {
+  local disk="$1"
+  local root_src root_disk
+  root_src="$(findmnt -no SOURCE /)" || die "could not determine root device"
+  # Strip [partition] annotations from btrfs etc.
+  root_src="${root_src%%[*}"
+  if [[ -b "$root_src" ]]; then
+    root_disk="$(disk_of "$root_src")"
+    [[ "$(readlink -f "$disk")" != "$(readlink -f "$root_disk")" ]] \
+      || die "refusing to use system disk ${disk} (holds /)"
+  fi
+}
+
+# Unmount any auto-mounts (e.g. udiskie) on the disk so we can fsck / wipe / remount ourselves.
+ensure_disk_unmounted() {
+  local disk="$1"
+  local part mp
+  while read -r part mp; do
+    [[ -n "${mp:-}" ]] || continue
+    log "Unmounting ${part} from ${mp} (was already mounted)"
+    if ! udisksctl unmount -b "$part" 2>/dev/null; then
+      umount "$mp" || die "could not unmount ${part} (${mp}); close any programs using the stick"
+    fi
+  done < <(lsblk -nrpo NAME,MOUNTPOINT "$disk" | awk 'NF >= 2 { print $1, $2 }')
+
+  if lsblk -nro MOUNTPOINT "$disk" | grep -q .; then
+    die "device ${disk} still has mounted partitions after unmount attempt"
+  fi
+}
+
+normalize_disk_arg() {
+  local arg="$1"
+  [[ -b "$arg" ]] || die "not a block device: ${arg}"
+  if is_partition "$arg"; then
+    die "pass the whole disk (e.g. /dev/sdX), not a partition (${arg})"
+  fi
+  DISK="$(readlink -f "$arg")"
+}
+
+mount_stick() {
+  local opts="${1:-}"
+  mkdir -p "$MOUNTPOINT"
+  if findmnt -n "$MOUNTPOINT" >/dev/null 2>&1; then
+    die "mountpoint ${MOUNTPOINT} is already in use"
+  fi
+  if [[ -n "$opts" ]]; then
+    mount -o "$opts" "$PART" "$MOUNTPOINT"
+  else
+    mount "$PART" "$MOUNTPOINT"
+  fi
+  MOUNTED=1
+  log "Mounted ${PART} at ${MOUNTPOINT}"
+}
+
+read_label() {
+  local lab
+  lab="$(lsblk -ndo LABEL "$PART" 2>/dev/null || true)"
+  if [[ -z "$lab" ]]; then
+    lab="$(blkid -s LABEL -o value "$PART" 2>/dev/null || true)"
+  fi
+  printf '%s\n' "$lab"
+}
+
+assert_locker_label() {
+  LABEL="$(read_label)"
+  [[ "$LABEL" =~ ^LOCKER-[1-9][0-9]*$ ]] \
+    || die "partition ${PART} label '${LABEL}' does not match LOCKER-<positive-integer>"
+  log "Stick label: ${LABEL}"
+}
+
+list_archives() {
+  # Newest first by filename date (YYYY-MM-DD sorts lexicographically).
+  local -a files=()
+  local f
+  shopt -s nullglob
+  for f in "${MOUNTPOINT}"/locker-*.tar.gz.gpg; do
+    [[ -f "$f" ]] || continue
+    files+=("$f")
+  done
+  shopt -u nullglob
+  if ((${#files[@]} == 0)); then
+    return 0
+  fi
+  printf '%s\n' "${files[@]}" | sort -r
+}
+
+prompt_passphrase_once() {
+  local pass
+  # shellcheck disable=SC2162
+  read -r -s -p "Passphrase: " pass
+  printf '\n' >&2
+  [[ -n "$pass" ]] || die "empty passphrase"
+  printf '%s' "$pass"
+}
+
+prompt_passphrase_twice() {
+  local a b
+  # shellcheck disable=SC2162
+  read -r -s -p "Passphrase: " a
+  printf '\n' >&2
+  # shellcheck disable=SC2162
+  read -r -s -p "Confirm passphrase: " b
+  printf '\n' >&2
+  [[ -n "$a" ]] || die "empty passphrase"
+  [[ "$a" == "$b" ]] || die "passphrases do not match"
+  printf '%s' "$a"
+}
+
+gpg_decrypt_list() {
+  local archive="$1"
+  local pass="$2"
+  printf '%s' "$pass" | gpg --batch --yes --passphrase-fd 0 \
+    --decrypt "$archive" 2>/dev/null | tar -tz >/dev/null
+}
+
+write_archive() {
+  local dest="$1"
+  local pass="$2"
+  # Passphrase on fd 3 so stdin can carry the tar stream.
+  tar -C "$BACKUP_HOME" -czf - Secrets .config/environment.d \
+    | gpg --batch --yes --passphrase-fd 3 \
+        --symmetric --cipher-algo AES256 --compress-algo none \
+        --output "$dest" \
+        3< <(printf '%s' "$pass")
+}
+
+write_sha256() {
+  local archive="$1"
+  local sumfile="${archive}.sha256"
+  # Store only the hash and basename so checks work regardless of cwd.
+  (
+    cd "$(dirname "$archive")"
+    sha256sum "$(basename "$archive")" >"$(basename "$sumfile")"
+  )
+}
+
+verify_sha256() {
+  local archive="$1"
+  local sumfile="${archive}.sha256"
+  [[ -f "$sumfile" ]] || {
+    printf 'FAIL  sha256 missing for %s\n' "$(basename "$archive")"
+    return 1
+  }
+  if (cd "$(dirname "$archive")" && sha256sum -c "$(basename "$sumfile")" >/dev/null 2>&1); then
+    printf 'OK    sha256 %s\n' "$(basename "$archive")"
+    return 0
+  fi
+  printf 'FAIL  sha256 %s\n' "$(basename "$archive")"
+  return 1
+}
+
+cmd_commission() {
+  local n="${2:-}"
+  local device="${1:-}"
+  [[ -n "$device" && -n "$n" ]] || {
+    usage
+    die "commission requires <device> and <N>"
+  }
+  [[ "$n" =~ ^[1-9][0-9]*$ ]] || die "N must be a positive integer (got: ${n})"
+  LABEL="${LABEL_PREFIX}${n}"
+
+  require_tools "${tools_shared[@]}" "${tools_commission[@]}"
+
+  normalize_disk_arg "$device"
+  assert_not_system_disk "$DISK"
+  ensure_disk_unmounted "$DISK"
+
+  section "Device"
+  lsblk -o NAME,SIZE,TYPE,FSTYPE,LABEL,MOUNTPOINTS "$DISK"
+
+  printf '\nThis will ERASE ALL DATA on %s and create label %s.\n' "$DISK" "$LABEL"
+  local confirm
+  # shellcheck disable=SC2162
+  read -r -p "Type YES to continue: " confirm
+  [[ "$confirm" == "YES" ]] || die "aborted"
+
+  log "Wiping signatures on ${DISK}"
+  wipefs -a "$DISK"
+
+  log "Creating GPT + single partition"
+  sfdisk --wipe always "$DISK" <<EOF
+label: gpt
+start=1MiB, type=linux
+EOF
+
+  # Wait for the new partition node to appear.
+  local expect
+  if [[ "$(basename "$DISK")" =~ [0-9]$ ]]; then
+    expect="${DISK}p1"
+  else
+    expect="${DISK}1"
+  fi
+  local _i
+  for ((_i = 0; _i < 50; _i++)); do
+    [[ -b "$expect" ]] && break
+    sleep 0.1
+  done
+  PART="$(partition_for_disk "$DISK")"
+
+  log "Creating ext4 filesystem labeled ${LABEL} on ${PART}"
+  mkfs.ext4 -F -L "$LABEL" "$PART"
+
+  mount_stick
+  section "f3write (free space)"
+  f3write "$MOUNTPOINT"
+  section "f3read"
+  f3read "$MOUNTPOINT"
+  log "Removing f3 test files"
+  rm -f "${MOUNTPOINT}"/*.h2w
+
+  log "Unmounting before fsck"
+  umount "$MOUNTPOINT"
+  MOUNTED=0
+
+  section "fsck"
+  fsck.ext4 -f "$PART"
+
+  POWER_OFF_ON_SUCCESS=1
+  section "Done"
+  printf 'Stick %s commissioned on %s.\n' "$LABEL" "$DISK"
+  printf 'Safe to remove after power-off. Next: locker-backup update %s\n' "$DISK"
+}
+
+cmd_update() {
+  local device="${1:-}"
+  local new_pass=0
+  shift || true
+  while (($#)); do
+    case "$1" in
+      --new-passphrase) new_pass=1 ;;
+      -h | --help)
+        usage
+        exit 0
+        ;;
+      *)
+        die "unknown argument: $1"
+        ;;
+    esac
+    shift
+  done
+  [[ -n "$device" ]] || {
+    usage
+    die "update requires <device>"
+  }
+
+  require_tools "${tools_shared[@]}" "${tools_update[@]}"
+  resolve_backup_home
+
+  local src_secrets="${BACKUP_HOME}/Secrets"
+  local src_env="${BACKUP_HOME}/.config/environment.d"
+  [[ -e "$src_secrets" ]] || die "missing source: ${src_secrets}"
+  [[ -e "$src_env" ]] || die "missing source: ${src_env}"
+
+  normalize_disk_arg "$device"
+  PART="$(partition_for_disk "$DISK")"
+  assert_locker_label
+  ensure_disk_unmounted "$DISK"
+
+  section "Device"
+  lsblk -o NAME,SIZE,TYPE,FSTYPE,LABEL,MOUNTPOINTS "$DISK"
+
+  section "fsck"
+  fsck.ext4 -f "$PART"
+
+  mount_stick sync
+
+  section "Stick contents"
+  ls -la "$MOUNTPOINT"
+
+  mapfile -t archives < <(list_archives || true)
+  local pass=""
+  local newest=""
+
+  if ((${#archives[@]} > 0)); then
+    newest="${archives[0]}"
+    section "Existing archives (newest first)"
+    local a
+    for a in "${archives[@]}"; do
+      printf '  %s\n' "$(basename "$a")"
+    done
+  else
+    section "Existing archives"
+    printf '  (none)\n'
+  fi
+
+  if ((${#archives[@]} > 0)) && [[ "$new_pass" -eq 0 ]]; then
+    log "Enter passphrase (must match newest archive: $(basename "$newest"))"
+    pass="$(prompt_passphrase_once)"
+  else
+    if [[ "$new_pass" -eq 1 ]]; then
+      log "Setting a new passphrase (--new-passphrase); old archives keep their old passphrase"
+    else
+      log "No existing archives; choose a passphrase"
+    fi
+    pass="$(prompt_passphrase_twice)"
+  fi
+
+  if ((${#archives[@]} > 0)) && [[ "$new_pass" -eq 0 ]]; then
+    section "Verify passphrase against newest"
+    if gpg_decrypt_list "$newest" "$pass"; then
+      printf 'OK    decrypt/list %s\n' "$(basename "$newest")"
+    else
+      die "passphrase does not decrypt $(basename "$newest")"
+    fi
+  fi
+
+  if ((${#archives[@]} > 0)); then
+    section "Integrity checks"
+    local a ok_all=1
+    for a in "${archives[@]}"; do
+      if ! verify_sha256 "$a"; then
+        ok_all=0
+      fi
+      if gpg_decrypt_list "$a" "$pass"; then
+        printf 'OK    decrypt/list %s\n' "$(basename "$a")"
+      else
+        printf 'FAIL  decrypt/list %s\n' "$(basename "$a")"
+        # With --new-passphrase, older archives may use the previous passphrase.
+        if [[ "$new_pass" -eq 0 ]]; then
+          ok_all=0
+        else
+          printf '      (ignored under --new-passphrase)\n'
+        fi
+      fi
+    done
+    [[ "$ok_all" -eq 1 ]] || die "integrity checks failed; refusing to update"
+  fi
+
+  local today
+  today="$(date +%Y-%m-%d)"
+  local dest="${MOUNTPOINT}/locker-${today}.tar.gz.gpg"
+  local dest_tmp="${dest}.tmp"
+
+  section "Create archive locker-${today}.tar.gz.gpg"
+  rm -f "$dest_tmp"
+  write_archive "$dest_tmp" "$pass"
+  sync -f "$MOUNTPOINT" 2>/dev/null || sync
+
+  section "Verify new archive"
+  if ! gpg_decrypt_list "$dest_tmp" "$pass"; then
+    rm -f "$dest_tmp"
+    die "new archive failed decrypt/list verify"
+  fi
+  printf 'OK    decrypt/list new archive\n'
+
+  # Move into place (overwrites same-day if present).
+  mv -f "$dest_tmp" "$dest"
+  write_sha256 "$dest"
+  if ! verify_sha256 "$dest"; then
+    die "sha256 verify failed for new archive"
+  fi
+  if ! gpg_decrypt_list "$dest" "$pass"; then
+    die "final decrypt/list verify failed"
+  fi
+  printf 'OK    final decrypt/list %s\n' "$(basename "$dest")"
+  sync -f "$MOUNTPOINT" 2>/dev/null || sync
+
+  section "Prune to ${KEEP_GENERATIONS} generations"
+  mapfile -t archives < <(list_archives || true)
+  local i
+  if ((${#archives[@]} > KEEP_GENERATIONS)); then
+    for ((i = KEEP_GENERATIONS; i < ${#archives[@]}; i++)); do
+      log "Removing old $(basename "${archives[$i]}")"
+      rm -f "${archives[$i]}" "${archives[$i]}.sha256"
+    done
+  else
+    printf '  (nothing to prune; %d archive(s))\n' "${#archives[@]}"
+  fi
+
+  section "Stick contents after update"
+  ls -la "$MOUNTPOINT"
+
+  POWER_OFF_ON_SUCCESS=1
+  section "Done"
+  printf 'Update complete on %s.\n' "$LABEL"
+  printf 'Safe to remove after power-off.\n'
+}
+
+main() {
+  local cmd="${1:-}"
+  case "$cmd" in
+    -h | --help | help)
+      usage
+      exit 0
+      ;;
+    "")
+      usage
+      exit 1
+      ;;
+  esac
+
+  require_host
+  require_root
+  shift
+
+  case "$cmd" in
+    commission)
+      cmd_commission "$@"
+      ;;
+    update)
+      cmd_update "$@"
+      ;;
+    *)
+      usage
+      die "unknown command: ${cmd}"
+      ;;
+  esac
+}
+
+main "$@"
