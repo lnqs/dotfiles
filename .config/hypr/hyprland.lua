@@ -68,11 +68,10 @@ if hostname() == "nyarlathothep" then
     scale    = "auto",
   })
 
-  hl.bind("switch:on:Lid Switch", hl.dsp.exec_cmd("hyprctl reload"), { locked = true })
-  hl.bind("switch:off:Lid Switch", hl.dsp.exec_cmd("hyprctl reload"), { locked = true })
-
-  hl.on("monitor.added", function () hl.exec_cmd("hyprctl reload") end)
-  hl.on("monitor.removed", function () hl.exec_cmd("hyprctl reload") end)
+  hl.bind("switch:on:Lid Switch", hl.dsp.reload_config(), { locked = true })
+  hl.bind("switch:off:Lid Switch", hl.dsp.reload_config(), { locked = true })
+  hl.on("monitor.added", function () hl.dsp.reload_config() end)
+  hl.on("monitor.removed", function () hl.dsp.reload_config() end)
 end
 
 hl.monitor({
@@ -341,9 +340,11 @@ if hostname() == "nyarlathothep" then
   end
 end
 
-hl.workspace_rule({ workspace = "special:scratchpad", on_created_empty = terminal .. " -- nvim ~/Notes/todo.md" })
-hl.workspace_rule({ workspace = "HALLO", persistent = true, monitor = "DP-9" })
-
+hl.on("workspace.created", function(workspace)
+  if workspace.name == "special:scratchpad" and workspace.is_empty then
+    hl.exec_cmd(terminal .. " -- nvim ~/Notes/todo.md")
+  end
+end)
 
 ----------------
 ---- LAYERS ----
