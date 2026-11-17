@@ -31,5 +31,35 @@ return {
 
       return config
     end,
+  },
+
+  {
+    "stevearc/conform.nvim",
+    event = { "BufWritePre" },
+    cmd = { "ConformInfo" },
+    opts = {},
+  },
+
+  {
+    "mrcjkb/rustaceanvim",
+    version = "^9",
+    lazy = false,
+    init = function()
+      vim.g.rustaceanvim = {
+        server = {
+          default_settings = {
+            ["rust-analyzer"] = {
+              checkOnSave = true,
+              check = {
+                command = "clippy",
+              },
+              cargo = {
+                allFeatures = true,
+              },
+            },
+          },
+        },
+      }
+    end,
   }
 }
