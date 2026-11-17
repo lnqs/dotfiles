@@ -26,15 +26,17 @@ autoload -U add-zsh-hook
 #     SETUP ENVIRONMENT
 ###############################################################################
 
+if command -v systemctl >/dev/null 2>&1; then
+    while IFS='=' read -r key value; do
+        [[ "$key" =~ ^[a-zA-Z_][a-zA-Z0-9_]*$ ]] || continue
+        export "$key=$value"
+    done < <(systemctl --user show-environment 2>/dev/null)
+fi
+
 # enable 265 colors
 if [[ "$TERM" = "xterm" ]]; then
     export TERM="xterm-256color"
 fi
-
-if [[ $(uname) == "Darwin" ]]; then
-    source $HOME/.config/environment.d/*
-fi
-
 
 ###############################################################################
 #     ALIASES
